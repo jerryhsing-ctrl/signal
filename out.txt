@@ -1,0 +1,51 @@
+🔨 編譯 StrategySv/StrategySv.cpp
+g++ -std=c++20 -Wall -pthread -I./helper -I./QuoteSv -I./StrategySv -I./Order -I/usr/local/include -I. -DCFG_FILE=\"./cfg/HWStratSv.cfg\" -MMD -MP -c StrategySv/StrategySv.cpp -o build/StrategySv/StrategySv.o
+🔗 連結 build/HWStratSv
+g++ build/./main.o build/QuoteSv/Format1.o build/QuoteSv/Format6.o build/QuoteSv/QuoteSv.o build/QuoteSv/UDPSession.o build/StrategySv/indexCalc.o build/StrategySv/signalA.o build/StrategySv/signalB.o build/StrategySv/signalC.o build/StrategySv/StrategySv.o build/StrategySv/strongGroup.o build/StrategySv/strongSingle.o build/helper/IniReader.o build/Order/Order.o -o build/HWStratSv -pthread 
+cd ./exec/ && time ./sv/signal
+✅ [Success] Process is now SCHED_FIFO (Priority 99)
+Thread 0 processing ./data/TSEQuote.20260129
+Thread 1 processing ./data/TSEQuote.20260128
+Thread 2 processing ./data/TSEQuote.20260127
+Thread 3 processing ./data/TSEQuote.20260126
+Thread 4 processing ./data/TSEQuote.20260123
+Thread 3 processing ./data/TSEQuote.20260122
+Thread 4 processing ./data/TSEQuote.20260121
+Thread 1 processing ./data/TSEQuote.20260120
+Thread 2 processing ./data/TSEQuote.20260119
+Thread 0 processing ./data/TSEQuote.20260116
+Thread 3 processing ./data/TSEQuote.20260115
+Thread 1 processing ./data/TSEQuote.20260114
+Thread 0 processing ./data/TSEQuote.20260113
+Thread 2 processing ./data/TSEQuote.20260112
+Thread 4 processing ./data/TSEQuote.20260109
+Thread 1 processing ./data/TSEQuote.20260108
+Thread 2 processing ./data/TSEQuote.20260107
+Thread 3 processing ./data/TSEQuote.20260106
+Thread 0 processing ./data/TSEQuote.20260105
+Thread 4 processing ./data/TSEQuote.20260102
+Thread 4 processing ./data/TSEQuote.20251231
+QuoteSv init finished. Total files processed: 21
+ symbol 1603 value 391956700
+ symbol 1608 value 4164578350
+ symbol 1609 value 7336671850
+ symbol 1612 value 737322300
+ symbol 1615 value 70154975
+ symbol 1616 value 496071375
+ symbol 1617 value 120493100
+ symbol 1618 value 1739233575
+ symbol 2061 value 0
+ symbol 2440 value 77159075
+ symbol 911608 value 1871295
+tseEnable: [false]
+otcEnable: [false]
+✅ [Success] Process is now SCHED_FIFO (Priority 99)
+
+hwqEnable: [false]
+
+start To readFile
+StrategySv::run started TSE
+ readFileFinish cnt = 1756477
+
+ total cnt 1756477
+signal finish
