@@ -45,7 +45,7 @@ $(BUILDDIR)/%.o: %.cpp
 
 # 一般執行 (不含 ASan)
 run: $(TARGET)
-	cd ./exec/ && time ./sv/signal
+	cd ./exec/  && rm -rf log && mkdir log &&  time ./sv/signal
 
 # ==========================================
 # 🔥 核心功能：ASan 記憶體檢測模式

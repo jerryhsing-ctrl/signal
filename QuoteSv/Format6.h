@@ -67,8 +67,11 @@ class Format6: public Poolable
 		short tradeAt; //0,不是內盤也不是外盤  內盤:1, 成交在買價，表示賣方急於成交, 外盤:2, 成交在賣價，表示買方急於成交
 		bool  isLimitUpLocked;  // 漲停鎖死
 		bool  isLimitDownLocked;  // 跌停鎖死
-
+		
+		string market;
 		timeType time;
+		bool volatilityPause = false; // 波動暫停
+		bool prevLimitUp = false; // 前一日是否漲停
 		void record(std::string seqno);
 };
 //---------------------------------------------------------------------------

@@ -132,19 +132,20 @@ after_0940  = rolling_min(low, 8 min)  # 可配置不同視窗
 
 觸發條件:
 ├─ 追蹤階段 (Tracking Zone):
-│   ├─ VWAP <= Price <= VWAP × 1.01   
+│   ├─ Vwap * 1.006 <= Price <= Day High × (1 - 1%) (最小回檔要求) 
 │   └─ Price 觸及 Rolling Low → 開始計時  #這個Price 定義為trigger_price
 │   
 │ 
-└─ 生成階段 (Buffer Zone: 在 Buffer 1 分鐘內):
+└─ 生成階段 (Buffer Zone: 在 Buffer 2 分鐘內):
     ├─ Volume Contraction = True (B 的 volume_contraction_ratio跟A可能)
-    └─ Price <= Day High × (1 - 1.5%) (最小回檔要求)
+
 (取消條件: price >= trigger_price × 1.005 → 取消 Buffer (反彈))
 
 觸發階段 (  20 分鐘 ):
 ├─ Price >= trigger_price × 1.005
 └─ Price >= trigger_price + 2 ticks
 (取消條件: Price <= trigger_price - 2 ticks )
+
 #條件是 and
 ```
 #### Signal C: 跌深反彈

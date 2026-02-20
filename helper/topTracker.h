@@ -11,23 +11,25 @@ using StockEntry = std::pair<long long, std::string>;
 
 class TopKVolumeTracker {
 private:
-    const size_t K;
+    size_t K;
 
     // 儲存全市場所有股票的當前累積量
     std::unordered_map<std::string, long long> all_volumes;
 
     // 核心優化：使用 std::set 取代 vector
     // set 自動排序，begin() 永遠是最小值 (門檻值)
-    std::set<StockEntry> top_list;
+   
 
     // 快速查找某支股票是否在榜內
     std::unordered_map<std::string, bool> is_in_top;
 
 public:
+    std::set<StockEntry> top_list;
     TopKVolumeTracker(size_t k_val = 200) : K(k_val) {}
     
     bool inPool(const std::string& symbol) const {
-        return is_in_top.count(symbol);
+        auto it = is_in_top.find(symbol);
+        return (it != is_in_top.end() && it->second);
     }
     // 回傳: {NewEntrant, Leaver}
     std::pair<std::string, std::string> on_tick(const std::string& symbol, long long volume_delta) {

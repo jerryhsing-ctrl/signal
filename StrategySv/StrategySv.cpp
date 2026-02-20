@@ -10,13 +10,13 @@
 
 using namespace std;
 
-StrategySv::StrategySv() {
-    quoteSv = new QuoteSv();
-    quoteSv->getPastData();
+StrategySv::StrategySv(QuoteSv *quoteSv) {
+    this->quoteSv = quoteSv;
+
     // strongSingle.f1mgr = &quoteSv->f1mgr;
     strongSingle.quoteSv = quoteSv;
     strongGroup.quoteSv = quoteSv;
-    strongGroup.getData();
+    
     
     
     IniReader reader(CFG_FILE);
@@ -48,11 +48,11 @@ StrategySv::StrategySv() {
         });
         
     }
-    th_OTC = thread([this]() {
-        pin_thread_to_core(21);
-        set_thread_name("strat OTC");
-        this->run(market_queue_OTC, "OTC");
-    });
+    // th_OTC = thread([this]() {
+    //     pin_thread_to_core(21);
+    //     set_thread_name("strat OTC");
+    //     this->run(market_queue_OTC, "OTC");
+    // });
     
     std::string hwqEnable = reader.Read("HWQ", "ENABLE");
     cout << "hwqEnable: [" << hwqEnable << "]" << endl;
@@ -67,11 +67,11 @@ StrategySv::StrategySv() {
         });
         
     }
-    th_HWQ = thread([this]() {
-        pin_thread_to_core(22);
-        set_thread_name("strat HWQ");
-        this->run(market_queue_HWQ, "HWQ");
-    });
+    // th_HWQ = thread([this]() {
+    //     pin_thread_to_core(22);
+    //     set_thread_name("strat HWQ");
+    //     this->run(market_queue_HWQ, "HWQ");
+    // });
     
     
 }
@@ -81,73 +81,99 @@ void StrategySv::run(queueType *market_queue_, string market_name) {
     cout << '\n';
     format6Type *f6;
     bool flag = true;
-    int cnt = 0;
-    bool printed = false;
+    static std::atomic<bool> printed(false); // 改為 static atomic
+    static std::atomic<int> processed_cnt{0};
     while(1) {
         if ((f6 = market_queue_->front()) != nullptr) {
-            cnt++;
-
-
-
+            
             if (flag) {
                 cout << "StrategySv::run started " << market_name << endl;
                 flag = false;
             }
-            if (f6->tradeCode != 1) { 
+            if (f6->tradeCode != 1 || (f6->symbol[0] == '0' && f6->symbol[1] == '0')) { 
+                market_queue_->pop();
+                processed_cnt++;
+                continue;
+            }
+            
+            string &symbol = f6->symbol;
+            indexCalc &index_calc = index_calc_map_[symbol];
+            IndexData idx = index_calc.calc(f6);
+
+            
+            
+
+            order.on_tick(f6);
+            if (order.stocks[f6->symbol] > 0) {
+                processed_cnt++;
                 market_queue_->pop();
                 continue;
             }
 
-            // if (f6->symbol != "1605") {
-            //     market_queue_->pop();
-            //     continue;
-            // }
-
-            string &symbol = f6->symbol;
-            indexCalc &index_calc = index_calc_map_[symbol];
-
-
-
-            IndexData idx = index_calc.calc(f6);
-
-
-            bool choosen = false;
-            if (strongSingle.on_tick(idx, f6)) {
-                choosen = true;
-            }
-            if (strongGroup.on_tick(idx, f6)) {
-                choosen = true;
-            }
-            choosen = true;
-
-            if (signalA_map_[symbol].eval(idx, f6, choosen)) {
-                order.trigger(idx, f6, entry_idx++, SIGNAL_A);
-            }
-            // if (signalA_map_[symbol].leave(idx, f6)) {
-            //     order.leave(idx, f6, entry_idx);
-            // }
-
-            // if (signalB_map_[symbol].eval(idx, f6)) {
-            //     order.trigger(idx, f6, entry_idx++, SIGNAL_B);
-            // }
-
-            // if (signalB_map_[symbol].leave(idx, f6)) {
-            //     order.leave(idx, f6, entry_idx);
-            // }
-
-            // order.trigger(idx, f6, entry_idx);
-            // cout << "  cnt = " << cnt << '\n'; 
-            market_queue_->pop(); 
-            // if (cnt % 10000 == 0) // 1760420
-            //     cout << "cnt " << cnt << '\n';
+            bool single = strongSingle.on_tick(idx, f6);
+            bool group = strongGroup.on_tick(idx, f6);
             
-        }
-        if (quoteSv->readFileFinish &&  cnt == quoteSv->readFileCnt && !printed) {
-            cout << " total cnt " << cnt << '\n';
-            cout << "signal finish\n";
-            printed = true;
-            fflush(stdout);
-            exit(0);
-        }
+            MatchType matchType = MatchType::None;
+            if (single && group)
+                matchType = MatchType::Both;
+            else if (single)
+                matchType = MatchType::StrongSingle;
+            else if (group)
+                matchType = MatchType::StrongGroup;
+            
+       
+
+            MatchType triggerMatchTypeA = MatchType::None;
+            bool isSignalA = signalA_map_[symbol].eval(idx, f6, matchType, triggerMatchTypeA, strongSingle, strongGroup, quoteSv);
+
+            MatchType triggerMatchTypeB = MatchType::None;
+            bool isSignalB = signalB_map_[symbol].eval(idx, f6, matchType, triggerMatchTypeB, strongSingle, strongGroup, quoteSv, order.isStoppedLoss(symbol));
+
+            // cout << "   SignalA: " << isSignalA << " SignalB: " << isSignalB << '\n';
+ 
+            if (isSignalA) {
+                 order.trigger(idx, f6, entry_idx++, SIGNAL_TYPE::SIGNAL_A, triggerMatchTypeA, strongSingle, strongGroup);
+            } else if (isSignalB) {
+                 order.trigger(idx, f6, entry_idx++, SIGNAL_TYPE::SIGNAL_B, triggerMatchTypeB, strongSingle, strongGroup);
+            }
+            else if (isSignalA && isSignalB)
+                errorLog(" both signal triggered, symbol: " + f6->symbol + " matchTime: " + to_string(f6->matchTimeStr));
+            
+            market_queue_->pop(); 
+            processed_cnt++;
+
+
+            bool expected = false;
+        // 使用 compare_exchange_strong 確保只有一個 thread 能將 printed 從 false 變成 true
+            if (quoteSv->readFileFinish && processed_cnt == quoteSv->readFileCnt && printed.compare_exchange_strong(expected, true)) {
+                // sleep(3);
+                cout << " total cnt " << processed_cnt << '\n';
+                cout << "signal finish\n";
+                
+                format6Type f6;
+                f6.matchTimeStr = LLONG_MAX; 
+                
+                for (auto& [symbol, qty] : order.stocks) {
+                    if (qty > 0) {
+                        errorLog(" final stock: " + symbol + " qty: " + to_string(qty));
+                        f6.symbol = symbol;
+                        order.on_tick(&f6); // 強制檢查是否需要停損或其他離場條件
+                    }
+                }
+
+                for (auto& [symbol, qty] : order.stocks) {
+                    if (qty > 0) {
+                        errorLog(" !!!!!after market close : final stock: " + symbol + " qty: " + to_string(qty));
+                    }
+                }
+                cout << " cash left: " <<  order.cash  << '\n';
+                fflush(stdout);
+                while(1) {
+                    cout << "finished all processing, sleeping... " << endl;
+                    // sleep(1);
+                    exit(0);
+                }
+            }
+        } 
     }
 }

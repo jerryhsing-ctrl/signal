@@ -9,6 +9,7 @@
 #include "Order.h"
 #include "strongSingle.h"
 #include "strongGroup.h"
+#include <unordered_map>
 
 
 class StrategySv
@@ -23,16 +24,17 @@ private:
 	queueType *market_queue_HWQ = nullptr;
 	unordered_map<std::string, indexCalc> index_calc_map_;
 
-	StrongSingle strongSingle;
-	StrongGroup strongGroup;
+	
 
 	unordered_map<std::string, signalA> signalA_map_;
 	unordered_map<std::string, signalB> signalB_map_;
-	Order order;
+	
 	int entry_idx = 0;
 public:
-	StrategySv();
+	StrategySv(QuoteSv *quoteSv);
 	void run(queueType *market_queue_, std::string market_name);
-
+	Order order;
 	QuoteSv *quoteSv;
+	StrongSingle strongSingle;
+	StrongGroup strongGroup;
 };

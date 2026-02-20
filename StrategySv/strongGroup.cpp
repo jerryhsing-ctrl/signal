@@ -2,66 +2,166 @@
 #include "indexCalc.h"
 #include "type.h"
 #include "QuoteSv.h"
+#include "IniReader.h"
+#include <iostream>
 
 StrongGroup::StrongGroup (){
     readFile("./files/group.csv");
 
-    
-}
+    IniReader reader;
+    if (reader.ReadIni("./cfg/parameter.cfg")) {
+        string section = "StrongGroup";
+        try {
+            string val;
 
-void StrongGroup::getData() {
-    for (auto &[group, members] : group_member) {
-        
-        for (const string &symbol : members) {
-            long long tmp = 0;
-            for (int i = 1; i <= DAY_PER_MONTH; i++) 
-                tmp += quoteSv->trading_val[i][symbol];
-            tmp /= DAY_PER_MONTH;
+            val = reader.Read(section.c_str(), "member_min_month_trading_val");
+            if (val.empty()) throw std::runtime_error("member_min_month_trading_val missing");
+            config.member_min_month_trading_val = stoll(val);
 
-            tradingValue_monthAvg[symbol] = tmp;
+            val = reader.Read(section.c_str(), "group_min_month_trading_val");
+            if (val.empty()) throw std::runtime_error("group_min_month_trading_val missing");
+            config.group_min_month_trading_val = stoll(val);
+
+            val = reader.Read(section.c_str(), "group_min_avg_pct_chg");
+            if (val.empty()) throw std::runtime_error("group_min_avg_pct_chg missing");
+            config.group_min_avg_pct_chg = stod(val);
+
+            val = reader.Read(section.c_str(), "group_min_val_ratio");
+            if (val.empty()) throw std::runtime_error("group_min_val_ratio missing");
+            config.group_min_val_ratio = stod(val);
+
+            val = reader.Read(section.c_str(), "member_strong_vol_ratio");
+            if (val.empty()) throw std::runtime_error("member_strong_vol_ratio missing");
+            config.member_strong_vol_ratio = stod(val);
+
+            val = reader.Read(section.c_str(), "member_strong_trading_val");
+            if (val.empty()) throw std::runtime_error("member_strong_trading_val missing");
+            config.member_strong_trading_val = stoll(val);
+
+            val = reader.Read(section.c_str(), "top_group_rank_threshold");
+            if (val.empty()) throw std::runtime_error("top_group_rank_threshold missing");
+            config.top_group_rank_threshold = stoi(val);
+
+            val = reader.Read(section.c_str(), "top_group_max_select");
+            if (val.empty()) throw std::runtime_error("top_group_max_select missing");
+            config.top_group_max_select = stoi(val);
+
+            val = reader.Read(section.c_str(), "top_group_min_select");
+            if (val.empty()) throw std::runtime_error("top_group_min_select missing");
+            config.top_group_min_select = stoi(val);
             
-            if (group == "電線電纜")
-                cout <<  " symbol " << symbol << " value " << tradingValue_monthAvg[symbol] << '\n';
-            if (tmp >= 100'000'000)  
-                group_tradingValue_monthAvg_sum[group] += tmp;
+            val = reader.Read(section.c_str(), "normal_group_max_select");
+            if (val.empty()) throw std::runtime_error("normal_group_max_select missing");
+            config.normal_group_max_select = stoi(val);
+
+            val = reader.Read(section.c_str(), "normal_group_min_select");
+            if (val.empty()) throw std::runtime_error("normal_group_min_select missing");
+            config.normal_group_min_select = stoi(val);
+
+
+        } catch (const std::exception& e) {
+            std::cerr << "Error parsing config for StrongGroup: " << e.what() << std::endl;
+            exit(1);
         }
+    } else {
+        std::cerr << "Failed to read ./cfg/parameter.cfg" << std::endl;
+        exit(1);
     }
 }
 
-bool StrongGroup::on_tick(IndexData &idx, format6Type *f6) {
-    if (symbol_to_group.count(f6->symbol)) 
-        return false;
-    // cout << "f6 Qty " << f6->match.Qty << " price " << f6->match.Price << '\n'; 
+void StrongGroup::getGroup() {
+    for (auto &[group, members] : group_member) {
+        
+        for (const string &symbol : members) {
+            if (symbol_is_valid.count(symbol) == 0) {
+                long long tmp = 0;
+                for (int i = 1; i <= DAY_PER_MONTH; i++) {
+                    tmp += quoteSv->trading_val[i][symbol];
+                }
+                tmp /= DAY_PER_MONTH;
 
+                tradingValue_monthAvg[symbol] = tmp;
+                symbol_is_valid[symbol] = (tmp >= config.member_min_month_trading_val);
+            }
+
+            if (symbol_is_valid[symbol])
+                group_tradingValue_monthAvg_sum[group] += tradingValue_monthAvg[symbol];
+        }
+    }
+
+}
+
+bool StrongGroup::on_tick(IndexData &idx, format6Type *f6) {
+    if (symbol_to_groups.count(f6->symbol) == 0 || !symbol_is_valid[f6->symbol] || quoteSv->prevDayLimitUpMap[f6->symbol]) 
+        return false;
 
     tradingValue_cumu[f6->symbol] += f6->match.Price * f6->match.Qty;
-    group_tradingValue_cumu[symbol_to_group[f6->symbol]] += f6->match.Price * f6->match.Qty;
+    for (const auto& group : symbol_to_groups[f6->symbol]) {
+        group_tradingValue_cumu[group] += f6->match.Price * f6->match.Qty;
+    }
     price_last[f6->symbol] = f6->match.Price;
     vol_cumu[f6->symbol] += f6->match.Qty;
 
+    double vwapPerChg = percentagChg(f6->symbol, idx.vwap);
+    double pricePerChg = percentagChg(f6->symbol, f6->match.Price);
 
-    if (isValidGroup(idx, f6)) {
-        // (個股量增比(參數13) > 1.5 && 當前漲幅 >= 族群平均漲幅-0.5%) || 個股當前漲幅 > 4%
-        long long total_vol = 0;
-        for (int i = 1; i <= DAY_PER_MONTH; i++) {
-            long long vol = quoteSv->vol_cum[i].query(f6->symbol, f6->matchTime_us);
-            total_vol += vol;
+
+    for (const auto& group : symbol_to_groups[f6->symbol]) {
+        double gPerChg = groupPercentageChg(group);
+        groupRank.on_tick(group, gPerChg);
+        group_member_vwapRank[group].on_tick(f6->symbol, vwapPerChg);
+        if (isValidGroup(idx, f6, group)) {
+            
+
+            long long total_vol = 0;
+            for (int i = 1; i <= DAY_PER_MONTH; i++) {
+                long long vol = quoteSv->vol_cum[i].query(f6->symbol, f6->matchTime_us);
+                total_vol += vol;
+            }
+            long long avg = total_vol / DAY_PER_MONTH;
+            // bool cond1 = ((double) vol_cumu[f6->symbol] / avg) >= config.member_strong_vol_ratio;
+
+            // 2. 個股月均成交金額 > 2 billion
+            long long total_tradingVal = 0;
+            for (int i = 1; i <= DAY_PER_MONTH; i++) {
+                total_tradingVal += quoteSv->trading_val[i][f6->symbol];
+            }
+            bool cond1 = ((double) vol_cumu[f6->symbol] / avg) >= config.member_strong_vol_ratio || total_tradingVal / DAY_PER_MONTH > config.member_strong_trading_val;
+
+
+            bool cond2 = pricePerChg > 0.02 && vwapPerChg > 0.01;
+
+            // 2. 個股月平均成交金額 > 0.3 billion ============================
+            // cond3
+            bool cond3 = false;
+            int maxChoosen, minChoosen;
+            if (groupRank.isTopN(group, config.top_group_rank_threshold)) {
+                maxChoosen = config.top_group_max_select, minChoosen = config.top_group_min_select;
+            }
+            else {
+                maxChoosen = config.normal_group_max_select, minChoosen = config.normal_group_min_select;
+            }
+
+            int choosen = 0, throwOut = 0;
+            for (auto &[gain, symbol] : group_member_vwapRank[group].rank_map) {
+                if (symbol == f6->symbol) {
+                    cond3 = true;
+                    break;
+                }
+                if (!quoteSv->prevDayLimitUpMap[symbol]) {
+                    choosen++;
+                }
+                else {
+                    throwOut++;
+                }
+                if (choosen + throwOut >= maxChoosen && choosen >= minChoosen) {
+                    break;
+                }
+            }
+
+            if (cond1 && cond2 && cond3)
+                return true;
         }
-        long long avg = total_vol / DAY_PER_MONTH;
-        bool cond1 = ((double) vol_cumu[f6->symbol] / avg) >= 1.2;
-
-        double gPerChg = groupPercentageChg(symbol_to_group[f6->symbol]);
-        double perChg = percentagChg(f6->symbol, f6->match.Price);
-        bool cond2 = perChg >= gPerChg - 0.005;
-
-        bool cond3 = perChg > 0.04;
-
-        long long total_month_tradingVal = 0;
-        for (int i = 1; i <= DAY_PER_MONTH; i++) { 
-            total_month_tradingVal += quoteSv->trading_val[i][f6->symbol];
-        }
-        bool cond4 = total_month_tradingVal / DAY_PER_MONTH >= 300'000'000;
-        return (cond1 || cond2 || cond3) && cond4;
     }
 
     return false;
@@ -86,27 +186,21 @@ double StrongGroup::groupPercentageChg(std::string group) {
     return avg_percentageChg;
 }
 
-bool StrongGroup::isValidGroup(IndexData &idx, format6Type *f6){
+bool StrongGroup::isValidGroup(IndexData &idx, format6Type *f6, const std::string& group){
     // 1. 月平均成交金額(參數8)成交金額太低 >= 0.1 billion
-    bool cond1 = tradingValue_monthAvg[f6->symbol] >= 100'000'000;
+    bool cond1 = tradingValue_monthAvg[f6->symbol] >= config.member_min_month_trading_val;
     
     // 2. 族群月均成交金額(參數9) > 3 billion
-    string group = symbol_to_group[f6->symbol];
-    bool cond2 =  group_tradingValue_monthAvg_sum[group] >= 3'000'000'000;
+    bool cond2 =  group_tradingValue_monthAvg_sum[group] >=  config.group_min_month_trading_val;
 
     // 3. 族群當前平均漲幅
     double avg_percentageChg = groupPercentageChg(group);
-    bool cond3 = avg_percentageChg > 0.015;
+    bool cond3 = avg_percentageChg > config.group_min_avg_pct_chg;
 
     
-    long long total_tradingValue = 0;
-    for (auto &symbol : group_member[group]) {
-        for (int i = 1; i <= DAY_PER_MONTH; i++) {
-            total_tradingValue += quoteSv->vol_cum[i].query(symbol, f6->matchTime_us);
-        }
-    }
-    double val_ratio = (double) group_tradingValue_cumu[group] / (total_tradingValue / 20);
-    bool cond4 = val_ratio > 0.015;
+    
+    double val_ratio = (double) group_tradingValue_cumu[group] / (group_tradingValue_monthAvg_sum[group]);
+    bool cond4 = val_ratio > config.group_min_val_ratio;
     
 
     return cond1 && cond2 && cond3 && cond4;
@@ -146,11 +240,8 @@ void StrongGroup::readFile(std::string filename) {
         } catch (const std::exception& e) {
             errorLog("轉換失敗，例如欄位");
         }
-        if (symbol_to_group.count(symbol)) {
-            continue; // 跳過，不加入第二個群組
-        }
-
-        symbol_to_group[symbol] = group;
+        
+        symbol_to_groups[symbol].push_back(group);
         group_member[group].insert(symbol);
     }
 

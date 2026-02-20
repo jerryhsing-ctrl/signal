@@ -11,6 +11,13 @@ using queueType = SPSCQueue<format6Type, 10000000>;
 
 using seqnoType = string;
 
+enum class MatchType {
+    None,
+    StrongSingle,
+    StrongGroup,
+    Both
+};
+
 enum class Reply : uint32_t {
     Upload_Success,
     Upload_Repeat,

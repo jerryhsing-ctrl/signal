@@ -35,7 +35,7 @@ inline void logErrorToFile(const string& msg) {
 
 inline void errorLog(string msg){
     logErrorToFile(msg);
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 10; i++) {
         cout << " ERROR OCCUR: " << msg << endl;
         // terminate();
         // sleep(1);

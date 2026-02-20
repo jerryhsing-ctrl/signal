@@ -30,7 +30,8 @@ static inline void trim(std::string& s) {
 /**
  * @brief 實作 readFile (已更新：自動去除所有欄位的前後空白)
  */
-bool Format1Manager::readFile(const std::string& filename) {
+bool Format1Manager::readFile(const std::string& date) {
+    std::string filename = "./files/Symbols_" + date + ".csv";
     std::ifstream file(filename);
     if (!file.is_open()) {
         // std::cerr << "Error: Could not open file " << filename << std::endl;
@@ -117,24 +118,12 @@ bool Format1Manager::readFile(const std::string& filename) {
             std::cerr << "Warning: Skipping malformed line: " << line << " (" << e.what() << ")" << std::endl;
         }
 
-        // cout << " symbol " << symbol << " segment " << name2 << '\n';
     }
 
     file.close();
     return true;
 }
-bool Format1Manager::readFileToday() {
- std::time_t t = std::time(nullptr);
-	std::tm tm{};
 
-	localtime_r(&t, &tm);
-	std::ostringstream oss;
-	oss << "./files/Symbols_" << std::put_time(&tm, "%Y%m%d") << ".csv";
-	std::string todaySymbols = oss.str();
-
-	// 優先讀取執行目錄下的今日檔案，若不存在則嘗試使用原 SYMBOL_FILE 做為後援
-	return readFile(todaySymbols.c_str());
-}
 /**
  * @brief 實作 getData (此函數不需修改)
  */

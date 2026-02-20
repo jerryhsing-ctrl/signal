@@ -22,6 +22,9 @@ void Format6::init(unsigned char *package_src, int length)
     tradeAt = 0; 
     isLimitUpLocked = false; 
     isLimitDownLocked = false;
+    match = {};
+    memset(bid, 0, sizeof(bid));
+    memset(ask, 0, sizeof(ask));
 
     const unsigned char* cursor = package_src + 10;
     const Format6Body* body = reinterpret_cast<const Format6Body*>(cursor);
@@ -165,8 +168,8 @@ long long convertRawTimeToMicroseconds(long long rawTime) {
 }
 
 std::pair<long long, long long> getBestPrices(const std::string& line) {
-    long long bidPrice = -1;
-    long long askPrice = -1;
+    long long bidPrice = 0;
+    long long askPrice = 0;
 
     // --- 處理 BID (委買) ---
     size_t bidPos = line.find("BID:");
@@ -200,6 +203,12 @@ std::pair<long long, long long> getBestPrices(const std::string& line) {
 }
 
 bool Format6::fromRedis(const std::string& data, const std::string& depth) {
+    // memset(this, 0, sizeof(Format6)); // 清空整個物件，避免殘留數據影響解析
+    match = {};
+    memset(bid, 0, sizeof(bid));
+    memset(ask, 0, sizeof(ask));
+    tradeAt = 0;
+
     const char* p = data.c_str();
 
     // Trade
@@ -268,6 +277,8 @@ bool Format6::fromRedis(const std::string& data, const std::string& depth) {
             tradeAt = 1;
         else 
             tradeAt = 2;
+        bid[0].Price = bidAsk.first;
+        ask[0].Price = bidAsk.second;
     }
     else {
         tradeAt = 0;

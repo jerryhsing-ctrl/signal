@@ -20,6 +20,7 @@
 #include "UDPSession.h"
 #include <atomic>
 #include "volTracker.h"
+#include "NumTracker.h"
 // #define RANGE 10000
 
 #define DAY_PER_MONTH 20
@@ -56,7 +57,7 @@ class QuoteSv
 		vector<LinearVolumeTracker> vol_cum;
 		vector<LinearVolumeTracker> tradingValue_cum;
 		vector<unordered_map<std::string, long long>> trading_val;
-		
+		unordered_map<std::string, long long> lastPrice;
 
 		bool get_vol_cum(std::string filename, int idx);
 
@@ -64,10 +65,15 @@ class QuoteSv
         atomic<int> readFileCnt = 0;
         atomic<bool> readFileFinish = false;
 
-		void getPastData();
+		void getTickData(string type, string date);
 
-		bool readFile(const std::string filename);
-		
+		bool readFile(string market, const std::string date);
+		void readFileMerged(string market1, string date1, string market2, string date2);
+
+		// 判斷每檔股票前一天是否漲停
+		unordered_map<std::string, bool> prevDayLimitUpMap;
+		bool checkPrevDayLimitUp(const std::string& date);
+		NumTracker numTracker;
 		bool run(string market);
 		thread quoteThread_TSE, quoteThread_OTC, quoteThread_HWQ;
 		// 訂閱
