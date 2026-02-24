@@ -1,0 +1,5 @@
+Action    ,Symbol    ,Time                ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   
+enter     ,6176      ,92937344037         ,-3.87965e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,74626.9        
+leave     ,6176      ,92938917359         ,-2.88338e+07   ,-37313.4       ,-              ,-              ,stopLoss       ,0              
+enter     ,6176      ,92938917359         ,-3.88338e+07   ,-1.00373e+07   ,SignalA        ,StrongGroup    ,-              ,74626.9        
+leave     ,6176      ,120840963361        ,-2.42852e+07   ,-74626.9       ,-              ,-              ,stopLoss       ,0              

@@ -1,0 +1,13 @@
+Action    ,Symbol    ,Time                ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   
+enter     ,2455      ,92354684436         ,-3.79957e+07   ,-1e+07         ,SignalA        ,StrongSingle   ,-              ,53475.9        
+leave     ,2455      ,92411032298         ,-3.59904e+07   ,-7.99465e+06   ,-              ,-              ,takeProfit     ,42780.7        
+leave     ,2455      ,92844243915         ,-3.99778e+07   ,-5.98396e+06   ,-              ,-              ,takeProfit     ,32085.6        
+leave     ,2455      ,92947108340         ,-3.99617e+07   ,-3.96791e+06   ,-              ,-              ,takeProfit     ,21390.4        
+leave     ,2455      ,93003549793         ,-3.79403e+07   ,-1.94652e+06   ,-              ,-              ,takeProfit     ,10695.2        
+leave     ,2455      ,93011688011         ,-4.59136e+07   ,80213.9        ,-              ,-              ,takeProfit     ,0              
+enter     ,2455      ,94321223685         ,-6.00908e+07   ,-9.91979e+06   ,SignalA        ,StrongSingle   ,-              ,53191.5        
+leave     ,2455      ,94617781192         ,-6.60304e+07   ,-7.90383e+06   ,-              ,-              ,takeProfit     ,42553.2        
+leave     ,2455      ,94619465764         ,-6.40091e+07   ,-5.88255e+06   ,-              ,-              ,takeProfit     ,31914.9        
+leave     ,2455      ,94645033964         ,-5.79481e+07   ,-3.85596e+06   ,-              ,-              ,takeProfit     ,21276.6        
+leave     ,2455      ,94645099688         ,-5.59162e+07   ,-1.82404e+06   ,-              ,-              ,takeProfit     ,10638.3        
+leave     ,2455      ,95613620563         ,-5.59561e+07   ,175959         ,-              ,-              ,bailout        ,0              

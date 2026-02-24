@@ -71,6 +71,22 @@ signalA::signalA() {
             if (val.empty()) throw std::runtime_error("trade_zone_vwap_ratio missing");
             double trade_zone_vwap_ratio = stod(val);
 
+            val = reader.Read(section.c_str(), "buffer_zone_start_time");
+            if (val.empty()) throw std::runtime_error("buffer_zone_start_time missing");
+            long long buffer_zone_start_time = stoll(val);
+
+            val = reader.Read(section.c_str(), "buffer_zone_end_time");
+            if (val.empty()) throw std::runtime_error("buffer_zone_end_time missing");
+            long long buffer_zone_end_time = stoll(val);
+
+            val = reader.Read(section.c_str(), "trade_zone_start_time");
+            if (val.empty()) throw std::runtime_error("trade_zone_start_time missing");
+            long long trade_zone_start_time = stoll(val);
+
+            val = reader.Read(section.c_str(), "trade_zone_max_increase_ratio");
+            if (val.empty()) throw std::runtime_error("trade_zone_max_increase_ratio missing");
+            double trade_zone_max_increase_ratio = stod(val);
+
             config.set(
                 vol_contract_ratio,
                 rolling_low_duration,
@@ -84,7 +100,11 @@ signalA::signalA() {
                 buffer_zone_vwap_entry_ratio,
                 trade_zone_duration_us,
                 trade_zone_exit_price_ratio,
-                trade_zone_vwap_ratio
+                trade_zone_vwap_ratio,
+                buffer_zone_start_time,
+                buffer_zone_end_time,
+                trade_zone_start_time,
+                trade_zone_max_increase_ratio
             );
 
         } catch (const std::exception& e) {
@@ -130,6 +150,8 @@ bool signalA::eval(IndexData &idx, format6Type *f6, MatchType matchType, MatchTy
     triggerMatchType = MatchType::None;
 
     if (matchType != MatchType::None) {
+
+            
         if (track_zone_eval(idx, f6)) {
             in_buffer_zone = true;
             buffer_zone_trigger_price = f6->match.Price;
@@ -152,6 +174,7 @@ bool signalA::eval(IndexData &idx, format6Type *f6, MatchType matchType, MatchTy
             trade_zone_start_time = f6->matchTime_us;
             trade_zone_matchType = buffer_zone_matchType;
 
+
         }
     }
     
@@ -168,6 +191,7 @@ bool signalA::eval(IndexData &idx, format6Type *f6, MatchType matchType, MatchTy
             enter_market = true;
             triggerMatchType = trade_zone_matchType;
 
+
         }
     }
 
@@ -180,7 +204,10 @@ bool signalA::pre_condition_met(IndexData &idx, format6Type *f6) {
 
 
 bool signalA::track_zone_eval(IndexData &idx, format6Type *f6) {
-    bool cond1 = f6->match.Price <= idx.vwap * config.track_zone_vwap_ratio && f6->match.Price <= config.track_zone_day_high_ratio * idx.day_high;
+    bool cond1 = f6->match.Price <= idx.vwap * config.track_zone_vwap_ratio ;
+    
+
+    
     bool cond2 = f6->match.Price <= rolling_low_val;
 
     return cond1 && cond2;
@@ -194,13 +221,16 @@ bool signalA::buffer_zone_exit(IndexData &idx, format6Type *f6) {
 }
 
 bool signalA::buffer_zone_eval(IndexData &idx, format6Type *f6) {
-    if (f6->matchTimeStr < 91'000'000'000 || f6->matchTimeStr >= 11'00'00'000'000)
+    if (f6->matchTimeStr < config.buffer_zone_start_time || f6->matchTimeStr >= config.buffer_zone_end_time)
         return false;
 
     bool cond1 = rolling_sum_ratio < config.vol_contract_ratio;
     bool cond2 = f6->match.Price <= idx.day_high * config.buffer_zone_day_high_ratio;
     bool cond3 = f6->match.Price >= idx.vwap * config.buffer_zone_vwap_entry_ratio;
     
+    // if (f6->symbol == "2313") {
+    //     cout << " ================ time " <<  f6->matchTimeStr << " cond1 " << cond1 << " cond2 " << cond2 << " cond3 " << cond3 << " price: " << f6->match.Price << ", vwap: " << idx.vwap << ", day_high: " << idx.day_high << ", rolling_low: " << rolling_low_val << '\n';
+    // }
     return cond1 && cond2 && cond3;
 }
 
@@ -212,15 +242,20 @@ bool signalA::trade_zone_exit(IndexData &idx, format6Type *f6) {
 }
 
 bool signalA::trade_zone_eval(IndexData &idx, format6Type *f6) {
+    if (f6->matchTimeStr < config.trade_zone_start_time)
+        return false;
+
     bool cond1 = f6->match.Price >= idx.vwap * config.trade_zone_vwap_ratio;
-    if ( cond1 ) {
+
+    double prev_close = quoteSv->f1mgr.format1Map[f6->symbol].previous_close * 10000;
+    bool cond2 = (f6->match.Price - prev_close) / prev_close <= config.trade_zone_max_increase_ratio;
+
+    // bool cond3 = f6->match.Price <= config.track_zone_day_high_ratio * idx.day_high;
+
+    if (cond1 && cond2) {
         in_trade_zone = false;
-        
-        if (f6->matchTimeStr < 92'000'000'000)
-            return false;
-        else {
+        if (f6->matchTimeStr >= config.trade_zone_start_time) 
             return true;
-        }
     }
     return false;
 }

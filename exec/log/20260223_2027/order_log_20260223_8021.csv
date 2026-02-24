@@ -1,0 +1,10 @@
+Action    ,Symbol    ,Time                ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   
+enter     ,8021      ,93112520787         ,-1e+07         ,-1e+07         ,SignalB        ,StrongGroup    ,-              ,45454.5        
+leave     ,8021      ,93119541733         ,-8e+06         ,-8e+06         ,-              ,-              ,takeProfit     ,36363.6        
+leave     ,8021      ,93123736280         ,-5.99545e+06   ,-5.99545e+06   ,-              ,-              ,takeProfit     ,27272.7        
+leave     ,8021      ,93352613969         ,-3.98636e+06   ,-3.98636e+06   ,-              ,-              ,takeProfit     ,18181.8        
+leave     ,8021      ,93706918910         ,-1.97273e+06   ,-1.97273e+06   ,-              ,-              ,takeProfit     ,9090.91        
+leave     ,8021      ,94011569867         ,-7.98933e+06   ,45454.5        ,-              ,-              ,takeProfit     ,0              
+enter     ,8021      ,94011569867         ,-1.79893e+07   ,-9.95455e+06   ,SignalB        ,StrongGroup    ,-              ,45045          
+leave     ,8021      ,94011610278         ,-1.39938e+07   ,-5.95905e+06   ,-              ,-              ,takeProfit     ,27027          
+leave     ,8021      ,94023853354         ,-8.02086e+06   ,13923          ,-              ,-              ,stopLoss       ,0              

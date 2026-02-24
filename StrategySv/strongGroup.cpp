@@ -58,6 +58,17 @@ StrongGroup::StrongGroup (){
             if (val.empty()) throw std::runtime_error("normal_group_min_select missing");
             config.normal_group_min_select = stoi(val);
 
+            val = reader.Read(section.c_str(), "member_vwap_pct_chg_threshold");
+            if (val.empty()) throw std::runtime_error("member_vwap_pct_chg_threshold missing");
+            config.member_vwap_pct_chg_threshold = stod(val);
+
+            val = reader.Read(section.c_str(), "group_valid_top_n");
+            if (val.empty()) throw std::runtime_error("group_valid_top_n missing");
+            config.group_valid_top_n = stoi(val);
+
+            val = reader.Read(section.c_str(), "is_weighted_avg");
+            if (val.empty()) throw std::runtime_error("is_weighted_avg missing");
+            config.is_weighted_avg = (val == "true");
 
         } catch (const std::exception& e) {
             std::cerr << "Error parsing config for StrongGroup: " << e.what() << std::endl;
@@ -72,6 +83,7 @@ StrongGroup::StrongGroup (){
 void StrongGroup::getGroup() {
     for (auto &[group, members] : group_member) {
         
+
         for (const string &symbol : members) {
             if (symbol_is_valid.count(symbol) == 0) {
                 long long tmp = 0;
@@ -84,9 +96,13 @@ void StrongGroup::getGroup() {
                 symbol_is_valid[symbol] = (tmp >= config.member_min_month_trading_val);
             }
 
-            if (symbol_is_valid[symbol])
+            if (symbol_is_valid[symbol]) {
                 group_tradingValue_monthAvg_sum[group] += tradingValue_monthAvg[symbol];
+                group_member_count[group]++;
+            }
         }
+
+        
     }
 
 }
@@ -106,12 +122,18 @@ bool StrongGroup::on_tick(IndexData &idx, format6Type *f6) {
     double pricePerChg = percentagChg(f6->symbol, f6->match.Price);
 
 
+    bool ans = false;
     for (const auto& group : symbol_to_groups[f6->symbol]) {
-        double gPerChg = groupPercentageChg(group);
-        groupRank.on_tick(group, gPerChg);
-        group_member_vwapRank[group].on_tick(f6->symbol, vwapPerChg);
+        
+        // 
+        
+        
         if (isValidGroup(idx, f6, group)) {
-            
+            double gPerChg = groupPercentageChg(group, config.is_weighted_avg);
+            groupRank.on_tick(group, gPerChg);
+       
+            if (!groupRank.isTopN(group, config.group_valid_top_n))
+                continue;
 
             long long total_vol = 0;
             for (int i = 1; i <= DAY_PER_MONTH; i++) {
@@ -131,40 +153,39 @@ bool StrongGroup::on_tick(IndexData &idx, format6Type *f6) {
 
             bool cond2 = pricePerChg > 0.02 && vwapPerChg > 0.01;
 
-            // 2. 個股月平均成交金額 > 0.3 billion ============================
-            // cond3
-            bool cond3 = false;
-            int maxChoosen, minChoosen;
-            if (groupRank.isTopN(group, config.top_group_rank_threshold)) {
-                maxChoosen = config.top_group_max_select, minChoosen = config.top_group_min_select;
-            }
-            else {
-                maxChoosen = config.normal_group_max_select, minChoosen = config.normal_group_min_select;
-            }
+            bool cond3 = !f6->prevLimitUp;
 
-            int choosen = 0, throwOut = 0;
-            for (auto &[gain, symbol] : group_member_vwapRank[group].rank_map) {
-                if (symbol == f6->symbol) {
-                    cond3 = true;
-                    break;
-                }
-                if (!quoteSv->prevDayLimitUpMap[symbol]) {
-                    choosen++;
+            bool cond4 = percentagChg(f6->symbol, idx.vwap) > config.member_vwap_pct_chg_threshold;
+
+            if (cond1 && cond2 && cond3 && cond4) {
+                group_member_vwapRank[group].on_tick(f6->symbol, vwapPerChg);
+                
+                int maxChoosen = 0;
+                if (groupRank.isTopN(group, config.top_group_rank_threshold)) {
+                    maxChoosen = config.top_group_max_select;
                 }
                 else {
-                    throwOut++;
+                    maxChoosen = config.normal_group_max_select;
                 }
-                if (choosen + throwOut >= maxChoosen && choosen >= minChoosen) {
-                    break;
+                int cnt = 0;
+                
+                for (auto &[gain, symbol] : group_member_vwapRank[group].rank_map) {
+                    if (symbol == f6->symbol) {
+                        ans = true;
+                    }
+                    cnt++;
+                    if (cnt >= maxChoosen) {
+                        break;
+                    }
                 }
             }
-
-            if (cond1 && cond2 && cond3)
-                return true;
+            else {
+                group_member_vwapRank[group].erase(f6->symbol);
+            }
         }
     }
 
-    return false;
+    return ans;
 }
 
 double StrongGroup::percentagChg(string symbol, long long price) {
@@ -173,10 +194,14 @@ double StrongGroup::percentagChg(string symbol, long long price) {
     return percantageChg;
 }
 
-double StrongGroup::groupPercentageChg(std::string group) {
+double StrongGroup::groupPercentageChg(std::string group, bool weighted_avg) {
     double avg_percentageChg = 0;
     for (auto &symbol : group_member[group]) {
-        double ratio = (double) tradingValue_cumu[symbol] / (double) group_tradingValue_cumu[group];
+        double ratio;
+        if (weighted_avg)
+            ratio = (double) tradingValue_cumu[symbol] / (double) group_tradingValue_cumu[group];
+        else
+            ratio = 1.0 / group_member_count[group];
         double percantageChg = 0;
         if (price_last.count(symbol))
             percantageChg = percentagChg(symbol, price_last[symbol]);
@@ -186,6 +211,11 @@ double StrongGroup::groupPercentageChg(std::string group) {
     return avg_percentageChg;
 }
 
+// A  1000   1000
+// B   500   250  750
+
+// A+B = 1500
+
 bool StrongGroup::isValidGroup(IndexData &idx, format6Type *f6, const std::string& group){
     // 1. 月平均成交金額(參數8)成交金額太低 >= 0.1 billion
     bool cond1 = tradingValue_monthAvg[f6->symbol] >= config.member_min_month_trading_val;
@@ -194,13 +224,14 @@ bool StrongGroup::isValidGroup(IndexData &idx, format6Type *f6, const std::strin
     bool cond2 =  group_tradingValue_monthAvg_sum[group] >=  config.group_min_month_trading_val;
 
     // 3. 族群當前平均漲幅
-    double avg_percentageChg = groupPercentageChg(group);
+    double avg_percentageChg = groupPercentageChg(group, config.is_weighted_avg);
     bool cond3 = avg_percentageChg > config.group_min_avg_pct_chg;
 
     
     
     double val_ratio = (double) group_tradingValue_cumu[group] / (group_tradingValue_monthAvg_sum[group]);
     bool cond4 = val_ratio > config.group_min_val_ratio;
+    
     
 
     return cond1 && cond2 && cond3 && cond4;

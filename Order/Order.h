@@ -23,6 +23,7 @@ class Order {
 private:
     std::ofstream logFile;
     std::string logDate; // e.g. "20260211"
+    std::string logDir;  // e.g. "./log/20260211_1234/"
     void openLogFile();
     unordered_map<string, std::unique_ptr<std::ofstream>> symbolLogFiles;
     std::ofstream& getSymbolLogFile(const std::string& symbol);
@@ -42,7 +43,7 @@ private:
     unordered_map<string, bool> profitTaken;
 
     IniReader reader;
-
+    bool dispostion_enabled = false;
     void cancelAll(string symbol);
     void closeAll(string symbol, format6Type *f6);
 public:

@@ -1,0 +1,17 @@
+Action    ,Symbol    ,Time                ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   
+enter     ,8021      ,91001124477         ,-4.00247e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,46729          
+leave     ,8021      ,91003310459         ,-2.00712e+07   ,-23364.5       ,-              ,-              ,stopLoss       ,0              
+enter     ,8021      ,91003310459         ,-3.00712e+07   ,-1.00234e+07   ,SignalA        ,StrongGroup    ,-              ,46729          
+leave     ,8021      ,91003822644         ,-2.00946e+07   ,-46729         ,-              ,-              ,stopLoss       ,0              
+enter     ,8021      ,91003822644         ,-3.00946e+07   ,-1.00467e+07   ,SignalA        ,StrongGroup    ,-              ,46729          
+leave     ,8021      ,91004939032         ,-3.0146e+07    ,-70093.5       ,-              ,-              ,stopLoss       ,0              
+enter     ,8021      ,91004939032         ,-4.0146e+07    ,-1.00701e+07   ,SignalA        ,StrongGroup    ,-              ,46729          
+leave     ,8021      ,91011674871         ,-2.81756e+07   ,-93457.9       ,-              ,-              ,stopLoss       ,0              
+enter     ,8021      ,91132476561         ,-4.9108e+07    ,-1.00935e+07   ,SignalA        ,StrongGroup    ,-              ,46620          
+leave     ,8021      ,91141354986         ,-3.9582e+07    ,-140078        ,-              ,-              ,stopLoss       ,0              
+enter     ,8021      ,91141354986         ,-4.9582e+07    ,-1.01401e+07   ,SignalA        ,StrongGroup    ,-              ,46729          
+leave     ,8021      ,91252289667         ,-3.39911e+07   ,-8.11204e+06   ,-              ,-              ,takeProfit     ,37383.2        
+leave     ,8021      ,91314362327         ,-3.22032e+07   ,-6.07933e+06   ,-              ,-              ,takeProfit     ,28037.4        
+leave     ,8021      ,91513352129         ,-4.13607e+07   ,-4.04195e+06   ,-              ,-              ,takeProfit     ,18691.6        
+leave     ,8021      ,91514475582         ,-3.93187e+07   ,-1.99989e+06   ,-              ,-              ,takeProfit     ,9345.79        
+leave     ,8021      ,91514520484         ,-3.7272e+07    ,46837.9        ,-              ,-              ,takeProfit     ,0              

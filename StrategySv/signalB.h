@@ -20,11 +20,17 @@ struct SignalBConfig {
     double track_zone_day_high_ratio;
     long long buffer_zone_duration_us;
     double buffer_zone_exit_price_ratio;
+    double buffer_zone_rolling_low_increase_ratio;
     long long trade_zone_duration_us;
     double trade_zone_eval_price_ratio;
     int trade_zone_eval_tick_add;
     double trade_zone_eval_day_high_increase_ratio;
     int trade_zone_exit_tick_sub;
+
+    long long pre_condition_start_time;
+    long long buffer_zone_start_time;
+    long long buffer_zone_end_time;
+    long long trade_zone_start_time;
 
     void set(
         double vol_contract_ratio,
@@ -36,11 +42,16 @@ struct SignalBConfig {
         double track_zone_day_high_ratio,
         long long buffer_zone_duration_us,
         double buffer_zone_exit_price_ratio,
+        double buffer_zone_rolling_low_increase_ratio,
         long long trade_zone_duration_us,
         double trade_zone_eval_price_ratio,
         int trade_zone_eval_tick_add,
         double trade_zone_eval_day_high_increase_ratio,
-        int trade_zone_exit_tick_sub
+        int trade_zone_exit_tick_sub,
+        long long pre_condition_start_time,
+        long long buffer_zone_start_time,
+        long long buffer_zone_end_time,
+        long long trade_zone_start_time
     ) {
         this->vol_contract_ratio = vol_contract_ratio;
         this->rolling_low_duration = rolling_low_duration;
@@ -51,11 +62,16 @@ struct SignalBConfig {
         this->track_zone_day_high_ratio = track_zone_day_high_ratio;
         this->buffer_zone_duration_us = buffer_zone_duration_us;
         this->buffer_zone_exit_price_ratio = buffer_zone_exit_price_ratio;
+        this->buffer_zone_rolling_low_increase_ratio = buffer_zone_rolling_low_increase_ratio;
         this->trade_zone_duration_us = trade_zone_duration_us;
         this->trade_zone_eval_price_ratio = trade_zone_eval_price_ratio;
         this->trade_zone_eval_tick_add = trade_zone_eval_tick_add;
         this->trade_zone_eval_day_high_increase_ratio = trade_zone_eval_day_high_increase_ratio;
         this->trade_zone_exit_tick_sub = trade_zone_exit_tick_sub;
+        this->pre_condition_start_time = pre_condition_start_time;
+        this->buffer_zone_start_time = buffer_zone_start_time;
+        this->buffer_zone_end_time = buffer_zone_end_time;
+        this->trade_zone_start_time = trade_zone_start_time;
     }
 };
 

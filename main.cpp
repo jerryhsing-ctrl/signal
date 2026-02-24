@@ -8,7 +8,7 @@ using namespace std;
 int main() {
     pin_thread_to_core(1);
     set_fifo_priority(99);
-    const string tradeDate = "20260211";
+    const string tradeDate = "20260224";
     QuoteSv quoteSv = QuoteSv();
     quoteSv.f1mgr.readFile(tradeDate);
     quoteSv.checkPrevDayLimitUp(tradeDate);

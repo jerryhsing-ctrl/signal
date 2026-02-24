@@ -7,8 +7,10 @@
 #include "errorLog.h"
 #include "tick.h"
 #include "IniReader.h"
+#include <filesystem>
 
 using namespace std;
+namespace fs = std::filesystem;
 #define ZERO_NUM 10000.0
 
 static std::string sanitizeForFilename(const std::string& s) {
@@ -41,7 +43,11 @@ std::ofstream& Order::getSymbolLogFile(const std::string& symbol) {
 
     auto ofs = std::make_unique<std::ofstream>();
     const std::string datePart = logDate.empty() ? "unknown" : logDate;
-    const std::string path = "./log/order_log_" + datePart + "_" + sym + ".csv";
+    
+    // Use logDir if set, otherwise fallback to ./log/
+    string dir = logDir.empty() ? "./log/" : logDir;
+    const std::string path = dir + "order_log_" + datePart + "_" + sym + ".csv";
+    
     ofs->open(path, ios::out | ios::trunc);
     if (!ofs->is_open()) {
         cerr << "Failed to open " << path << endl;
@@ -76,7 +82,8 @@ void Order::openLogFile() {
         suffix = "_" + logDate;
     }
 
-    const string path = "./log/order_log" + suffix + ".csv";
+    string dir = logDir.empty() ? "./log/" : logDir;
+    const string path = dir + "order_log" + suffix + ".csv";
     logFile.open(path, ios::out | ios::trunc);
     if (!logFile.is_open()) {
         cerr << "Failed to open " << path << endl;
@@ -103,6 +110,9 @@ Order::Order() {
     string posSizeStr = reader.Read("Order", "position_cash");
     position = stod(posSizeStr);
     cout << "~~~~~~~~~~~~~~~ [" << "position_cash: " << posSizeStr << "]" << endl;
+    string dispositionStr = reader.Read("Order", "disposition_stocks_enabled");
+    dispostion_enabled = (dispositionStr == "true");
+    cout << "~~~~~~~~~~~~~~~ [" << "disposition_stocks_enabled: " << dispositionStr << "]" << endl;
 }
 
 Order::~Order() {
@@ -116,6 +126,22 @@ Order::~Order() {
 void Order::setDate(const std::string& date) {
     // if user passes empty/invalid, treat as "not set" -> order_log.csv
     logDate = sanitizeForFilename(date);
+
+    // Create log folder: ./log/YYYYMMDD_HHMM
+    auto now = std::chrono::system_clock::now();
+    std::time_t now_c = std::chrono::system_clock::to_time_t(now);
+    std::tm* time_parts = std::localtime(&now_c);
+    
+    char buffer[10];
+    std::strftime(buffer, sizeof(buffer), "%H%M", time_parts);
+    logDir = "./log/" + logDate + "_" + buffer + "/";
+
+    try {
+        fs::create_directories(logDir);
+    } catch(const std::exception& e) {
+        cerr << "Failed to create directory: " << logDir << " Error: " << e.what() << endl;
+    }
+
     closeSymbolLogFiles(); // date changed -> reopen per-symbol logs with new name
     openLogFile();
 }
@@ -125,8 +151,12 @@ void Order::trigger(IndexData &idx, format6Type *f6, int entry_idx, SIGNAL_TYPE 
     if (f6->matchTimeStr >= time_limit) {
         return;
     }
-    if (f6->prevLimitUp || f6->volatilityPause) {
+    if (f6->prevLimitUp) {
         return;
+    }
+    if (dispostion_enabled) {
+        if (f6->volatilityPause)
+            return;
     }
     if (stocks[f6->symbol] != 0)
         return;
@@ -158,6 +188,12 @@ void Order::trigger(IndexData &idx, format6Type *f6, int entry_idx, SIGNAL_TYPE 
     prices.push_back(getPriceCond(f6->symbol, idx.day_high, 1));
     prices.push_back(getPriceCond(f6->symbol, idx.day_high, 2));
     prices.push_back(getPriceCond(f6->symbol, idx.day_high, 3));
+
+    if (f6->symbol == "2360") {
+        cout << " ====== trigger price " << f6->match.Price << " time " << f6->matchTimeStr << " day_high " << idx.day_high << '\n'; 
+        for (int i = 0; i < 5; i++)
+            cout << " ====== order price " << prices[i] << '\n';
+    }
 
     orders[f6->symbol].push_back({prices[0], q});
     orders[f6->symbol].push_back({prices[1], q});
@@ -397,7 +433,7 @@ bool Order::bailout(format6Type *f6) {
     
 
     IndexData &entryIdx = entryPointIdx[f6->symbol];
-    if (f6->match.Price <= entryIdx.day_high * 0.992) {
+    if (f6->match.Price <= entryIdx.day_high * 0.985) {
         cancelAll(f6->symbol);
         closeAll(f6->symbol, f6);
         profitTaken[f6->symbol] = false;
@@ -424,6 +460,10 @@ bool Order::takeProfit(format6Type *f6) {
             symbolCash[f6->symbol] += income;
             stocks[f6->symbol] -= qty;
 
+            if (f6->symbol == "2360") {
+                cout << " !!!!!!!! take profit " << f6->match.Price << " time " << f6->matchTimeStr <<  " order price " << price << '\n'; 
+                
+            }
 
             // 移除已成交的訂單
             orders[f6->symbol].erase(orders[f6->symbol].begin() + i);

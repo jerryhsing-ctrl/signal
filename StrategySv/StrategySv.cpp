@@ -21,6 +21,26 @@ StrategySv::StrategySv(QuoteSv *quoteSv) {
     
     IniReader reader(CFG_FILE);
     std::string tseEnable = reader.Read("TSE", "ENABLE");
+
+    IniReader parameterReader;
+    parameterReader.ReadIni("./cfg/parameter.cfg");
+    string signalAEnable = parameterReader.Read("SignalA", "enabled");
+    signalA_enabled = (signalAEnable == "true");
+    cout << "signalA_enabled: [" << signalAEnable << "]" << endl;
+
+    string signalBEnable = parameterReader.Read("SignalB", "enabled");
+    signalB_enabled = (signalBEnable == "true");
+    cout << "signalB_enabled: [" << signalBEnable << "]" << endl;
+    
+    string strongSingleEnable = parameterReader.Read("StrongSignal", "enabled");
+    strongSingle_enabled = (strongSingleEnable == "true");
+    cout << "strongSingle_enabled: [" << strongSingleEnable << "]" << endl;
+    
+
+    string strongGroupEnable = parameterReader.Read("StrongGroup", "enabled");
+    strongGroup_enabled = (strongGroupEnable == "true");
+    cout << "strongGroup_enabled: [" << strongGroupEnable << "]" << endl;
+
     cout << "tseEnable: [" << tseEnable << "]" << endl;
     market_queue_TSE = new queueType();
     quoteSv->subscribe("", market_queue_TSE, 0);
@@ -101,7 +121,7 @@ void StrategySv::run(queueType *market_queue_, string market_name) {
             IndexData idx = index_calc.calc(f6);
 
             
-            
+            // cout <<  "symbol " << f6->symbol << '\n';
 
             order.on_tick(f6);
             if (order.stocks[f6->symbol] > 0) {
@@ -111,7 +131,13 @@ void StrategySv::run(queueType *market_queue_, string market_name) {
             }
 
             bool single = strongSingle.on_tick(idx, f6);
+            if (!strongSingle_enabled)
+                single = false;
+
             bool group = strongGroup.on_tick(idx, f6);
+            if (!strongGroup_enabled)
+                 group = false;
+
             
             MatchType matchType = MatchType::None;
             if (single && group)
@@ -125,9 +151,14 @@ void StrategySv::run(queueType *market_queue_, string market_name) {
 
             MatchType triggerMatchTypeA = MatchType::None;
             bool isSignalA = signalA_map_[symbol].eval(idx, f6, matchType, triggerMatchTypeA, strongSingle, strongGroup, quoteSv);
+            if (!signalA_enabled)
+                isSignalA = false;
+
 
             MatchType triggerMatchTypeB = MatchType::None;
             bool isSignalB = signalB_map_[symbol].eval(idx, f6, matchType, triggerMatchTypeB, strongSingle, strongGroup, quoteSv, order.isStoppedLoss(symbol));
+            if (!signalB_enabled)
+                isSignalB = false;
 
             // cout << "   SignalA: " << isSignalA << " SignalB: " << isSignalB << '\n';
  

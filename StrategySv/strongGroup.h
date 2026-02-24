@@ -23,6 +23,9 @@ struct StrongGroupConfig {
     long long group_min_month_trading_val;
     double group_min_avg_pct_chg;
     double group_min_val_ratio;
+    double member_vwap_pct_chg_threshold;
+    int group_valid_top_n;
+    bool is_weighted_avg;
 };
 
 class StrongGroup {
@@ -51,7 +54,8 @@ private:
     // unordered_map<std::string, double> group_percentageChg_sum;
     unordered_map<std::string, long long> vol_cumu;
 
-    double groupPercentageChg(std::string);
+    unordered_map<std::string, int> group_member_count;
+    double groupPercentageChg(std::string, bool weighted_avg);
     double percentagChg(string symbol, long long price);
 
     bool isValidGroup(IndexData &idx, format6Type *f6, const std::string& group);

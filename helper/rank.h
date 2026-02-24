@@ -39,6 +39,27 @@ public:
         return result;
     }
 
+    // 刪除某族群
+    void erase(const std::string& group) {
+        auto it = group_gain.find(group);
+        if (it != group_gain.end()) {
+            rank_map.erase(it->second);
+            group_gain.erase(it);
+        }
+    }
+
+    // 查詢某族群排名第幾名 (1-based)，找不到回傳 -1
+    int getRank(const std::string& group) const {
+        auto it = group_gain.find(group);
+        if (it == group_gain.end()) return -1;
+
+        int rank = 1;
+        for (auto it = rank_map.begin(); it != rank_map.end(); ++it, ++rank) {
+            if (it->second == group) return rank;
+        }
+        return -1;
+    }
+
     // 查詢某族群是否在前 N 名
     bool isTopN(const std::string& group, int n = 5) const {
         auto it = group_gain.find(group);

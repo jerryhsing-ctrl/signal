@@ -24,7 +24,7 @@ private:
 	queueType *market_queue_HWQ = nullptr;
 	unordered_map<std::string, indexCalc> index_calc_map_;
 
-	
+	bool signalA_enabled = false, signalB_enabled = false, strongGroup_enabled = false, strongSingle_enabled = false;
 
 	unordered_map<std::string, signalA> signalA_map_;
 	unordered_map<std::string, signalB> signalB_map_;

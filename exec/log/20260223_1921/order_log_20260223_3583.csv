@@ -1,0 +1,3 @@
+Action    ,Symbol    ,Time                ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   
+enter     ,3583      ,103141555385        ,-1.57898e+08   ,-1e+07         ,SignalB        ,StrongGroup    ,-              ,28818.4        
+leave     ,3583      ,133000000000        ,77187.5        ,-43227.7       ,-              ,-              ,timeExit       ,0              

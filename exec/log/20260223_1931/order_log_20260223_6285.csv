@@ -1,0 +1,16 @@
+Action    ,Symbol    ,Time                ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   
+enter     ,6285      ,110747521647        ,-7.5292e+07    ,-1e+07         ,SignalB        ,StrongSingle   ,-              ,54054.1        
+leave     ,6285      ,110747971511        ,-7.32974e+07   ,-8.00541e+06   ,-              ,-              ,takeProfit     ,43243.2        
+leave     ,6285      ,110748065933        ,-7.12974e+07   ,-6.00541e+06   ,-              ,-              ,takeProfit     ,32432.4        
+leave     ,6285      ,110946189550        ,-6.9292e+07    ,-4e+06         ,-              ,-              ,takeProfit     ,21621.6        
+leave     ,6285      ,111138572469        ,-5.53762e+07   ,-1.98919e+06   ,-              ,-              ,takeProfit     ,10810.8        
+leave     ,6285      ,111141690248        ,-5.336e+07     ,27027          ,-              ,-              ,takeProfit     ,0              
+enter     ,6285      ,111141690248        ,-6.336e+07     ,-9.97297e+06   ,SignalB        ,StrongSingle   ,-              ,53619.3        
+leave     ,6285      ,111141690248        ,-5.736e+07     ,-3.97297e+06   ,-              ,-              ,takeProfit     ,21447.7        
+leave     ,6285      ,111141706350        ,-5.53492e+07   ,-1.96225e+06   ,-              ,-              ,takeProfit     ,10723.9        
+leave     ,6285      ,111145035441        ,-5.33332e+07   ,53836.7        ,-              ,-              ,takeProfit     ,0              
+enter     ,6285      ,111145035441        ,-6.33332e+07   ,-9.94616e+06   ,SignalB        ,StrongSingle   ,-              ,53191.5        
+leave     ,6285      ,111145069340        ,-5.93385e+07   ,-5.95148e+06   ,-              ,-              ,takeProfit     ,31914.9        
+leave     ,6285      ,111236399141        ,-5.34183e+07   ,-31269.7       ,-              ,-              ,bailout        ,0              
+enter     ,6285      ,111236399141        ,-6.34183e+07   ,-1.00313e+07   ,SignalB        ,StrongSingle   ,-              ,53619.3        
+leave     ,6285      ,112716128595        ,-4.15473e+07   ,-218937        ,-              ,-              ,stopLoss       ,0              

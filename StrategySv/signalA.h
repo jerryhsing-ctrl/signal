@@ -30,6 +30,11 @@ struct SignalAConfig {
     double trade_zone_exit_price_ratio;
     double trade_zone_vwap_ratio;
 
+    long long buffer_zone_start_time;
+    long long buffer_zone_end_time;
+    long long trade_zone_start_time;
+    double trade_zone_max_increase_ratio;
+
     void set(
         double vol_contract_ratio,
         double rolling_low_duration,
@@ -43,7 +48,11 @@ struct SignalAConfig {
         double buffer_zone_vwap_entry_ratio,
         long long trade_zone_duration_us,
         double trade_zone_exit_price_ratio,
-        double trade_zone_vwap_ratio
+        double trade_zone_vwap_ratio,
+        long long buffer_zone_start_time,
+        long long buffer_zone_end_time,
+        long long trade_zone_start_time,
+        double trade_zone_max_increase_ratio
     ) {
         this->vol_contract_ratio = vol_contract_ratio;
         this->rolling_low_duration = rolling_low_duration;
@@ -58,6 +67,10 @@ struct SignalAConfig {
         this->trade_zone_duration_us = trade_zone_duration_us;
         this->trade_zone_exit_price_ratio = trade_zone_exit_price_ratio;
         this->trade_zone_vwap_ratio = trade_zone_vwap_ratio;
+        this->buffer_zone_start_time = buffer_zone_start_time;
+        this->buffer_zone_end_time = buffer_zone_end_time;
+        this->trade_zone_start_time = trade_zone_start_time;
+        this->trade_zone_max_increase_ratio = trade_zone_max_increase_ratio;
     }
 };
 
