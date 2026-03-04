@@ -1,1 +1,14 @@
-[22:42:42.819000289] IniReader get empty key: [SignalB]-[track_zone_day_high_ratio]
+[11:15:46.696733611]  final stock: 7717 qty: 2684.563758
+[11:22:41.816658605] IniReader get empty key: [StrongSignal]-[monitor_pool_size]
+[11:22:42.311687586] IniReader get empty key: [StrongSignal]-[monitor_pool_size]
+[11:22:42.806636396] IniReader get empty key: [StrongSignal]-[monitor_pool_size]
+[11:22:43.296758153] IniReader get empty key: [StrongSignal]-[monitor_pool_size]
+[11:22:50.533687227] IniReader get empty key: [StrongSignal]-[monitor_pool_size]
+[20:15:18.858346388] Error: Could not open file ./files/Symbols_20260227.csv
+[20:15:18.858844389] Error: Could not open file ./files/Symbols_20260227.csv
+[20:15:18.858862596] checkPrevDayLimitUp: Cannot read file for date 20260227
+[20:15:40.443205986] Open file fail: ./data/TSEQuote.20260227
+[20:15:40.443242207] Open file fail: ./data/OTCQuote.20260227
+[20:27:30.824184286] Error: Could not open file ./files/Symbols_20260228.csv
+[20:27:30.824716979] Error: Could not open file ./files/Symbols_20260228.csv
+[20:27:30.824732856] checkPrevDayLimitUp: Cannot read file for date 20260228

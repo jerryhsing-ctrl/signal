@@ -1,0 +1,3 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,2645      ,92857957148         ,1760000        ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,56818.2        ,軍工(G4/M1/R2)
+leave     ,2645      ,93340330271         ,1735000        ,-2.0142e+07    ,-142045        ,-              ,-              ,stopLoss       ,0              

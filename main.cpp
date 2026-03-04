@@ -5,10 +5,17 @@
 #include "core.h"
 
 using namespace std;
-int main() {
+int main(int argc, char* argv[]) {
     pin_thread_to_core(1);
     set_fifo_priority(99);
-    const string tradeDate = "20260224";
+    string tradeDate = "20260225";
+    string logFolder = "";
+    if (argc > 1) {
+        tradeDate = argv[1];
+    }
+    if (argc > 2) {
+        logFolder = argv[2];
+    }
     QuoteSv quoteSv = QuoteSv();
     quoteSv.f1mgr.readFile(tradeDate);
     quoteSv.checkPrevDayLimitUp(tradeDate);
@@ -19,7 +26,7 @@ int main() {
     // }
 
     StrategySv strategySv = StrategySv(&quoteSv);
-    strategySv.order.setDate(tradeDate);
+    strategySv.order.setDate(tradeDate, logFolder);
     cout << "start To readFile\n";
     
     strategySv.quoteSv->getTickData("OTC", tradeDate);

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<title>January 2026 Analysis</title>
+<style>
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f5; padding: 20px; max-width: 1000px; margin: 0 auto; }
+h1 { text-align: center; color: #333; }
+h2 { color: #555; margin-top: 40px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+.summary { text-align: center; font-size: 18px; color: #333; margin: 10px 0 30px; }
+table { border-collapse: collapse; margin: 20px auto; width: 100%; }
+th, td { padding: 10px 14px; text-align: center; border: 1px solid #ccc; }
+th { background: #37474f; color: white; font-weight: 600; }
+.sub { font-size: 11px; color: #888; display: block; }
+.total-row { font-weight: bold; }
+.bar-chart { margin: 20px auto; max-width: 900px; }
+.bar-row { display: flex; align-items: center; margin: 8px 0; }
+.bar-label { width: 110px; text-align: right; padding-right: 12px; font-size: 13px; font-weight: 500; }
+.bar-area { flex: 1; position: relative; height: 34px; }
+.bar-pos { height: 100%; display: inline-block; border-radius: 0 4px 4px 0; }
+.bar-neg { height: 100%; display: inline-block; border-radius: 4px 0 0 4px; }
+.bar-value { position: absolute; top: 7px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.bar-center { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: #333; z-index: 2; }
+</style>
+</head><body>
+<h1>Jan 2026 Analysis</h1>
+<div class="summary">119 trades &nbsp;|&nbsp; PnL: -260.5 萬 &nbsp;|&nbsp; Win Rate: 40%</div>
+<h2>PnL by Price Range (股價區間)</h2>
+<table><tr><th>Price Range</th><th>Trades</th><th>Win Rate</th><th>PnL (萬)</th></tr>
+<tr><td><b><50</b></td><td>22</td><td>45%</td><td style="background:#e53935;color:#222;font-weight:bold">-35.8</td></tr>
+<tr><td><b>50~100</b></td><td>23</td><td>43%</td><td style="background:#e53935;color:#222;font-weight:bold">-48.0</td></tr>
+<tr><td><b>100~200</b></td><td>29</td><td>44%</td><td style="background:#4caf50;color:#fff;font-weight:bold">+10.3</td></tr>
+<tr><td><b>200~500</b></td><td>21</td><td>28%</td><td style="background:#b71c1c;color:#fff;font-weight:bold">-122.7</td></tr>
+<tr><td><b>500~1000</b></td><td>13</td><td>30%</td><td style="background:#e53935;color:#222;font-weight:bold">-45.4</td></tr>
+<tr><td><b>1000+</b></td><td>11</td><td>45%</td><td style="background:#e53935;color:#222;font-weight:bold">-18.8</td></tr>
+<tr class="total-row"><td>Total</td><td>119</td><td>40%</td><td style="background:#b71c1c;color:#fff;font-weight:bold">-260.5</td></tr>
+</table>
+<div class="bar-chart">
+<div class="bar-row"><div class="bar-label"><50</div><div class="bar-area"><div class="bar-center"></div><div style="position:absolute;right:50%;top:0;height:100%;width:11.679014840625438%"><div class="bar-neg" style="width:100%;height:100%;background:#e53935"></div></div><div class="bar-value" style="right:calc(50% + 11.679014840625438% + 5px);color:#b71c1c">-35.8萬 (22筆/45%)</div></div></div>
+<div class="bar-row"><div class="bar-label">50~100</div><div class="bar-area"><div class="bar-center"></div><div style="position:absolute;right:50%;top:0;height:100%;width:15.652573559370651%"><div class="bar-neg" style="width:100%;height:100%;background:#e53935"></div></div><div class="bar-value" style="right:calc(50% + 15.652573559370651% + 5px);color:#b71c1c">-48.0萬 (23筆/43%)</div></div></div>
+<div class="bar-row"><div class="bar-label">100~200</div><div class="bar-area"><div class="bar-center"></div><div style="position:absolute;left:50%;top:0;height:100%;width:3.3624952329420816%"><div class="bar-pos" style="width:100%;height:100%;background:#4caf50"></div></div><div class="bar-value" style="left:calc(50% + 3.3624952329420816% + 5px);color:#1a7a1a">+10.3萬 (29筆/44%)</div></div></div>
+<div class="bar-row"><div class="bar-label">200~500</div><div class="bar-area"><div class="bar-center"></div><div style="position:absolute;right:50%;top:0;height:100%;width:40.0%"><div class="bar-neg" style="width:100%;height:100%;background:#e53935"></div></div><div class="bar-value" style="right:calc(50% + 40.0% + 5px);color:#b71c1c">-122.7萬 (21筆/28%)</div></div></div>
+<div class="bar-row"><div class="bar-label">500~1000</div><div class="bar-area"><div class="bar-center"></div><div style="position:absolute;right:50%;top:0;height:100%;width:14.803694999559964%"><div class="bar-neg" style="width:100%;height:100%;background:#e53935"></div></div><div class="bar-value" style="right:calc(50% + 14.803694999559964% + 5px);color:#b71c1c">-45.4萬 (13筆/30%)</div></div></div>
+<div class="bar-row"><div class="bar-label">1000+</div><div class="bar-area"><div class="bar-center"></div><div style="position:absolute;right:50%;top:0;height:100%;width:6.137949692463648%"><div class="bar-neg" style="width:100%;height:100%;background:#e53935"></div></div><div class="bar-value" style="right:calc(50% + 6.137949692463648% + 5px);color:#b71c1c">-18.8萬 (11筆/45%)</div></div></div>
+</div>
+<h2>PnL by Rank Group (族群排名)</h2>
+<table><tr><th>Rank Group</th><th>Trades</th><th>Win Rate</th><th>PnL (萬)</th></tr>
+<tr><td><b>G≤5 / M=1</b></td><td>56</td><td>37%</td><td style="background:#b71c1c;color:#fff;font-weight:bold">-109.4</td></tr>
+<tr><td><b>G≤5 / M=2</b></td><td>33</td><td>36%</td><td style="background:#b71c1c;color:#fff;font-weight:bold">-159.9</td></tr>
+<tr><td><b>G6~10 / M=1</b></td><td>21</td><td>47%</td><td style="background:#e53935;color:#222;font-weight:bold">-12.7</td></tr>
+<tr><td><b>G>10 / M=1</b></td><td>9</td><td>55%</td><td style="background:#4caf50;color:#fff;font-weight:bold">+21.4</td></tr>
+<tr class="total-row"><td>Total</td><td>119</td><td>40%</td><td style="background:#b71c1c;color:#fff;font-weight:bold">-260.5</td></tr>
+</table>
+<div class="bar-chart">
+<div class="bar-row"><div class="bar-label">G≤5 / M=1</div><div class="bar-area"><div class="bar-center"></div><div style="position:absolute;right:50%;top:0;height:100%;width:27.3584872616644%"><div class="bar-neg" style="width:100%;height:100%;background:#27ae60"></div></div><div class="bar-value" style="right:calc(50% + 27.3584872616644% + 5px);color:#b71c1c">-109.4萬 (56筆/37%)</div></div></div>
+<div class="bar-row"><div class="bar-label">G≤5 / M=2</div><div class="bar-area"><div class="bar-center"></div><div style="position:absolute;right:50%;top:0;height:100%;width:40.0%"><div class="bar-neg" style="width:100%;height:100%;background:#c0392b"></div></div><div class="bar-value" style="right:calc(50% + 40.0% + 5px);color:#b71c1c">-159.9萬 (33筆/36%)</div></div></div>
+<div class="bar-row"><div class="bar-label">G6~10 / M=1</div><div class="bar-area"><div class="bar-center"></div><div style="position:absolute;right:50%;top:0;height:100%;width:3.1793924928508703%"><div class="bar-neg" style="width:100%;height:100%;background:#2980b9"></div></div><div class="bar-value" style="right:calc(50% + 3.1793924928508703% + 5px);color:#b71c1c">-12.7萬 (21筆/47%)</div></div></div>
+<div class="bar-row"><div class="bar-label">G>10 / M=1</div><div class="bar-area"><div class="bar-center"></div><div style="position:absolute;left:50%;top:0;height:100%;width:5.363786249152486%"><div class="bar-pos" style="width:100%;height:100%;background:#9b59b6"></div></div><div class="bar-value" style="left:calc(50% + 5.363786249152486% + 5px);color:#1a7a1a">+21.4萬 (9筆/55%)</div></div></div>
+</div>
+</body></html>

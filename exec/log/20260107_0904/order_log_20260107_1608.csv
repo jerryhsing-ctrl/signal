@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,1608      ,95235020143         ,394000         ,-4.9651e+07    ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,253807         ,電線電纜(G2/M2/R2)
+leave     ,1608      ,95235773721         ,394000         ,-4.7651e+07    ,-8e+06         ,-              ,-              ,takeProfit     ,203046         
+leave     ,1608      ,95247329178         ,394500         ,-4.56484e+07   ,-5.99746e+06   ,-              ,-              ,takeProfit     ,152284         
+leave     ,1608      ,95327556364         ,395000         ,-4.36433e+07   ,-3.99239e+06   ,-              ,-              ,takeProfit     ,101523         
+leave     ,1608      ,111520671025        ,395500         ,-2.73947e+07   ,-1.98477e+06   ,-              ,-              ,takeProfit     ,50761.4        
+leave     ,1608      ,112216363222        ,396000         ,-2.53846e+07   ,25380.7        ,-              ,-              ,takeProfit     ,0              

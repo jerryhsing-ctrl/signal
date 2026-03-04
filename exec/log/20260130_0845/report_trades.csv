@@ -1,0 +1,7 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank
+6510,SignalA,StrongGroup,09:26:34,09:30:00,takeProfit,121212,1.21%,0h03m26s,探針卡,1,1,2
+8096,SignalA,StrongGroup,09:23:48,09:39:38,stopLoss,-159574,-1.60%,0h15m50s,記憶體,1,2,3
+2408,SignalA,StrongGroup,09:24:55,09:40:27,stopLoss,-141956,-1.42%,0h15m32s,記憶體,1,1,2
+3037,SignalA,StrongGroup,09:44:39,10:11:07,takeProfit,127660,1.28%,0h26m28s,ABF,2,2,2
+3189,SignalA,StrongGroup,09:29:52,10:22:14,stopLoss,-145833,-1.46%,0h52m22s,ABF,3,1,1
+6510,SignalA,StrongGroup,09:59:00,11:20:37,stopLoss,-192878,-1.93%,1h21m37s,探針卡,1,1,2

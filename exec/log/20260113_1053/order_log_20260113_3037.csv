@@ -1,0 +1,6 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,3037      ,93457943012         ,2540000        ,-3.59137e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,39370.1        ,ABF(G4/M1/R1)
+leave     ,3037      ,93723656869         ,2560000        ,-2.79871e+07   ,-7.98425e+06   ,-              ,-              ,takeProfit     ,31496.1        
+leave     ,3037      ,93729441365         ,2565000        ,-2.59674e+07   ,-5.96457e+06   ,-              ,-              ,takeProfit     ,23622          
+leave     ,3037      ,93731618959         ,2570000        ,-2.39438e+07   ,-3.94094e+06   ,-              ,-              ,takeProfit     ,15748          
+leave     ,3037      ,100739661954        ,2500000        ,-1.84594e+07   ,-3937.01       ,-              ,-              ,stopLoss       ,0              

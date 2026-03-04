@@ -1,0 +1,7 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank
+4989,SignalA,StrongGroup,09:21:19,09:29:56,stopLoss,-142349,-1.42%,0h08m37s,PCB上游,4,2,2
+6531,SignalA,StrongGroup,09:23:10,09:31:13,stopLoss,-141304,-1.41%,0h08m03s,設計IP,3,2,3
+3551,SignalA,StrongGroup,09:36:23,09:46:32,stopLoss,-143541,-1.44%,0h10m09s,電子化工材料,1,2,3
+1727,SignalA,StrongGroup,10:42:12,11:07:49,stopLoss,-140693,-1.41%,0h25m37s,電子化工材料,1,2,3
+3551,SignalA,StrongGroup,10:17:05,12:36:49,stopLoss,-143541,-1.44%,2h19m44s,電子化工材料,1,2,3
+2449,SignalA,StrongGroup,11:08:19,13:20:00,timeExit,0,0.00%,2h11m41s,IC封測,3,1,3

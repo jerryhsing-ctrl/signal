@@ -1,0 +1,4 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,2345      ,95106215046         ,11950000       ,-9.89691e+06   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,8368.2         ,網路通訊(G9/M1/R2)
+leave     ,2345      ,95106812242         ,11950000       ,-7.89691e+06   ,-8e+06         ,-              ,-              ,takeProfit     ,6694.56        
+leave     ,2345      ,100454389006        ,11750000       ,-30798.4       ,-133891        ,-              ,-              ,stopLoss       ,0              

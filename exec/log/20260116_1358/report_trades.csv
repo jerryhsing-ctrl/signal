@@ -1,0 +1,8 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol
+3701,SignalA,StrongGroup,09:24:18,09:29:26,stopLoss,-162602,-1.63%,0h05m08s,CPO,3,1,1,
+6706,SignalA,StrongGroup,09:29:00,09:33:38,stopLoss,-132231,-1.32%,0h04m38s,設備儀器商,15,1,1,
+2374,SignalA,StrongGroup,09:27:28,09:43:34,takeProfit,84643,0.85%,0h16m06s,光學鏡頭指標,3,1,1,
+8271,SignalA,StrongGroup,09:40:07,09:45:13,takeProfit,118577,1.19%,0h05m06s,記憶體,6,1,5,
+5347,SignalA,StrongGroup,09:26:37,10:07:12,takeProfit,228137,2.28%,0h40m35s,專業IC代工,4,1,1,
+3376,SignalA,StrongGroup,09:37:49,10:19:46,stopLoss,-13333,-0.13%,0h41m57s,軸承,5,1,1,
+2374,SignalA,StrongGroup,10:13:44,13:20:00,timeExit,-28846,-0.29%,3h06m16s,光學鏡頭指標,3,1,1,

@@ -1,0 +1,5 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol
+3529,SignalA,StrongGroup,09:22:45,09:26:05,stopLoss,-164319,-1.64%,0h03m20s,設計IP,5,1,2,
+4989,SignalA,StrongGroup,09:20:38,09:28:40,stopLoss,-133172,-1.33%,0h08m02s,PCB上游,7,1,1,
+2374,SignalA,StrongGroup,09:29:24,09:29:52,takeProfit,60168,0.60%,0h00m28s,光電,1,1,1,
+3189,SignalA,StrongGroup,09:25:17,09:31:19,stopLoss,-162866,-1.63%,0h06m02s,ABF,2,1,1,

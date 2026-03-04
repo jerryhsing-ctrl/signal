@@ -1,0 +1,4 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol
+1802,SignalA,StrongGroup,09:25:28,09:28:10,takeProfit,120321,1.20%,0h02m42s,玻纖布,5,1,1,
+2485,SignalA,StrongGroup,09:20:49,09:29:38,takeProfit,85837,0.86%,0h08m49s,網路通訊,5,1,1,
+1802,SignalA,StrongGroup,09:48:14,13:20:03,timeExit,-13038,-0.13%,3h31m49s,玻纖布,2,1,1,

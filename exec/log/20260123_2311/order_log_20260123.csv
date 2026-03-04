@@ -1,0 +1,12 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,6215      ,92915414781         ,1285000        ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,77821          ,機器人(G2/M2/R2)
+enter     ,8039      ,93203545185         ,934000         ,-2e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,106952         ,CCL(G7/M1/R1)
+leave     ,6215      ,93240250169         ,1265000        ,-1.01556e+07   ,-155642        ,-              ,-              ,stopLoss       ,0              
+leave     ,8039      ,94227240798         ,945000         ,-8.13425e+06   ,-7.97861e+06   ,-              ,-              ,takeProfit     ,85561.5        
+leave     ,8039      ,94237375290         ,946000         ,-6.11072e+06   ,-5.95508e+06   ,-              ,-              ,takeProfit     ,64171.1        
+leave     ,8039      ,94357265203         ,947000         ,-4.08505e+06   ,-3.92941e+06   ,-              ,-              ,takeProfit     ,42780.7        
+leave     ,8039      ,94357982969         ,948000         ,-2.05725e+06   ,-1.9016e+06    ,-              ,-              ,takeProfit     ,21390.4        
+leave     ,8039      ,94358044266         ,949000         ,-27299.8       ,128342         ,-              ,-              ,takeProfit     ,0              
+enter     ,8039      ,102614256272        ,946000         ,-1.00273e+07   ,-9.87166e+06   ,SignalA        ,StrongGroup    ,-              ,105708         ,CCL(G3/M1/R1)
+leave     ,8039      ,112728752821        ,962000         ,-7.99347e+06   ,-7.83783e+06   ,-              ,-              ,takeProfit     ,84566.6        
+leave     ,8039      ,132000060991        ,949000         ,23440.2        ,179082         ,-              ,-              ,timeExit       ,0              

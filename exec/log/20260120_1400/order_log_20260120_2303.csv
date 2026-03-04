@@ -1,0 +1,3 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,2303      ,112108774895        ,669000         ,-9.96172e+06   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,149477         ,專業IC代工(G4/M1/R1)
+leave     ,2303      ,132000221800        ,681000         ,502012         ,179372         ,-              ,-              ,timeExit       ,0              

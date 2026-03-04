@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<title>Cross Analysis: Price × Rank</title>
+<style>
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f5; padding: 20px; }
+h1 { text-align: center; color: #333; }
+h2 { color: #555; margin-top: 40px; }
+.chart-container { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+table { border-collapse: collapse; margin: 20px auto; }
+th, td { padding: 10px 14px; text-align: center; border: 1px solid #ccc; min-width: 90px; }
+th { background: #37474f; color: white; font-weight: 600; }
+th.row-header { background: #455a64; }
+.cell { border-radius: 4px; padding: 6px 8px; }
+.total-row { background: #eceff1; font-weight: bold; }
+.total-col { background: #eceff1; font-weight: bold; }
+.sub { font-size: 11px; color: #666; display: block; }
+.legend { display: flex; gap: 8px; justify-content: center; margin: 10px 0; flex-wrap: wrap; }
+.legend-item { padding: 4px 12px; border-radius: 4px; font-size: 12px; }
+
+/* Bar chart styles */
+.bar-chart { margin: 30px auto; max-width: 900px; }
+.bar-row { display: flex; align-items: center; margin: 6px 0; }
+.bar-label { width: 100px; text-align: right; padding-right: 10px; font-size: 13px; font-weight: 500; }
+.bar-area { flex: 1; position: relative; height: 32px; }
+.bar-track { position: absolute; top: 0; height: 100%; }
+.bar-pos { background: #4caf50; height: 100%; display: inline-block; border-radius: 0 4px 4px 0; }
+.bar-neg { background: #e53935; height: 100%; display: inline-block; border-radius: 4px 0 0 4px; }
+.bar-value { position: absolute; top: 6px; font-size: 12px; font-weight: 600; }
+.bar-center { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: #333; z-index: 2; }
+.stacked-bar { display: flex; height: 100%; }
+.stacked-seg { display: inline-block; height: 100%; position: relative; }
+.stacked-seg:first-child { border-radius: 4px 0 0 4px; }
+.stacked-seg:last-child { border-radius: 0 4px 4px 0; }
+</style>
+</head><body>
+<h1>Feb 2026 — Price Range × Rank Group Cross Analysis</h1>
+<h2>Total PnL Heatmap (萬元)</h2>
+<table>
+<tr><th></th><th>G≤5 / M=1</th><th>G≤5 / M=2</th><th>G6~10 / M=1</th><th>G6~10 / M=2</th><th>G>10 / M=1</th><th>G>10 / M=2</th><th class="total-col">Row Total</th></tr>
+<tr><th class="row-header"><50</th><td style="background:#e53935;color:#222;font-weight:bold">-8.0<span class="sub" style="color:#222">5筆 40%</span></td><td style="background:#e53935;color:#222;font-weight:bold">-14.0<span class="sub" style="color:#222">3筆 33%</span></td><td style="background:#4caf50;color:#222;font-weight:bold">+6.6<span class="sub" style="color:#222">1筆 100%</span></td><td style="background:#e0e0e0;color:#999">—</td><td style="background:#4caf50;color:#222;font-weight:bold">+10.4<span class="sub" style="color:#222">1筆 100%</span></td><td style="background:#e0e0e0;color:#999">—</td><td class="total-col" style="background:#e53935;color:#222;font-weight:bold">-5.0<span class="sub" style="color:#222">10筆 50%</span></td></tr>
+<tr><th class="row-header">50~100</th><td style="background:#1a7a1a;color:#fff;font-weight:bold">+30.5<span class="sub" style="color:#fff">3筆 67%</span></td><td style="background:#e53935;color:#222;font-weight:bold">-11.8<span class="sub" style="color:#222">1筆 0%</span></td><td style="background:#4caf50;color:#fff;font-weight:bold">+16.0<span class="sub" style="color:#fff">6筆 67%</span></td><td style="background:#e0e0e0;color:#999">—</td><td style="background:#4caf50;color:#222;font-weight:bold">+11.8<span class="sub" style="color:#222">2筆 50%</span></td><td style="background:#e0e0e0;color:#999">—</td><td class="total-col" style="background:#1a7a1a;color:#fff;font-weight:bold">+46.6<span class="sub" style="color:#fff">12筆 58%</span></td></tr>
+<tr><th class="row-header">100~200</th><td style="background:#4caf50;color:#222;font-weight:bold">+9.3<span class="sub" style="color:#222">7筆 57%</span></td><td style="background:#b71c1c;color:#fff;font-weight:bold">-28.5<span class="sub" style="color:#fff">10筆 30%</span></td><td style="background:#b71c1c;color:#fff;font-weight:bold">-23.8<span class="sub" style="color:#fff">6筆 50%</span></td><td style="background:#e0e0e0;color:#999">—</td><td style="background:#4caf50;color:#222;font-weight:bold">+13.9<span class="sub" style="color:#222">3筆 67%</span></td><td style="background:#e0e0e0;color:#999">—</td><td class="total-col" style="background:#b71c1c;color:#fff;font-weight:bold">-29.1<span class="sub" style="color:#fff">26筆 46%</span></td></tr>
+<tr><th class="row-header">200~500</th><td style="background:#1a7a1a;color:#fff;font-weight:bold">+78.4<span class="sub" style="color:#fff">7筆 86%</span></td><td style="background:#e53935;color:#222;font-weight:bold">-5.5<span class="sub" style="color:#222">2筆 50%</span></td><td style="background:#1a7a1a;color:#fff;font-weight:bold">+29.7<span class="sub" style="color:#fff">3筆 100%</span></td><td style="background:#e0e0e0;color:#999">—</td><td style="background:#a5d6a7;color:#222;font-weight:bold">+0.0<span class="sub" style="color:#222">2筆 50%</span></td><td style="background:#e0e0e0;color:#999">—</td><td class="total-col" style="background:#1a7a1a;color:#fff;font-weight:bold">+102.6<span class="sub" style="color:#fff">14筆 79%</span></td></tr>
+<tr><th class="row-header">500~1000</th><td style="background:#e53935;color:#222;font-weight:bold">-5.7<span class="sub" style="color:#222">2筆 50%</span></td><td style="background:#e0e0e0;color:#999">—</td><td style="background:#e0e0e0;color:#999">—</td><td style="background:#e0e0e0;color:#999">—</td><td style="background:#ef9a9a;color:#222;font-weight:bold">-0.9<span class="sub" style="color:#222">2筆 50%</span></td><td style="background:#e0e0e0;color:#999">—</td><td class="total-col" style="background:#e53935;color:#222;font-weight:bold">-6.6<span class="sub" style="color:#222">4筆 50%</span></td></tr>
+<tr><th class="row-header">1000+</th><td style="background:#a5d6a7;color:#222;font-weight:bold">+1.0<span class="sub" style="color:#222">6筆 50%</span></td><td style="background:#e53935;color:#fff;font-weight:bold">-17.2<span class="sub" style="color:#fff">3筆 33%</span></td><td style="background:#e53935;color:#fff;font-weight:bold">-18.5<span class="sub" style="color:#fff">1筆 0%</span></td><td style="background:#e0e0e0;color:#999">—</td><td style="background:#e53935;color:#222;font-weight:bold">-14.4<span class="sub" style="color:#222">1筆 0%</span></td><td style="background:#e0e0e0;color:#999">—</td><td class="total-col" style="background:#b71c1c;color:#fff;font-weight:bold">-49.1<span class="sub" style="color:#fff">11筆 36%</span></td></tr>
+<tr class="total-row"><th class="row-header">Col Total</th><td style="background:#1a7a1a;color:#fff;font-weight:bold">+105.4<span class="sub" style="color:#fff">30筆 60%</span></td><td style="background:#b71c1c;color:#fff;font-weight:bold">-76.9<span class="sub" style="color:#fff">19筆 32%</span></td><td style="background:#4caf50;color:#222;font-weight:bold">+10.1<span class="sub" style="color:#222">17筆 65%</span></td><td>—</td><td style="background:#1a7a1a;color:#fff;font-weight:bold">+20.8<span class="sub" style="color:#fff">11筆 55%</span></td><td>—</td><td style="background:#1a7a1a;color:#fff;font-weight:bold">+59.3<span class="sub" style="color:#fff">77筆 55%</span></td></tr></table>
+<h2>PnL by Price Range</h2>
+<div class="bar-chart">
+<div class="bar-row">
+  <div class="bar-label"><50</div>
+  <div class="bar-area">
+    <div class="bar-center"></div>
+    <div style="position:absolute;right:50%;top:0;height:100%;width:2.146689424069464%">
+      <div class="bar-neg" style="width:100%;height:100%"></div>
+    </div>
+    <div class="bar-value" style="right:calc(50% + 2.146689424069464% + 5px);color:#b71c1c">-5.0萬 (10筆/50%)</div>
+  </div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">50~100</div>
+  <div class="bar-area">
+    <div class="bar-center"></div>
+    <div style="position:absolute;left:50%;top:0;height:100%;width:19.885428684194547%">
+      <div class="bar-pos" style="width:100%;height:100%"></div>
+    </div>
+    <div class="bar-value" style="left:calc(50% + 19.885428684194547% + 5px);color:#1a7a1a">+46.6萬 (12筆/58%)</div>
+  </div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">100~200</div>
+  <div class="bar-area">
+    <div class="bar-center"></div>
+    <div style="position:absolute;right:50%;top:0;height:100%;width:12.442481897808003%">
+      <div class="bar-neg" style="width:100%;height:100%"></div>
+    </div>
+    <div class="bar-value" style="right:calc(50% + 12.442481897808003% + 5px);color:#b71c1c">-29.1萬 (26筆/46%)</div>
+  </div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">200~500</div>
+  <div class="bar-area">
+    <div class="bar-center"></div>
+    <div style="position:absolute;left:50%;top:0;height:100%;width:43.8071765513996%">
+      <div class="bar-pos" style="width:100%;height:100%"></div>
+    </div>
+    <div class="bar-value" style="left:calc(50% + 43.8071765513996% + 5px);color:#1a7a1a">+102.6萬 (14筆/79%)</div>
+  </div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">500~1000</div>
+  <div class="bar-area">
+    <div class="bar-center"></div>
+    <div style="position:absolute;right:50%;top:0;height:100%;width:2.823130768413383%">
+      <div class="bar-neg" style="width:100%;height:100%"></div>
+    </div>
+    <div class="bar-value" style="right:calc(50% + 2.823130768413383% + 5px);color:#b71c1c">-6.6萬 (4筆/50%)</div>
+  </div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">1000+</div>
+  <div class="bar-area">
+    <div class="bar-center"></div>
+    <div style="position:absolute;right:50%;top:0;height:100%;width:20.947779730098972%">
+      <div class="bar-neg" style="width:100%;height:100%"></div>
+    </div>
+    <div class="bar-value" style="right:calc(50% + 20.947779730098972% + 5px);color:#b71c1c">-49.1萬 (11筆/36%)</div>
+  </div>
+</div>
+</div>
+<h2>PnL by Rank Group</h2>
+<div class="bar-chart">
+<div class="bar-row">
+  <div class="bar-label">G≤5 / M=1</div>
+  <div class="bar-area">
+    <div class="bar-center"></div>
+    <div style="position:absolute;left:50%;top:0;height:100%;width:45.0%">
+      <div class="bar-pos" style="width:100%;height:100%;background:#2ecc71"></div>
+    </div>
+    <div class="bar-value" style="left:calc(50% + 45.0% + 5px);color:#1a7a1a">+105.4萬 (30筆/60%)</div>
+  </div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">G≤5 / M=2</div>
+  <div class="bar-area">
+    <div class="bar-center"></div>
+    <div style="position:absolute;right:50%;top:0;height:100%;width:32.84988558048454%">
+      <div class="bar-neg" style="width:100%;height:100%;background:#e74c3c"></div>
+    </div>
+    <div class="bar-value" style="right:calc(50% + 32.84988558048454% + 5px);color:#b71c1c">-76.9萬 (19筆/32%)</div>
+  </div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">G6~10 / M=1</div>
+  <div class="bar-area">
+    <div class="bar-center"></div>
+    <div style="position:absolute;left:50%;top:0;height:100%;width:4.29295190964843%">
+      <div class="bar-pos" style="width:100%;height:100%;background:#3498db"></div>
+    </div>
+    <div class="bar-value" style="left:calc(50% + 4.29295190964843% + 5px);color:#1a7a1a">+10.1萬 (17筆/65%)</div>
+  </div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">G>10 / M=1</div>
+  <div class="bar-area">
+    <div class="bar-center"></div>
+    <div style="position:absolute;left:50%;top:0;height:100%;width:8.88945708604044%">
+      <div class="bar-pos" style="width:100%;height:100%;background:#9b59b6"></div>
+    </div>
+    <div class="bar-value" style="left:calc(50% + 8.88945708604044% + 5px);color:#1a7a1a">+20.8萬 (11筆/55%)</div>
+  </div>
+</div>
+</div>
+</body></html>

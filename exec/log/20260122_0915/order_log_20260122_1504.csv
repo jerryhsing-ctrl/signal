@@ -1,0 +1,8 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,1504      ,93051123935         ,886000         ,-2.59599e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,112867         ,家電(G2/M1/R2)
+leave     ,1504      ,93051124562         ,886000         ,-2.19621e+07   ,-6.00226e+06   ,-              ,-              ,takeProfit     ,67720.1        
+leave     ,1504      ,93051559220         ,887000         ,-1.99599e+07   ,-4e+06         ,-              ,-              ,takeProfit     ,45146.7        
+leave     ,1504      ,93052229164         ,888000         ,-1.79554e+07   ,-1.99549e+06   ,-              ,-              ,takeProfit     ,22573.4        
+leave     ,1504      ,93053238024         ,889000         ,-1.59486e+07   ,11286.7        ,-              ,-              ,takeProfit     ,0              
+enter     ,1504      ,101018384054        ,904000         ,-3.40601e+07   ,-9.98871e+06   ,SignalA        ,StrongGroup    ,-              ,110619         ,家電(G1/M1/R1)
+leave     ,1504      ,104731863925        ,892000         ,-1.43443e+07   ,-121457        ,-              ,-              ,stopLoss       ,0              

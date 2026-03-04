@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,2609      ,93117057334         ,555000         ,-3.79946e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,180180         ,海運(G1/M1/R2)
+leave     ,2609      ,95419411384         ,557000         ,-3.61295e+07   ,-7.99279e+06   ,-              ,-              ,takeProfit     ,144144         
+leave     ,2609      ,95425726132         ,558000         ,-3.41187e+07   ,-5.98198e+06   ,-              ,-              ,takeProfit     ,108108         
+leave     ,2609      ,100340764477        ,559000         ,-3.21043e+07   ,-3.96757e+06   ,-              ,-              ,takeProfit     ,72072.1        
+leave     ,2609      ,100352197746        ,560000         ,-3.00862e+07   ,-1.94955e+06   ,-              ,-              ,takeProfit     ,36036          
+leave     ,2609      ,132000644673        ,554000         ,-1.0102e+07    ,46846.8        ,-              ,-              ,timeExit       ,0              

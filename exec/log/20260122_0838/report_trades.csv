@@ -1,0 +1,7 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank
+1504,SignalA,StrongGroup,09:30:51,09:30:53,takeProfit,11287,0.11%,0h00m02s,家電,2,1,2
+6173,SignalA,StrongGroup,09:21:21,09:41:43,stopLoss,-140127,-1.40%,0h20m22s,被動元件,2,2,3
+6488,SignalA,StrongGroup,10:08:13,10:33:49,stopLoss,-151515,-1.52%,0h25m36s,矽晶圓指標,1,2,4
+1504,SignalA,StrongGroup,10:10:18,10:47:31,stopLoss,-132743,-1.33%,0h37m13s,家電,1,1,1
+2327,SignalA,StrongGroup,09:34:06,13:20:00,timeExit,-13400,-0.13%,3h45m54s,被動元件,1,2,5
+2301,SignalA,StrongGroup,09:25:44,13:20:01,timeExit,126074,1.26%,3h54m17s,電供,2,2,3

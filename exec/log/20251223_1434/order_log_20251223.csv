@@ -1,0 +1,17 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,6903      ,92312293748         ,2395000        ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,41753.7        ,廠務(G3/M1/R1)
+enter     ,1785      ,92702322593         ,679000         ,-2e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,147275         ,電子化工材料(G2/M1/R1)
+leave     ,1785      ,93650635146         ,669000         ,-1.01473e+07   ,-147275        ,-              ,-              ,stopLoss       ,0              
+leave     ,6903      ,94140059292         ,2355000        ,-314290        ,-167015        ,-              ,-              ,stopLoss       ,0              
+enter     ,2495      ,94327703001         ,314000         ,-1.03143e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,318471         ,網路通訊(G9/M1/R2)
+enter     ,3167      ,94602643005         ,2295000        ,-2.03143e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,43573          ,PCB 設備(G16/M1/R1)
+enter     ,8033      ,94650114360         ,1550000        ,-3.03143e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,64516.1        ,軍工(G1/M1/R2)
+leave     ,8033      ,94728988028         ,1525000        ,-2.04756e+07   ,-161290        ,-              ,-              ,stopLoss       ,0              
+leave     ,3167      ,94816944424         ,2310000        ,-1.84625e+07   ,-7.98693e+06   ,-              ,-              ,takeProfit     ,34858.4        
+leave     ,3167      ,94819361943         ,2315000        ,-1.64451e+07   ,-5.9695e+06    ,-              ,-              ,takeProfit     ,26143.8        
+leave     ,3167      ,101332212866        ,2260000        ,-1.05366e+07   ,-61002.2       ,-              ,-              ,stopLoss       ,0              
+leave     ,2495      ,103515802439        ,309500         ,-679895        ,-143312        ,-              ,-              ,stopLoss       ,0              
+enter     ,2467      ,120327556131        ,2350000        ,-1.06799e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,42553.2        ,PCB 設備(G14/M1/R1)
+enter     ,4989      ,121415333989        ,431500         ,-2.06799e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,231481         ,PCB上游(G4/M1/R2)
+leave     ,4989      ,130832747824        ,425500         ,-1.08304e+07   ,-150463        ,-              ,-              ,stopLoss       ,0              
+leave     ,2467      ,132043370774        ,2340000        ,-872911        ,-42553.2       ,-              ,-              ,timeExit       ,0              

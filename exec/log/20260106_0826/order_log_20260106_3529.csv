@@ -1,0 +1,3 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,3529      ,113906184314        ,17300000       ,-2.00098e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,5780.35        ,設計IP(G2/M2/R2)
+leave     ,3529      ,132008770847        ,17150000       ,-207866        ,-115607        ,-              ,-              ,timeExit       ,0              

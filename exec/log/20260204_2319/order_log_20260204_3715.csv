@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,3715      ,93731574623         ,1505000        ,-2.38684e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,66445.2        ,印刷電路板(G6/M1/R6)
+leave     ,3715      ,94144986666         ,1525000        ,-2.57549e+07   ,-7.97342e+06   ,-              ,-              ,takeProfit     ,53156.1        
+leave     ,3715      ,94259514093         ,1530000        ,-2.37217e+07   ,-5.9402e+06    ,-              ,-              ,takeProfit     ,39867.1        
+leave     ,3715      ,100402818885        ,1535000        ,-2.3577e+07    ,-3.90033e+06   ,-              ,-              ,takeProfit     ,26578.1        
+leave     ,3715      ,100805619430        ,1540000        ,-2.15305e+07   ,-1.85382e+06   ,-              ,-              ,takeProfit     ,13289          
+leave     ,3715      ,101055430414        ,1545000        ,-1.94774e+07   ,199336         ,-              ,-              ,takeProfit     ,0              

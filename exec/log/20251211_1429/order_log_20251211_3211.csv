@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,3211      ,93920622496         ,2805000        ,-4.78961e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,35650.6        ,BBU(G5/M1/R2)
+leave     ,3211      ,93946589037         ,2815000        ,-4.5889e+07    ,-7.99287e+06   ,-              ,-              ,takeProfit     ,28520.5        
+leave     ,3211      ,93947483850         ,2820000        ,-4.38783e+07   ,-5.98217e+06   ,-              ,-              ,takeProfit     ,21390.4        
+leave     ,3211      ,94011823367         ,2825000        ,-4.1864e+07    ,-3.96791e+06   ,-              ,-              ,takeProfit     ,14260.2        
+leave     ,3211      ,94011878011         ,2830000        ,-3.98462e+07   ,-1.95009e+06   ,-              ,-              ,takeProfit     ,7130.12        
+leave     ,3211      ,94018675973         ,2835000        ,-3.78248e+07   ,71301.2        ,-              ,-              ,takeProfit     ,0              

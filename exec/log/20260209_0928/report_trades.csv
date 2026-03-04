@@ -1,0 +1,2 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank
+5347,SignalA,StrongGroup,09:24:41,09:26:00,stopLoss,-157480,-1.57%,0h01m19s,專業IC代工,7,1,1

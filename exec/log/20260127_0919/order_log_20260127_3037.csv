@@ -1,0 +1,3 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,3037      ,115319776242        ,3525000        ,-2.00074e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,28368.8        ,ABF(G1/M2/R2)
+leave     ,3037      ,132000818689        ,3530000        ,-1.00074e+07   ,0              ,-              ,-              ,timeExit       ,0              

@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,4989      ,92359710072         ,675000         ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,147929         ,CCL(G18/M1/R1)
+leave     ,4989      ,94347420158         ,693000         ,-7.9497e+06    ,-7.9497e+06    ,-              ,-              ,takeProfit     ,118343         
+leave     ,4989      ,94354680728         ,694000         ,-5.89645e+06   ,-5.89645e+06   ,-              ,-              ,takeProfit     ,88757.4        
+leave     ,4989      ,94354686885         ,695000         ,-3.84024e+06   ,-3.84024e+06   ,-              ,-              ,takeProfit     ,59171.6        
+leave     ,4989      ,94354716613         ,696000         ,-1.78107e+06   ,-1.78107e+06   ,-              ,-              ,takeProfit     ,29585.8        
+leave     ,4989      ,94354717001         ,697000         ,281065         ,281065         ,-              ,-              ,takeProfit     ,0              

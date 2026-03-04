@@ -1,0 +1,14 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,1326      ,92020184237         ,340000         ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,294118         ,塑膠(G1/M1/R2)
+enter     ,3491      ,92541542029         ,7830000        ,-2e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,12771.4        ,低軌衛星(G7/M1/R2)
+enter     ,6223      ,93108489716         ,22300000       ,-3e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,4484.3         ,探針卡(G8/M1/R1)
+leave     ,3491      ,93108536840         ,7720000        ,-2.01405e+07   ,-140485        ,-              ,-              ,stopLoss       ,0              
+leave     ,6223      ,93147742031         ,22350000       ,-1.8136e+07    ,-7.99552e+06   ,-              ,-              ,takeProfit     ,3587.44        
+leave     ,6223      ,93458351781         ,22000000       ,-1.02436e+07   ,-103139        ,-              ,-              ,stopLoss       ,0              
+leave     ,1326      ,93734864263         ,335000         ,-390683        ,-147059        ,-              ,-              ,stopLoss       ,0              
+enter     ,1802      ,94752083812         ,372000         ,-1.03907e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,268817         ,玻纖布(G3/M2/R3)
+enter     ,5274      ,95127334839         ,77250000       ,-2.03907e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,1288.66        ,IC設計(G4/M2/R5)
+leave     ,1802      ,95234172685         ,366500         ,-1.05385e+07   ,-147849        ,-              ,-              ,stopLoss       ,0              
+leave     ,5274      ,104749754245        ,76250000       ,-744718        ,-206186        ,-              ,-              ,stopLoss       ,0              
+enter     ,2404      ,110430138165        ,10350000       ,-1.07447e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,9661.84        ,廠務(G3/M2/R2)
+leave     ,2404      ,114923326351        ,10200000       ,-889646        ,-144928        ,-              ,-              ,stopLoss       ,0              

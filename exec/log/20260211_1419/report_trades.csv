@@ -1,0 +1,5 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol
+4722,SignalA,StrongGroup,09:23:13,09:25:03,stopLoss,-144092,-1.44%,0h01m50s,特化,17,1,1,
+6213,SignalA,StrongGroup,09:48:41,09:56:08,takeProfit,40650,0.41%,0h07m27s,印刷電路板,3,1,9,
+6753,SignalA,StrongGroup,10:02:25,10:26:25,stopLoss,-170068,-1.70%,0h24m00s,軍工,6,1,1,
+6290,SignalA,StrongGroup,10:41:53,13:20:09,timeExit,-100796,-1.01%,2h38m16s,連接線材,1,1,1,

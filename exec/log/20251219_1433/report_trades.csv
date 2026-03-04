@@ -1,0 +1,5 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol
+8039,SignalA,StrongGroup,09:37:58,09:41:37,stopLoss,-147679,-1.48%,0h03m39s,CCL,3,1,1,
+2485,SignalA,StrongGroup,09:41:01,10:01:30,stopLoss,-148270,-1.48%,0h20m29s,低軌衛星,3,1,3,
+1303,SignalA,StrongGroup,09:49:09,10:43:56,stopLoss,-148270,-1.48%,0h54m47s,塑膠,2,1,1,
+3037,SignalA,StrongGroup,09:41:10,10:50:08,stopLoss,-64965,-0.65%,1h08m58s,ABF,4,1,1,

@@ -25,6 +25,10 @@ private:
 	unordered_map<std::string, indexCalc> index_calc_map_;
 
 	bool signalA_enabled = false, signalB_enabled = false, strongGroup_enabled = false, strongSingle_enabled = false;
+	bool single_group_rank_filter = true;
+	int single_max_member_rank = 1;
+	double market_rally_disable_threshold = 0.02;
+	bool market_disabled = false;
 
 	unordered_map<std::string, signalA> signalA_map_;
 	unordered_map<std::string, signalB> signalB_map_;

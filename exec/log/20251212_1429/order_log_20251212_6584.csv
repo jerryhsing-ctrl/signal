@@ -1,0 +1,4 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,6584      ,92027710099         ,3545000        ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,28208.7        ,滑軌(G2/M1/R1)
+leave     ,6584      ,92051176957         ,3555000        ,-7.99436e+06   ,-7.99436e+06   ,-              ,-              ,takeProfit     ,22567          
+leave     ,6584      ,92811539587         ,3495000        ,-69025.3       ,-107193        ,-              ,-              ,stopLoss       ,0              

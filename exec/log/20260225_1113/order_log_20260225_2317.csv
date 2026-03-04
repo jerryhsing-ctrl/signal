@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,2317      ,94706204055         ,2420000        ,-1.77424e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,41322.3        ,ODM(G3/M2/R2)
+leave     ,2317      ,95023562862         ,2425000        ,-1.57382e+07   ,-7.99587e+06   ,-              ,-              ,takeProfit     ,33057.9        
+leave     ,2317      ,101443507827        ,2430000        ,-7.59598e+06   ,-5.9876e+06    ,-              ,-              ,takeProfit     ,24793.4        
+leave     ,2317      ,104815369085        ,2435000        ,-1.35769e+07   ,-3.97521e+06   ,-              ,-              ,takeProfit     ,16528.9        
+leave     ,2317      ,105252587992        ,2440000        ,-1.15604e+07   ,-1.95868e+06   ,-              ,-              ,takeProfit     ,8264.46        
+leave     ,2317      ,105725611744        ,2445000        ,-9.53969e+06   ,61983.5        ,-              ,-              ,takeProfit     ,0              

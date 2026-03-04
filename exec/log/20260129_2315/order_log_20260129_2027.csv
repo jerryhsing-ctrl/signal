@@ -1,0 +1,9 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,2027      ,92448064332         ,399500         ,-2.03342e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,250313         ,不鏽鋼(G3/M1/R1)
+leave     ,2027      ,92448156144         ,400500         ,-1.83292e+07   ,-7.99499e+06   ,-              ,-              ,takeProfit     ,200250         
+leave     ,2027      ,92511030972         ,401000         ,-1.63217e+07   ,-5.98748e+06   ,-              ,-              ,takeProfit     ,150188         
+leave     ,2027      ,92536171880         ,401500         ,-1.43117e+07   ,-3.97747e+06   ,-              ,-              ,takeProfit     ,100125         
+leave     ,2027      ,92536229634         ,402000         ,-1.22992e+07   ,-1.96496e+06   ,-              ,-              ,takeProfit     ,50062.6        
+leave     ,2027      ,92548881820         ,402500         ,-1.02842e+07   ,50062.6        ,-              ,-              ,takeProfit     ,0              
+enter     ,2027      ,101457828002        ,406000         ,-1.05638e+07   ,-9.94994e+06   ,SignalA        ,StrongGroup    ,-              ,246305         ,不鏽鋼(G2/M1/R1)
+leave     ,2027      ,104547472594        ,400000         ,-711542        ,-97720.7       ,-              ,-              ,stopLoss       ,0              

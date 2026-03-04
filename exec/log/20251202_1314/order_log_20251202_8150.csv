@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,8150      ,93656495798         ,440000         ,-2e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,227273         ,記憶體(G9/M1/R2)
+leave     ,8150      ,93810287752         ,442000         ,-1.79909e+07   ,-7.99091e+06   ,-              ,-              ,takeProfit     ,181818         
+leave     ,8150      ,94431440914         ,442500         ,-1.59795e+07   ,-5.97955e+06   ,-              ,-              ,takeProfit     ,136364         
+leave     ,8150      ,94431490535         ,443000         ,-1.39659e+07   ,-3.96591e+06   ,-              ,-              ,takeProfit     ,90909.1        
+leave     ,8150      ,94432805181         ,443500         ,-1.195e+07     ,-1.95e+06      ,-              ,-              ,takeProfit     ,45454.5        
+leave     ,8150      ,94436084219         ,444000         ,-9.93182e+06   ,68181.8        ,-              ,-              ,takeProfit     ,0              

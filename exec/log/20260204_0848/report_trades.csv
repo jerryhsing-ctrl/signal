@@ -1,0 +1,13 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank
+6282,SignalA,StrongGroup,09:21:03,09:22:48,takeProfit,40609,0.41%,0h01m45s,電供,5,1,2
+6116,SignalA,StrongGroup,09:24:01,09:36:44,stopLoss,-144928,-1.45%,0h12m43s,TFT 面板,1,2,3
+3189,SignalA,StrongGroup,09:25:42,09:36:49,takeProfit,172414,1.72%,0h11m07s,ABF,6,1,1
+2049,SignalA,StrongGroup,09:26:23,09:39:43,takeProfit,124224,1.24%,0h13m20s,工具機,3,1,2
+3019,SignalA,StrongGroup,09:41:28,09:45:52,stopLoss,-152439,-1.52%,0h04m24s,機器人,5,2,3
+6282,SignalA,StrongGroup,09:43:42,09:53:01,takeProfit,86694,0.87%,0h09m19s,電供,5,1,2
+6271,SignalA,StrongGroup,09:20:16,10:01:32,takeProfit,196721,1.97%,0h41m16s,IC封測,14,1,1
+3715,SignalA,StrongGroup,09:37:31,10:10:55,takeProfit,199336,1.99%,0h33m24s,印刷電路板,6,1,6
+4526,SignalA,StrongGroup,10:37:43,10:38:20,takeProfit,120846,1.21%,0h00m37s,工具機,3,2,3
+6869,SignalA,StrongGroup,09:46:39,11:14:59,stopLoss,-181818,-1.82%,1h28m20s,太陽能,1,2,4
+6282,SignalA,StrongGroup,11:03:48,11:21:44,takeProfit,100200,1.00%,0h17m56s,電供,5,1,2
+6584,SignalA,StrongGroup,09:57:18,13:24:32,timeExit,247734,2.48%,3h27m14s,滑軌,3,1,1

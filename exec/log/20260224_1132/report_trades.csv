@@ -1,0 +1,14 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol
+2455,SignalA,StrongGroup,09:28:16,09:34:12,takeProfit,103896,1.04%,0h05m56s,砷化鎵,1,2,3,8086
+1717,SignalA,StrongGroup,09:23:34,09:35:53,stopLoss,-129450,-1.29%,0h12m19s,特化,6,1,2,
+8358,SignalA,StrongGroup,09:22:59,09:42:31,takeProfit,103986,1.04%,0h19m32s,PCB上游,1,1,3,
+2406,SignalA,StrongGroup,09:39:35,09:47:13,stopLoss,-144695,-1.45%,0h07m38s,太陽能,2,1,3,
+8074,SignalA,StrongGroup,09:38:14,09:50:56,takeProfit,58224,0.58%,0h12m42s,PCB上游,1,2,6,8358
+6443,SignalA,StrongGroup,09:28:02,10:24:25,stopLoss,-155689,-1.56%,0h56m23s,太陽能,1,2,4,2406
+2472,SignalA,StrongGroup,10:07:58,10:30:31,stopLoss,-165289,-1.65%,0h22m33s,被動元件,5,1,4,
+1303,SignalA,StrongGroup,09:41:43,11:02:04,takeProfit,102506,1.03%,1h20m21s,玻纖布,1,1,4,
+3443,SignalA,StrongGroup,10:47:58,11:12:05,stopLoss,-141700,-1.42%,0h24m07s,設計IP,12,1,3,
+2455,SignalA,StrongGroup,10:38:38,12:55:59,takeProfit,230769,2.31%,2h17m21s,砷化鎵,1,2,3,8086
+5234,SignalA,StrongGroup,11:37:21,13:20:00,timeExit,207852,2.08%,1h42m39s,特化,12,1,1,
+2308,SignalA,StrongGroup,10:59:35,13:20:00,timeExit,51095,0.51%,2h20m25s,電供,12,1,1,
+6213,SignalA,StrongGroup,11:26:09,13:20:00,timeExit,215385,2.15%,1h53m51s,PCB上游,2,2,4,5498

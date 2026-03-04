@@ -1,0 +1,11 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,8039      ,93758171158         ,948000         ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,105485         ,CCL(G3/M1/R1)
+enter     ,2485      ,94101464445         ,303500         ,-2e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,329489         ,低軌衛星(G3/M1/R3)
+enter     ,3037      ,94110209345         ,2155000        ,-3e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,46403.7        ,ABF(G4/M1/R1)
+leave     ,3037      ,94110215027         ,2155000        ,-2.60046e+07   ,-6.00464e+06   ,-              ,-              ,takeProfit     ,27842.2        
+leave     ,8039      ,94137835301         ,934000         ,-1.61523e+07   ,-147679        ,-              ,-              ,stopLoss       ,0              
+enter     ,1303      ,94909751207         ,607000         ,-2.61523e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,164745         ,塑膠(G2/M1/R1)
+leave     ,3037      ,94934118841         ,2160000        ,-2.41477e+07   ,-4e+06         ,-              ,-              ,takeProfit     ,18561.5        
+leave     ,2485      ,100130694596        ,299000         ,-1.42959e+07   ,-148270        ,-              ,-              ,stopLoss       ,0              
+leave     ,1303      ,104356205074        ,598000         ,-4.44422e+06   ,-148270        ,-              ,-              ,stopLoss       ,0              
+leave     ,3037      ,105008027699        ,2120000        ,-509185        ,-64965.2       ,-              ,-              ,stopLoss       ,0              

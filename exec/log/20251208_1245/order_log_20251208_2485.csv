@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,2485      ,92049001356         ,233000         ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,429185         ,網路通訊(G5/M1/R1)
+leave     ,2485      ,92551805558         ,234000         ,-1.79914e+07   ,-7.99142e+06   ,-              ,-              ,takeProfit     ,343348         
+leave     ,2485      ,92631751619         ,234500         ,-1.59785e+07   ,-5.97854e+06   ,-              ,-              ,takeProfit     ,257511         
+leave     ,2485      ,92641486723         ,235000         ,-1.39614e+07   ,-3.96137e+06   ,-              ,-              ,takeProfit     ,171674         
+leave     ,2485      ,92924968887         ,235500         ,-1.81959e+06   ,-1.93991e+06   ,-              ,-              ,takeProfit     ,85836.9        
+leave     ,2485      ,92938794825         ,236000         ,206158         ,85836.9        ,-              ,-              ,takeProfit     ,0              

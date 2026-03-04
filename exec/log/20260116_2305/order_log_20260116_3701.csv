@@ -1,0 +1,3 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,3701      ,92418156399         ,614000         ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,162602         ,CPO(G3/M1/R1)
+leave     ,3701      ,92926782861         ,605000         ,-2.81626e+07   ,-162602        ,-              ,-              ,stopLoss       ,0              

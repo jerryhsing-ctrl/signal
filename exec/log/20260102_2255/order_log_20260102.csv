@@ -1,0 +1,13 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,4989      ,92119688573         ,562000         ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,177936         ,PCB上游(G4/M2/R2)
+enter     ,6531      ,92310896233         ,4600000        ,-2e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,21739.1        ,設計IP(G3/M2/R3)
+leave     ,4989      ,92956219442         ,554000         ,-1.01423e+07   ,-142349        ,-              ,-              ,stopLoss       ,0              
+leave     ,6531      ,93113409863         ,4535000        ,-283653        ,-141304        ,-              ,-              ,stopLoss       ,0              
+enter     ,3551      ,93623932768         ,2090000        ,-1.02837e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,47846.9        ,電子化工材料(G1/M2/R3)
+leave     ,3551      ,94632235636         ,2060000        ,-427194        ,-143541        ,-              ,-              ,stopLoss       ,0              
+enter     ,3551      ,101705721614        ,2090000        ,-1.04272e+07   ,-1.01435e+07   ,SignalA        ,StrongGroup    ,-              ,47846.9        ,電子化工材料(G1/M2/R3)
+enter     ,1727      ,104212720209        ,462000         ,-2.04272e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,216450         ,電子化工材料(G1/M2/R3)
+leave     ,1727      ,110749887950        ,455500         ,-1.05679e+07   ,-140693        ,-              ,-              ,stopLoss       ,0              
+enter     ,2449      ,110819847587        ,2675000        ,-2.05679e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,37383.2        ,IC封測(G3/M1/R3)
+leave     ,3551      ,123649347633        ,2060000        ,-1.07114e+07   ,-287081        ,-              ,-              ,stopLoss       ,0              
+leave     ,2449      ,132000066695        ,2680000        ,-711427        ,0              ,-              ,-              ,timeExit       ,0              

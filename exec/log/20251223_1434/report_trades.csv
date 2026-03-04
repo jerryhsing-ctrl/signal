@@ -1,0 +1,8 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol
+1785,SignalA,StrongGroup,09:27:02,09:36:50,stopLoss,-147275,-1.47%,0h09m48s,電子化工材料,2,1,1,
+6903,SignalA,StrongGroup,09:23:12,09:41:40,stopLoss,-167015,-1.67%,0h18m28s,廠務,3,1,1,
+8033,SignalA,StrongGroup,09:46:50,09:47:28,stopLoss,-161290,-1.61%,0h00m38s,軍工,1,1,2,
+3167,SignalA,StrongGroup,09:46:02,10:13:32,stopLoss,-61002,-0.61%,0h27m30s,PCB 設備,16,1,1,
+2495,SignalA,StrongGroup,09:43:27,10:35:15,stopLoss,-143312,-1.43%,0h51m48s,網路通訊,9,1,2,
+4989,SignalA,StrongGroup,12:14:15,13:08:32,stopLoss,-150463,-1.50%,0h54m17s,PCB上游,4,1,2,
+2467,SignalA,StrongGroup,12:03:27,13:20:43,timeExit,-42553,-0.43%,1h17m16s,PCB 設備,14,1,1,

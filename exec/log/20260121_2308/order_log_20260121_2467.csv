@@ -1,0 +1,3 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,2467      ,92856411359         ,2595000        ,-3e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,38535.6        ,FOPLP(G3/M2/R2)
+leave     ,2467      ,101659177360        ,2560000        ,1990.39        ,-134875        ,-              ,-              ,stopLoss       ,0              

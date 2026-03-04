@@ -1,0 +1,13 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,4722      ,92313246474         ,1735000        ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,57636.9        ,特化(G17/M1/R1)
+leave     ,4722      ,92503500836         ,1710000        ,-144092        ,-144092        ,-              ,-              ,stopLoss       ,0              
+enter     ,6213      ,94841708067         ,1230000        ,-1.01441e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,81300.8        ,印刷電路板(G3/M1/R9)
+leave     ,6213      ,94841743210         ,1230000        ,-6.15222e+06   ,-6.00813e+06   ,-              ,-              ,takeProfit     ,48780.5        
+leave     ,6213      ,95237984300         ,1235000        ,-4.14409e+06   ,-4e+06         ,-              ,-              ,takeProfit     ,32520.3        
+leave     ,6213      ,95311427137         ,1240000        ,-2.12783e+06   ,-1.98374e+06   ,-              ,-              ,takeProfit     ,16260.2        
+leave     ,6213      ,95608601305         ,1245000        ,-103442        ,40650.4        ,-              ,-              ,takeProfit     ,0              
+enter     ,6753      ,100225440135        ,1470000        ,-1.01034e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,68027.2        ,軍工(G6/M1/R1)
+leave     ,6753      ,102625885581        ,1445000        ,-273510        ,-170068        ,-              ,-              ,stopLoss       ,0              
+enter     ,6290      ,104153471818        ,1885000        ,-1.02735e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,53050.4        ,連接線材(G1/M1/R1)
+leave     ,6290      ,114312031372        ,1890000        ,-8.2682e+06    ,-7.99469e+06   ,-              ,-              ,takeProfit     ,42440.3        
+leave     ,6290      ,132009552063        ,1860000        ,-374306        ,-100796        ,-              ,-              ,timeExit       ,0              

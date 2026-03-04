@@ -1,0 +1,5 @@
+Category,Value,Count,WinRate,TotalPnL,AvgPnL
+SignalType,SignalA,8,75.0%,336388,42048
+EnterCause,StrongGroup,8,75.0%,336388,42048
+LeaveCause,stopLoss,2,0.0%,-293865,-146933
+LeaveCause,takeProfit,6,100.0%,630253,105042

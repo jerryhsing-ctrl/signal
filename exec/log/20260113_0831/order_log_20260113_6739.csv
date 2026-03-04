@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,6739      ,93002636455         ,7490000        ,-2.59876e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,13351.1        ,設備儀器商(G5/M2/R3)
+leave     ,6739      ,93420756864         ,7530000        ,-2.79271e+07   ,-7.98932e+06   ,-              ,-              ,takeProfit     ,10680.9        
+leave     ,6739      ,93420801169         ,7540000        ,-2.59137e+07   ,-5.97597e+06   ,-              ,-              ,takeProfit     ,8010.68        
+leave     ,6739      ,93541817749         ,7550000        ,-2.40429e+07   ,-3.95995e+06   ,-              ,-              ,takeProfit     ,5340.45        
+leave     ,6739      ,93643603612         ,7560000        ,-3.20242e+07   ,-1.94126e+06   ,-              ,-              ,takeProfit     ,2670.23        
+leave     ,6739      ,93649337657         ,7580000        ,-3.00028e+07   ,80106.8        ,-              ,-              ,takeProfit     ,0              

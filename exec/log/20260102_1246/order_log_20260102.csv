@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,4989      ,92119688573         ,562000         ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,177936         ,PCB上游(G4/M1/R1)
+leave     ,4989      ,92956219442         ,554000         ,-142349        ,-142349        ,-              ,-              ,stopLoss       ,0              
+enter     ,1727      ,104212720209        ,462000         ,-1.01423e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,216450         ,電子化工材料(G2/M1/R2)
+leave     ,1727      ,110749887950        ,455500         ,-283041        ,-140693        ,-              ,-              ,stopLoss       ,0              
+enter     ,2449      ,110819847587        ,2675000        ,-1.0283e+07    ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,37383.2        ,IC封測(G3/M1/R3)
+leave     ,2449      ,132000066695        ,2680000        ,-283041        ,0              ,-              ,-              ,timeExit       ,0              

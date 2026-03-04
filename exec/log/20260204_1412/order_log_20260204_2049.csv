@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,2049      ,92623534225         ,2415000        ,-3.99594e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,41407.9        ,工具機(G3/M1/R2)
+leave     ,2049      ,92953835111         ,2435000        ,-3.5916e+07    ,-7.98344e+06   ,-              ,-              ,takeProfit     ,33126.3        
+leave     ,2049      ,93628678795         ,2440000        ,-2.57656e+07   ,-5.96273e+06   ,-              ,-              ,takeProfit     ,24844.7        
+leave     ,2049      ,93942564577         ,2445000        ,-2.18436e+07   ,-3.93789e+06   ,-              ,-              ,takeProfit     ,16563.1        
+leave     ,2049      ,93943262944         ,2450000        ,-1.98146e+07   ,-1.9089e+06    ,-              ,-              ,takeProfit     ,8281.57        
+leave     ,2049      ,93943414469         ,2455000        ,-1.77815e+07   ,124224         ,-              ,-              ,takeProfit     ,0              

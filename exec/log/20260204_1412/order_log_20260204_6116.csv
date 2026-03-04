@@ -1,0 +1,3 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,6116      ,92401394313         ,89700          ,-1.99594e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,1.11483e+06    ,TFT 面板(G1/M1/R3)
+leave     ,6116      ,93644186666         ,88400          ,-1.59106e+07   ,-144928        ,-              ,-              ,stopLoss       ,0              

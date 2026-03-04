@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,2436      ,92454085699         ,626000         ,-2.01587e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,159744         ,車用電子(G10/M1/R1)
+leave     ,2436      ,92936633406         ,629000         ,-2.22177e+07   ,-7.99042e+06   ,-              ,-              ,takeProfit     ,127796         
+leave     ,2436      ,92942652930         ,630000         ,-2.0205e+07    ,-5.97764e+06   ,-              ,-              ,takeProfit     ,95846.6        
+leave     ,2436      ,93006217277         ,631000         ,-1.8189e+07    ,-3.96166e+06   ,-              ,-              ,takeProfit     ,63897.8        
+leave     ,2436      ,93006262081         ,632000         ,-1.61698e+07   ,-1.94249e+06   ,-              ,-              ,takeProfit     ,31948.9        
+leave     ,2436      ,93008642670         ,633000         ,-1.41475e+07   ,79872.2        ,-              ,-              ,takeProfit     ,0              

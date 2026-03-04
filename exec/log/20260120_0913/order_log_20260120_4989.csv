@@ -1,0 +1,3 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,4989      ,92200288620         ,669000         ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,149254         ,PCB上游(G2/M1/R3)
+leave     ,4989      ,92839983054         ,660000         ,-149254        ,-149254        ,-              ,-              ,stopLoss       ,0              

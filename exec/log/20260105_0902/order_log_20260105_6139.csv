@@ -1,0 +1,3 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,6139      ,101412998996        ,6000000        ,-1.00308e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,16666.7        ,廠務(G5/M1/R1)
+leave     ,6139      ,132001085476        ,5960000        ,52304.7        ,-66666.7       ,-              ,-              ,timeExit       ,0              

@@ -1,0 +1,4 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,6223      ,95808911797         ,24300000       ,-2.00634e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,4115.23        ,探針卡(G1/M2/R4)
+leave     ,6223      ,123705170297        ,24700000       ,-1.76444e+07   ,-7.96708e+06   ,-              ,-              ,takeProfit     ,3292.18        
+leave     ,6223      ,132000023507        ,24600000       ,-9.56213e+06   ,115226         ,-              ,-              ,timeExit       ,0              

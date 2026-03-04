@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,3443      ,92035191891         ,25050000       ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,3992.02        ,設計IP(G6/M1/R1)
+leave     ,3443      ,92035192494         ,25050000       ,-8e+06         ,-8e+06         ,-              ,-              ,takeProfit     ,3193.61        
+leave     ,3443      ,92040512686         ,25100000       ,-5.99601e+06   ,-5.99601e+06   ,-              ,-              ,takeProfit     ,2395.21        
+leave     ,3443      ,92052856442         ,25150000       ,-3.98802e+06   ,-3.98802e+06   ,-              ,-              ,takeProfit     ,1596.81        
+leave     ,3443      ,92146625404         ,25200000       ,-1.1976e+07    ,-1.97605e+06   ,-              ,-              ,takeProfit     ,798.403        
+leave     ,3443      ,92202420592         ,25250000       ,-9.96008e+06   ,39920.2        ,-              ,-              ,takeProfit     ,0              

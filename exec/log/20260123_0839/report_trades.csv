@@ -1,0 +1,4 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank
+6215,SignalA,StrongGroup,09:29:15,09:32:40,stopLoss,-155642,-1.56%,0h03m25s,機器人,2,2,2
+8039,SignalA,StrongGroup,09:32:03,09:43:58,takeProfit,128342,1.28%,0h11m55s,CCL,7,1,1
+8039,SignalA,StrongGroup,10:26:14,13:20:00,timeExit,50740,0.51%,2h53m46s,CCL,3,1,1

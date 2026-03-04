@@ -1,0 +1,13 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol
+5498,SignalA,StrongGroup,09:31:14,09:39:13,takeProfit,87108,0.87%,0h07m59s,PCB上游,2,1,1,
+3211,SignalA,StrongGroup,09:39:20,09:40:18,takeProfit,71301,0.71%,0h00m58s,BBU,5,1,2,
+6139,SignalA,StrongGroup,09:28:20,09:40:53,stopLoss,-147330,-1.47%,0h12m33s,廠務,1,1,1,
+5475,SignalA,StrongGroup,09:32:53,09:50:23,stopLoss,-142012,-1.42%,0h17m30s,玻纖布,13,1,1,
+4989,SignalA,StrongGroup,09:32:37,09:52:27,stopLoss,-143965,-1.44%,0h19m50s,CCL,6,1,2,
+6291,SignalA,StrongGroup,09:33:22,09:52:31,takeProfit,139665,1.40%,0h19m09s,IC設計,10,1,1,
+1815,SignalA,StrongGroup,09:54:38,09:58:04,takeProfit,114155,1.14%,0h03m26s,PCB上游,3,1,4,
+4989,SignalA,StrongGroup,10:05:13,10:32:14,stopLoss,-143965,-1.44%,0h27m01s,CCL,6,1,2,
+3376,SignalA,StrongGroup,10:08:48,11:06:06,stopLoss,-160183,-1.60%,0h57m18s,軸承,1,1,1,
+2371,SignalA,StrongGroup,09:40:52,12:26:10,takeProfit,73529,0.74%,2h45m18s,重電,2,1,1,
+5498,SignalA,StrongGroup,10:23:37,13:20:00,timeExit,-68729,-0.69%,2h56m23s,PCB上游,2,1,1,
+2612,SignalA,StrongGroup,10:52:44,13:20:17,timeExit,-94044,-0.94%,2h27m33s,海運,9,1,1,

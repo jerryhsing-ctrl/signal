@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,6125      ,92702279914         ,737000         ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,135685         ,設備儀器商(G9/M1/R1)
+leave     ,6125      ,93008265243         ,744000         ,-7.981e+06     ,-7.981e+06     ,-              ,-              ,takeProfit     ,108548         
+leave     ,6125      ,94035028708         ,745000         ,-5.95929e+06   ,-5.95929e+06   ,-              ,-              ,takeProfit     ,81411.1        
+leave     ,6125      ,94035028719         ,746000         ,-3.93487e+06   ,-3.93487e+06   ,-              ,-              ,takeProfit     ,54274.1        
+leave     ,6125      ,94035028829         ,747000         ,-1.90773e+06   ,-1.90773e+06   ,-              ,-              ,takeProfit     ,27137          
+leave     ,6125      ,94035081219         ,748000         ,122117         ,122117         ,-              ,-              ,takeProfit     ,0              

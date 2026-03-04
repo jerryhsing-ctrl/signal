@@ -37,9 +37,19 @@ StrategySv::StrategySv(QuoteSv *quoteSv) {
     cout << "strongSingle_enabled: [" << strongSingleEnable << "]" << endl;
     
 
+    string singleGroupRankFilter = parameterReader.Read("StrongSignal", "single_group_rank_filter");
+    if (!singleGroupRankFilter.empty()) single_group_rank_filter = (singleGroupRankFilter == "true");
+    string singleMaxMemberRank = parameterReader.Read("StrongSignal", "single_max_member_rank");
+    if (!singleMaxMemberRank.empty()) single_max_member_rank = stoi(singleMaxMemberRank);
+    cout << "single_group_rank_filter: [" << single_group_rank_filter << "] single_max_member_rank: [" << single_max_member_rank << "]" << endl;
+
     string strongGroupEnable = parameterReader.Read("StrongGroup", "enabled");
     strongGroup_enabled = (strongGroupEnable == "true");
     cout << "strongGroup_enabled: [" << strongGroupEnable << "]" << endl;
+
+    string marketRallyThreshold = parameterReader.Read("Strategy", "market_rally_disable_threshold");
+    if (!marketRallyThreshold.empty()) market_rally_disable_threshold = stod(marketRallyThreshold);
+    cout << "market_rally_disable_threshold: [" << market_rally_disable_threshold << "]" << endl;
 
     cout << "tseEnable: [" << tseEnable << "]" << endl;
     market_queue_TSE = new queueType();
@@ -110,21 +120,40 @@ void StrategySv::run(queueType *market_queue_, string market_name) {
                 cout << "StrategySv::run started " << market_name << endl;
                 flag = false;
             }
-            if (f6->tradeCode != 1 || (f6->symbol[0] == '0' && f6->symbol[1] == '0')) { 
+            // 0050 price at 9:00 and 9:15 vs prev close
+            static long long p0050_900 = 0, p0050_915 = 0, p0050_prev = 0;
+            static bool got_900 = false, got_915 = false;
+            if (!got_915 && f6->symbol[0] == '0' && f6->symbol[1] == '0' && strcmp(f6->symbol.c_str(), "0050") == 0 && f6->tradeCode == 1 && f6->tradeAt > 0) {
+                if (p0050_prev == 0) p0050_prev = quoteSv->f1mgr.format1Map["0050"].previous_close * 10000;
+                if (!got_900 && f6->matchTimeStr >= 90000000000) { p0050_900 = f6->match.Price; got_900 = true; }
+                if (f6->matchTimeStr >= 91500000000) { p0050_915 = f6->match.Price; got_915 = true;
+                    double at915_chg = (double)(p0050_915-p0050_prev)/p0050_prev;
+                    fprintf(stderr, "[0050] prev=%lld open=%lld at915=%lld open_chg=%.3f%% at915_chg=%.3f%%\n",
+                        p0050_prev, p0050_900, p0050_915,
+                        (double)(p0050_900-p0050_prev)/p0050_prev*100.0,
+                        at915_chg*100.0);
+                    if (at915_chg >= market_rally_disable_threshold) {
+                        market_disabled = true;
+                        fprintf(stderr, "[STRATEGY] DISABLED: 0050 at915 change %.3f%% >= threshold %.1f%%\n",
+                            at915_chg*100.0, market_rally_disable_threshold*100.0);
+                    }
+                }
+            }
+
+            if (f6->tradeCode != 1 || (f6->symbol[0] == '0' && f6->symbol[1] == '0')) {
                 market_queue_->pop();
                 processed_cnt++;
                 continue;
             }
-            
+
             string &symbol = f6->symbol;
             indexCalc &index_calc = index_calc_map_[symbol];
             IndexData idx = index_calc.calc(f6);
 
-            
             // cout <<  "symbol " << f6->symbol << '\n';
 
             order.on_tick(f6);
-            if (order.stocks[f6->symbol] > 0) {
+            if (order.stocks[f6->symbol] > 0 || market_disabled) {
                 processed_cnt++;
                 market_queue_->pop();
                 continue;
@@ -133,12 +162,14 @@ void StrategySv::run(queueType *market_queue_, string market_name) {
             bool single = strongSingle.on_tick(idx, f6);
             if (!strongSingle_enabled)
                 single = false;
+            if (single && single_group_rank_filter && !strongGroup.isSingleAllowed(symbol, single_max_member_rank))
+                single = false;
 
             bool group = strongGroup.on_tick(idx, f6);
             if (!strongGroup_enabled)
                  group = false;
 
-            
+
             MatchType matchType = MatchType::None;
             if (single && group)
                 matchType = MatchType::Both;
@@ -146,10 +177,18 @@ void StrategySv::run(queueType *market_queue_, string market_name) {
                 matchType = MatchType::StrongSingle;
             else if (group)
                 matchType = MatchType::StrongGroup;
-            
-       
 
             MatchType triggerMatchTypeA = MatchType::None;
+            static bool printed_top_948 = false;
+            if (symbol == "3037" && f6->matchTimeStr >= 94800000000 && f6->matchTimeStr <= 94810000000 && !printed_top_948) {
+                printed_top_948 = true;
+                int abf_rank = strongGroup.groupRank.getRank("ABF");
+                auto topN = strongGroup.groupRank.query(abf_rank > 0 ? abf_rank : 25);
+                for (auto &[name, gain] : topN) {
+                    fprintf(stderr, "[TOP-G@0948] G-rank %s gain=%.4f%%\n", name.c_str(), gain * 100.0);
+                }
+                fprintf(stderr, "[TOP-G@0948] ABF rank=%d\n", abf_rank);
+            }
             bool isSignalA = signalA_map_[symbol].eval(idx, f6, matchType, triggerMatchTypeA, strongSingle, strongGroup, quoteSv);
             if (!signalA_enabled)
                 isSignalA = false;
@@ -163,6 +202,12 @@ void StrategySv::run(queueType *market_queue_, string market_name) {
             // cout << "   SignalA: " << isSignalA << " SignalB: " << isSignalB << '\n';
  
             if (isSignalA) {
+                 // Debug: print M1 info for non-M1 entries (M1 captured at last_match_info write time)
+                 if (strongGroup.last_match_info.count(symbol) && strongGroup.last_match_info[symbol].member_rank > 1) {
+                     auto &mi = strongGroup.last_match_info[symbol];
+                     fprintf(stderr, "[M1-DEBUG] %s entered as M%d in %s(G%d), M1=%s\n",
+                         symbol.c_str(), mi.member_rank, mi.group_name.c_str(), mi.group_rank, mi.m1_symbol.c_str());
+                 }
                  order.trigger(idx, f6, entry_idx++, SIGNAL_TYPE::SIGNAL_A, triggerMatchTypeA, strongSingle, strongGroup);
             } else if (isSignalB) {
                  order.trigger(idx, f6, entry_idx++, SIGNAL_TYPE::SIGNAL_B, triggerMatchTypeB, strongSingle, strongGroup);
@@ -198,6 +243,7 @@ void StrategySv::run(queueType *market_queue_, string market_name) {
                     }
                 }
                 cout << " cash left: " <<  order.cash  << '\n';
+                order.generateReport();
                 fflush(stdout);
                 while(1) {
                     cout << "finished all processing, sleeping... " << endl;

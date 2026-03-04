@@ -1,0 +1,3 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,3707      ,111253926116        ,582000         ,-2.42358e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,171821         ,矽晶圓指標(G2/M2/R4)
+leave     ,3707      ,132002705610        ,576000         ,-130750        ,-120275        ,-              ,-              ,timeExit       ,0              

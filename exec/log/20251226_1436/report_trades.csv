@@ -1,0 +1,8 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol
+3167,SignalA,StrongGroup,09:23:35,09:24:32,takeProfit,105708,1.06%,0h00m57s,鑽孔,1,1,1,
+3105,SignalA,StrongGroup,09:20:20,09:28:41,takeProfit,51948,0.52%,0h08m21s,砷化鎵,12,1,1,
+6510,SignalA,StrongGroup,09:32:21,09:33:44,takeProfit,105932,1.06%,0h01m23s,探針卡,1,1,3,
+1815,SignalA,StrongGroup,09:23:27,09:34:06,stopLoss,-135699,-1.36%,0h10m39s,玻纖布,2,1,1,
+8103,SignalA,StrongGroup,09:36:12,11:53:44,takeProfit,91743,0.92%,2h17m32s,連接線材,11,1,1,
+3167,SignalA,StrongGroup,10:03:55,13:20:00,timeExit,8386,0.08%,3h16m05s,鑽孔,1,1,1,
+5536,SignalA,StrongGroup,10:26:39,13:20:05,timeExit,20151,0.20%,2h53m26s,廠務,12,1,1,

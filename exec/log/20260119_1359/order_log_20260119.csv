@@ -1,0 +1,9 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,6488      ,92004063980         ,4975000        ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,20100.5        ,矽晶圓指標(G6/M1/R1)
+leave     ,6488      ,93140437184         ,4905000        ,-140704        ,-140704        ,-              ,-              ,stopLoss       ,0              
+enter     ,1815      ,93612063791         ,1040000        ,-1.01407e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,96153.8        ,玻纖布(G1/M1/R3)
+leave     ,1815      ,94538658039         ,1020000        ,-333011        ,-192308        ,-              ,-              ,stopLoss       ,0              
+enter     ,2312      ,101416523319        ,361000         ,-1.0333e+07    ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,277008         ,車用電子(G5/M1/R1)
+enter     ,8074      ,105648673723        ,600000         ,-2.0333e+07    ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,166667         ,鑽孔(G9/M1/R1)
+leave     ,2312      ,110056919783        ,355500         ,-1.04854e+07   ,-152355        ,-              ,-              ,stopLoss       ,0              
+leave     ,8074      ,122428292950        ,591000         ,-635366        ,-150000        ,-              ,-              ,stopLoss       ,0              

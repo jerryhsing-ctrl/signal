@@ -26,6 +26,12 @@ struct StrongGroupConfig {
     double member_vwap_pct_chg_threshold;
     int group_valid_top_n;
     bool is_weighted_avg;
+    long long group_vol_ratio_exempt_threshold;
+    bool filter_prev_day_limit_up;
+    bool exclude_prev_limit_up_from_rank;
+    bool member_cond1_enabled;
+    bool member_cond2_enabled;
+    bool member_cond4_enabled;
 };
 
 class StrongGroup {
@@ -61,8 +67,24 @@ private:
     bool isValidGroup(IndexData &idx, format6Type *f6, const std::string& group);
 
 
+public:
     GroupRank groupRank;
     // GroupRank vwapRank;
     unordered_map<std::string, GroupRank> group_member_vwapRank;
+    unordered_map<std::string, GroupRank> group_member_raw_vwapRank; // 僅過濾 member_min_month_trading_val，不做其他過濾
+private:
     unordered_map<std::string, bool> symbol_is_valid;
+
+public:
+    // populated by on_tick when a stock qualifies — consumed by Order::trigger()
+    struct MatchInfo {
+        std::string group_name;
+        int group_rank = 0;    // group's rank among all groups (1-based)
+        int member_rank = 0;   // stock's rank within the group (1-based)
+        int raw_member_rank = 0; // 僅過濾成交值，不做其他過濾的 VWAP 排名
+        std::string m1_symbol;  // debug: M1 at the time last_match_info was set
+    };
+    unordered_map<std::string, MatchInfo> last_match_info;
+
+    bool isSingleAllowed(const std::string& symbol, int maxRank);
 };

@@ -1,0 +1,9 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,6788      ,94224046885         ,3425000        ,-1.60428e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,29197.1        ,半導體設備(G3/M2/R5)
+leave     ,6788      ,94737402874         ,3475000        ,-2.40136e+07   ,-7.9708e+06    ,-              ,-              ,takeProfit     ,23357.7        
+leave     ,6788      ,94737402874         ,3480000        ,-2.19815e+07   ,-5.93869e+06   ,-              ,-              ,takeProfit     ,17518.2        
+leave     ,6788      ,94737479846         ,3485000        ,-1.99465e+07   ,-3.90365e+06   ,-              ,-              ,takeProfit     ,11678.8        
+leave     ,6788      ,94740882201         ,3490000        ,-1.79085e+07   ,-1.86569e+06   ,-              ,-              ,takeProfit     ,5839.42        
+leave     ,6788      ,94744520240         ,3495000        ,-1.58676e+07   ,175182         ,-              ,-              ,takeProfit     ,0              
+enter     ,6788      ,120756357983        ,3510000        ,-1.1667e+07    ,-9.82482e+06   ,SignalA        ,StrongGroup    ,-              ,28490          ,半導體設備(G2/M2/R5)
+leave     ,6788      ,132013251653        ,3540000        ,411665         ,260653         ,-              ,-              ,timeExit       ,0              

@@ -1,0 +1,3 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,3653      ,122212261274        ,29300000       ,-3.01956e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,3412.97        ,散熱(G3/M2/R2)
+leave     ,3653      ,132038441204        ,29600000       ,-119263        ,85324.2        ,-              ,-              ,timeExit       ,0              

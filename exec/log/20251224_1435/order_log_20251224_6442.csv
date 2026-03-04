@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,6442      ,100325628787        ,12350000       ,-2.04322e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,8097.17        ,CPO(G15/M1/R2)
+leave     ,6442      ,100632740993        ,12400000       ,-1.84241e+07   ,-7.9919e+06    ,-              ,-              ,takeProfit     ,6477.73        
+leave     ,6442      ,101104131424        ,12450000       ,-1.2377e+07    ,-5.97571e+06   ,-              ,-              ,takeProfit     ,4858.3         
+leave     ,6442      ,101257626152        ,12500000       ,-1.03527e+07   ,-3.95142e+06   ,-              ,-              ,takeProfit     ,3238.87        
+leave     ,6442      ,101341610479        ,12550000       ,-8.32032e+06   ,-1.91903e+06   ,-              ,-              ,takeProfit     ,1619.43        
+leave     ,6442      ,101355542051        ,12600000       ,-6.27983e+06   ,121457         ,-              ,-              ,takeProfit     ,0              

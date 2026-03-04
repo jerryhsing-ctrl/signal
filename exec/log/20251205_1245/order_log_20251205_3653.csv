@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,3653      ,95428524288         ,29700000       ,-2e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,3367           ,散熱(G1/M1/R1)
+leave     ,3653      ,101346318628        ,29900000       ,-2.79865e+07   ,-7.98653e+06   ,-              ,-              ,takeProfit     ,2693.6         
+leave     ,3653      ,101348830047        ,29950000       ,-2.59697e+07   ,-5.9697e+06    ,-              ,-              ,takeProfit     ,2020.2         
+leave     ,3653      ,101354283590        ,30000000       ,-2.39495e+07   ,-3.94949e+06   ,-              ,-              ,takeProfit     ,1346.8         
+leave     ,3653      ,101419405264        ,30050000       ,-2.19259e+07   ,-1.92593e+06   ,-              ,-              ,takeProfit     ,673.401        
+leave     ,3653      ,101420257712        ,30100000       ,-1.9899e+07    ,101010         ,-              ,-              ,takeProfit     ,0              

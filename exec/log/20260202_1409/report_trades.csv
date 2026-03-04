@@ -1,0 +1,4 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol
+6443,SignalA,StrongGroup,09:48:40,10:10:10,stopLoss,-154946,-1.55%,0h21m30s,低軌衛星,1,1,1,
+3533,SignalA,StrongGroup,10:02:21,11:40:21,stopLoss,-168350,-1.68%,1h38m00s,連接器,5,1,1,
+3324,SignalA,StrongGroup,11:20:54,13:20:06,timeExit,-53022,-0.53%,1h59m12s,散熱,3,1,1,

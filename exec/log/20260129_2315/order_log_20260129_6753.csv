@@ -1,0 +1,6 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,6753      ,93145503230         ,1485000        ,-3.02842e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,67340.1        ,軍工(G10/M1/R1)
+leave     ,6753      ,93145515530         ,1485000        ,-2.62909e+07   ,-6.00673e+06   ,-              ,-              ,takeProfit     ,40404          
+leave     ,6753      ,93217965944         ,1490000        ,-2.42842e+07   ,-4e+06         ,-              ,-              ,takeProfit     ,26936          
+leave     ,6753      ,93225332098         ,1495000        ,-2.22707e+07   ,-1.98653e+06   ,-              ,-              ,takeProfit     ,13468          
+leave     ,6753      ,93243437848         ,1500000        ,-2.02505e+07   ,33670          ,-              ,-              ,takeProfit     ,0              

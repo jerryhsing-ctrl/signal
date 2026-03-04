@@ -1,0 +1,3 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol
+2413,SignalA,StrongGroup,09:24:13,13:04:14,takeProfit,119581,1.20%,3h40m01s,電供,8,1,1,
+6257,SignalA,StrongGroup,09:47:54,13:20:07,timeExit,-19704,-0.20%,3h32m13s,IC封測,11,1,1,

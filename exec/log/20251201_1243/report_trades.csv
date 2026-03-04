@@ -1,0 +1,3 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol
+4939,SignalA,StrongGroup,09:49:59,10:09:09,takeProfit,206795,2.07%,0h19m10s,印刷電路板,9,1,1,
+4939,SignalA,StrongGroup,10:35:32,12:21:20,takeProfit,279823,2.80%,1h45m48s,印刷電路板,8,1,1,

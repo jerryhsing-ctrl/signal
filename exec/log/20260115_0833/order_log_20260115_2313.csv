@@ -1,0 +1,3 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,2313      ,93132049883         ,1410000        ,-9.88829e+06   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,70922          ,低軌衛星(G1/M1/R2)
+leave     ,2313      ,105325848211        ,1385000        ,-56306         ,-177305        ,-              ,-              ,stopLoss       ,0              

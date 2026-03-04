@@ -1,0 +1,13 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,4989      ,92038098635         ,413000         ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,242131         ,PCB上游(G7/M1/R1)
+enter     ,3529      ,92245288161         ,21300000       ,-2e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,4694.84        ,設計IP(G5/M1/R2)
+enter     ,3189      ,92517898122         ,1535000        ,-3e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,65146.6        ,ABF(G2/M1/R1)
+leave     ,3529      ,92605184388         ,20950000       ,-2.01643e+07   ,-164319        ,-              ,-              ,stopLoss       ,0              
+leave     ,4989      ,92840398683         ,407500         ,-1.02975e+07   ,-133172        ,-              ,-              ,stopLoss       ,0              
+enter     ,2374      ,92924605983         ,831000         ,-2.02975e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,120337         ,光電(G1/M1/R1)
+leave     ,2374      ,92927254238         ,834000         ,-1.82903e+07   ,-7.99278e+06   ,-              ,-              ,takeProfit     ,96269.6        
+leave     ,2374      ,92937026307         ,835000         ,-1.62806e+07   ,-5.98315e+06   ,-              ,-              ,takeProfit     ,72202.2        
+leave     ,2374      ,92938055239         ,836000         ,-1.42686e+07   ,-3.97112e+06   ,-              ,-              ,takeProfit     ,48134.8        
+leave     ,2374      ,92939799531         ,837000         ,-1.22542e+07   ,-1.95668e+06   ,-              ,-              ,takeProfit     ,24067.4        
+leave     ,2374      ,92952070394         ,838000         ,-1.02373e+07   ,60168.5        ,-              ,-              ,takeProfit     ,0              
+leave     ,3189      ,93119009981         ,1510000        ,-400189        ,-162866        ,-              ,-              ,stopLoss       ,0              

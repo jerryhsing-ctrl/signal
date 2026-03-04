@@ -1,0 +1,3 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,2612      ,105244948051        ,638000         ,-3.81562e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,156740         ,海運(G9/M1/R1)
+leave     ,2612      ,132017134630        ,633000         ,-414467        ,-94043.9       ,-              ,-              ,timeExit       ,0              

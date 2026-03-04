@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,6213      ,112609107024        ,1300000        ,-1.84721e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,76923.1        ,PCB上游(G2/M1/R3)
+leave     ,6213      ,123154722830        ,1320000        ,-2.4434e+07    ,-7.96923e+06   ,-              ,-              ,takeProfit     ,61538.5        
+leave     ,6213      ,130411991782        ,1325000        ,-1.4269e+07    ,-5.93077e+06   ,-              ,-              ,takeProfit     ,46153.8        
+leave     ,6213      ,131006638596        ,1330000        ,-1.01744e+07   ,-3.88462e+06   ,-              ,-              ,takeProfit     ,30769.2        
+leave     ,6213      ,131417490916        ,1335000        ,-8.12051e+06   ,-1.83077e+06   ,-              ,-              ,takeProfit     ,15384.6        
+leave     ,6213      ,132000966202        ,1335000        ,2225.04        ,215385         ,-              ,-              ,timeExit       ,0              

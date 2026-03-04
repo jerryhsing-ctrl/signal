@@ -2,76 +2,18 @@
 #include "indexCalc.h"
 #include "Format6.h"
 #include "type.h"
-#include "rolling.h"
 
 class StrongSingle;
 class StrongGroup;
 class QuoteSv;
 
 struct SignalAConfig {
-    double vol_contract_ratio;
-
-    double rolling_low_duration;
-    double rolling_sum_short_duration;
-    double rolling_sum_long_duration;
-
-    
-    double track_zone_vwap_ratio;
-    double track_zone_day_high_ratio;
-    
-    long long buffer_zone_duration_us;
-    double buffer_zone_exit_vwap_ratio;
-    double buffer_zone_day_high_ratio;
-    double buffer_zone_vwap_entry_ratio;
-
-
-    
-    long long trade_zone_duration_us;
-    double trade_zone_exit_price_ratio;
-    double trade_zone_vwap_ratio;
-
-    long long buffer_zone_start_time;
-    long long buffer_zone_end_time;
-    long long trade_zone_start_time;
-    double trade_zone_max_increase_ratio;
-
-    void set(
-        double vol_contract_ratio,
-        double rolling_low_duration,
-        double rolling_sum_short_duration,
-        double rolling_sum_long_duration,
-        double track_zone_vwap_ratio,
-        double track_zone_day_high_ratio,
-        long long buffer_zone_duration_us,
-        double buffer_zone_exit_vwap_ratio,
-        double buffer_zone_day_high_ratio,
-        double buffer_zone_vwap_entry_ratio,
-        long long trade_zone_duration_us,
-        double trade_zone_exit_price_ratio,
-        double trade_zone_vwap_ratio,
-        long long buffer_zone_start_time,
-        long long buffer_zone_end_time,
-        long long trade_zone_start_time,
-        double trade_zone_max_increase_ratio
-    ) {
-        this->vol_contract_ratio = vol_contract_ratio;
-        this->rolling_low_duration = rolling_low_duration;
-        this->rolling_sum_short_duration = rolling_sum_short_duration;
-        this->rolling_sum_long_duration = rolling_sum_long_duration;
-        this->track_zone_vwap_ratio = track_zone_vwap_ratio;
-        this->track_zone_day_high_ratio = track_zone_day_high_ratio;
-        this->buffer_zone_duration_us = buffer_zone_duration_us;
-        this->buffer_zone_exit_vwap_ratio = buffer_zone_exit_vwap_ratio;
-        this->buffer_zone_day_high_ratio = buffer_zone_day_high_ratio;
-        this->buffer_zone_vwap_entry_ratio = buffer_zone_vwap_entry_ratio;
-        this->trade_zone_duration_us = trade_zone_duration_us;
-        this->trade_zone_exit_price_ratio = trade_zone_exit_price_ratio;
-        this->trade_zone_vwap_ratio = trade_zone_vwap_ratio;
-        this->buffer_zone_start_time = buffer_zone_start_time;
-        this->buffer_zone_end_time = buffer_zone_end_time;
-        this->trade_zone_start_time = trade_zone_start_time;
-        this->trade_zone_max_increase_ratio = trade_zone_max_increase_ratio;
-    }
+    double vwap_touch_ratio = 0.002;
+    long long entry_start_time = 92000000000;
+    long long entry_end_time = 110000000000;
+    long long pre_condition_start_time = 91500000000;
+    double pre_condition_vwap_ratio = 0.993;
+    double trade_zone_max_increase_ratio = 0.085;
 };
 
 class signalA {
@@ -82,34 +24,11 @@ public:
 
 private:
     string symbol = "";
+    bool forbidden = false;
+    bool triggered = false;
     QuoteSv *quoteSv = nullptr;
 
     SignalAConfig config;
 
-    RollingLow<long long, long long> rolling_low;
-    RollingSum<long long, long long> rolling_sum_short;
-    RollingSum<long long, long long> rolling_sum_long;
-
-    long long rolling_low_val = 0;
-    double rolling_sum_ratio = 0;
-
     bool pre_condition_met(IndexData &idx, format6Type *f6);
-
-    bool track_zone_eval(IndexData &idx, format6Type *f6);
-
-    bool in_buffer_zone = false;
-    MatchType buffer_zone_matchType = MatchType::None;
-    long long buffer_zone_trigger_price = -1;
-    long long buffer_zone_start_time = -1;
-    bool buffer_zone_eval(IndexData &idx, format6Type *f6);
-    bool buffer_zone_exit(IndexData &idx, format6Type *f6);
-    
-    bool in_trade_zone = false;
-    MatchType trade_zone_matchType = MatchType::None;
-    long long trade_zone_trigger_price = -1;
-    long long trade_zone_start_time = -1;
-    bool trade_zone_eval(IndexData &idx, format6Type *f6);
-    bool trade_zone_exit(IndexData &idx, format6Type *f6);
-
-    bool enter_market = false;
 };

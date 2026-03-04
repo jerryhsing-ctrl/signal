@@ -1,0 +1,10 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,3491      ,92541542029         ,7830000        ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,12771.4        ,低軌衛星(G7/M1/R2)
+enter     ,6223      ,93108489716         ,22300000       ,-2e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,4484.3         ,探針卡(G8/M1/R1)
+leave     ,3491      ,93108536840         ,7720000        ,-1.01405e+07   ,-140485        ,-              ,-              ,stopLoss       ,0              
+leave     ,6223      ,93147742031         ,22350000       ,-8.136e+06     ,-7.99552e+06   ,-              ,-              ,takeProfit     ,3587.44        
+leave     ,6223      ,93458351781         ,22000000       ,-243624        ,-103139        ,-              ,-              ,stopLoss       ,0              
+enter     ,1802      ,94752083812         ,372000         ,-1.02436e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,268817         ,玻纖布(G3/M1/R2)
+enter     ,5274      ,95127334839         ,77250000       ,-2.02436e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,1288.66        ,IC設計(G9/M1/R2)
+leave     ,1802      ,95234172685         ,366500         ,-1.03915e+07   ,-147849        ,-              ,-              ,stopLoss       ,0              
+leave     ,5274      ,104749754245        ,76250000       ,-597659        ,-206186        ,-              ,-              ,stopLoss       ,0              

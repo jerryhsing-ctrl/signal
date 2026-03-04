@@ -1,0 +1,7 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank
+5347,SignalA,StrongGroup,09:22:22,09:41:05,takeProfit,236486,2.36%,0h18m43s,專業IC代工,1,2,2
+8422,SignalA,StrongGroup,09:28:33,09:42:47,stopLoss,-148402,-1.48%,0h14m14s,回收焚化相關指標,4,1,2
+5483,SignalA,StrongGroup,09:35:10,10:13:22,stopLoss,48780,0.49%,0h38m12s,矽晶圓指標,1,2,4
+2467,SignalA,StrongGroup,09:28:56,10:16:59,stopLoss,-134875,-1.35%,0h48m03s,FOPLP,3,2,2
+5347,SignalA,StrongGroup,10:28:49,11:12:57,stopLoss,-165563,-1.66%,0h44m08s,專業IC代工,1,2,2
+5371,SignalA,StrongGroup,12:10:55,13:20:00,timeExit,-82051,-0.82%,1h09m05s,軍工,2,2,4

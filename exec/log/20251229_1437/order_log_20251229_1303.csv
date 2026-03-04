@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,1303      ,94805274176         ,593000         ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,168634         ,塑膠(G9/M1/R1)
+leave     ,1303      ,94838581197         ,594000         ,-7.99663e+06   ,-7.99663e+06   ,-              ,-              ,takeProfit     ,134907         
+leave     ,1303      ,95006553175         ,595000         ,-5.98988e+06   ,-5.98988e+06   ,-              ,-              ,takeProfit     ,101180         
+leave     ,1303      ,95902089349         ,596000         ,-1.39798e+07   ,-3.97976e+06   ,-              ,-              ,takeProfit     ,67453.6        
+leave     ,1303      ,95903020559         ,597000         ,-1.19663e+07   ,-1.96627e+06   ,-              ,-              ,takeProfit     ,33726.8        
+leave     ,1303      ,95915316315         ,598000         ,-9.94941e+06   ,50590.2        ,-              ,-              ,takeProfit     ,0              

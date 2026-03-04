@@ -1,0 +1,4 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,5483      ,111218796111        ,1235000        ,-2.94023e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,80971.7        ,太陽能(G1/M2/R3)
+leave     ,5483      ,131500414961        ,1240000        ,-7.47109e+06   ,-7.9919e+06    ,-              ,-              ,takeProfit     ,64777.3        
+leave     ,5483      ,132010891566        ,1235000        ,496523         ,-24291.5       ,-              ,-              ,timeExit       ,0              

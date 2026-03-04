@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,8103      ,93612533400         ,872000         ,-9.87211e+06   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,114679         ,連接線材(G11/M1/R1)
+leave     ,8103      ,112711110436        ,878000         ,-1.97727e+07   ,-7.98624e+06   ,-              ,-              ,takeProfit     ,91743.1        
+leave     ,8103      ,112733731737        ,879000         ,-1.77567e+07   ,-5.97018e+06   ,-              ,-              ,takeProfit     ,68807.3        
+leave     ,8103      ,113623377713        ,880000         ,-1.57383e+07   ,-3.95183e+06   ,-              ,-              ,takeProfit     ,45871.6        
+leave     ,8103      ,115344763161        ,881000         ,-1.37177e+07   ,-1.93119e+06   ,-              ,-              ,takeProfit     ,22935.8        
+leave     ,8103      ,115344790624        ,882000         ,-1.16948e+07   ,91743.1        ,-              ,-              ,takeProfit     ,0              

@@ -1,0 +1,9 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,2455      ,92348572057         ,1540000        ,-1.59722e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,64935.1        ,砷化鎵(G8/M1/R1)
+leave     ,2455      ,92454082655         ,1545000        ,-1.39657e+07   ,-7.99351e+06   ,-              ,-              ,takeProfit     ,51948.1        
+leave     ,2455      ,92455936956         ,1550000        ,-1.19527e+07   ,-5.98052e+06   ,-              ,-              ,takeProfit     ,38961          
+leave     ,2455      ,92456635587         ,1555000        ,-9.93326e+06   ,-3.96104e+06   ,-              ,-              ,takeProfit     ,25974          
+leave     ,2455      ,92848591641         ,1560000        ,-1.18425e+07   ,-1.93506e+06   ,-              ,-              ,takeProfit     ,12987          
+leave     ,2455      ,93512714929         ,1565000        ,-1.981e+07     ,97402.6        ,-              ,-              ,takeProfit     ,0              
+enter     ,2455      ,103234291891        ,1575000        ,-1.16226e+07   ,-9.9026e+06    ,SignalA        ,StrongGroup    ,-              ,63492.1        ,砷化鎵(G2/M1/R1)
+leave     ,2455      ,122758132409        ,1550000        ,336388         ,-61327.6       ,-              ,-              ,stopLoss       ,0              

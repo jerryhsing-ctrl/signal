@@ -1,0 +1,9 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank
+8086,SignalA,StrongGroup,09:22:13,09:24:43,stopLoss,-158730,-1.59%,0h02m30s,砷化鎵,1,2,3
+8086,SignalA,StrongGroup,09:26:29,09:27:55,stopLoss,-158730,-1.59%,0h01m26s,砷化鎵,1,2,3
+2436,SignalA,StrongGroup,09:24:54,09:30:08,takeProfit,79872,0.80%,0h05m14s,車用電子,10,1,1
+3131,SignalA,StrongGroup,09:26:25,09:31:54,takeProfit,116279,1.16%,0h05m29s,半導體設備,4,2,3
+6788,SignalA,StrongGroup,09:42:24,09:47:44,takeProfit,175182,1.75%,0h05m20s,半導體設備,3,2,5
+6223,SignalA,StrongGroup,09:43:59,10:05:46,takeProfit,108499,1.08%,0h21m47s,探針卡,6,1,1
+2329,SignalA,StrongGroup,09:22:19,13:20:02,timeExit,163823,1.64%,3h57m43s,IC封測,11,1,1
+6788,SignalA,StrongGroup,12:07:56,13:20:13,timeExit,85470,0.85%,1h12m17s,半導體設備,2,2,5

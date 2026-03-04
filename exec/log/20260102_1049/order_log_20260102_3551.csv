@@ -1,0 +1,5 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,3551      ,93623932768         ,2090000        ,-1.02837e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,47846.9        ,電子化工材料(G1/M2/R3)
+leave     ,3551      ,94632235636         ,2060000        ,-427194        ,-143541        ,-              ,-              ,stopLoss       ,0              
+enter     ,3551      ,101705721614        ,2090000        ,-1.04272e+07   ,-1.01435e+07   ,SignalA        ,StrongGroup    ,-              ,47846.9        ,電子化工材料(G1/M2/R3)
+leave     ,3551      ,123649347633        ,2060000        ,-1.07114e+07   ,-287081        ,-              ,-              ,stopLoss       ,0              

@@ -1,0 +1,3 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,3030      ,123221026011        ,1710000        ,-1.01459e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,58479.5        ,PCB 設備(G12/M1/R1)
+leave     ,3030      ,132000657255        ,1710000        ,-175107        ,-29239.8       ,-              ,-              ,timeExit       ,0              

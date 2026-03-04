@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,8422      ,92833528939         ,438000         ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,228311         ,回收焚化相關指標(G4/M1/R2)
+enter     ,2467      ,92856411359         ,2595000        ,-2e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,38535.6        ,半導體設備(G12/M1/R1)
+leave     ,8422      ,94247425644         ,431500         ,-1.01484e+07   ,-148402        ,-              ,-              ,stopLoss       ,0              
+leave     ,2467      ,101659177360        ,2560000        ,-283277        ,-134875        ,-              ,-              ,stopLoss       ,0              
+enter     ,5347      ,102849184458        ,1510000        ,-1.02833e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,66225.2        ,專業IC代工(G1/M1/R1)
+leave     ,5347      ,111257935270        ,1485000        ,-448839        ,-165563        ,-              ,-              ,stopLoss       ,0              

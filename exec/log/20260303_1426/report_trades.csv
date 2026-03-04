@@ -1,0 +1,3 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol
+6271,SignalA,StrongGroup,09:20:59,09:29:50,stopLoss,22727,0.23%,0h08m51s,IC封測,12,1,2,
+2609,SignalA,StrongGroup,10:11:32,11:38:33,takeProfit,93458,0.93%,1h27m01s,海運,1,1,2,

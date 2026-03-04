@@ -197,7 +197,8 @@ bool signalB::eval(IndexData &idx, format6Type *f6, MatchType matchType, MatchTy
         else if (trade_zone_eval(idx, f6)) {
             trigger = true;
             enter_market = true;
-            triggerMatchType = trade_zone_matchType;
+            // 用當前 matchType；若當前為 None 才 fallback 到記錄的
+            triggerMatchType = (matchType != MatchType::None) ? matchType : trade_zone_matchType;
         }
     }
 

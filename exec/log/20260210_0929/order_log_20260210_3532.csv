@@ -1,0 +1,3 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,3532      ,92019047207         ,1470000        ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,68027.2        ,矽晶圓指標(G1/M1/R1)
+leave     ,3532      ,92618607983         ,1450000        ,-136054        ,-136054        ,-              ,-              ,stopLoss       ,0              

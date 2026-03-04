@@ -1,0 +1,11 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank
+6271,SignalA,StrongGroup,09:22:34,09:30:53,takeProfit,104530,1.05%,0h08m19s,IC封測,13,1,1
+6182,SignalA,StrongGroup,09:28:51,09:44:42,stopLoss,-161074,-1.61%,0h15m51s,矽晶圓指標,4,1,2
+1303,SignalA,StrongGroup,09:35:54,09:58:54,takeProfit,67385,0.67%,0h23m00s,玻纖布,4,1,5
+6443,SignalA,StrongGroup,09:20:59,10:00:00,stopLoss,-11587,-0.12%,0h39m01s,低軌衛星,1,2,3
+6215,SignalA,StrongGroup,09:45:45,10:05:44,stopLoss,-174672,-1.75%,0h19m59s,設備儀器商,7,1,4
+6271,SignalA,StrongGroup,09:52:16,10:13:26,stopLoss,-172414,-1.72%,0h21m10s,IC封測,13,1,1
+1815,SignalA,StrongGroup,10:19:32,10:35:01,stopLoss,-138889,-1.39%,0h15m29s,玻纖布,2,2,3
+2467,SignalA,StrongGroup,10:51:27,11:18:07,takeProfit,95420,0.95%,0h26m40s,FOPLP,7,1,1
+3017,SignalA,StrongGroup,10:32:41,11:47:39,takeProfit,125392,1.25%,1h14m58s,散熱,1,1,1
+6510,SignalA,StrongGroup,10:45:58,13:22:06,timeExit,145357,1.45%,2h36m08s,探針卡,1,2,2

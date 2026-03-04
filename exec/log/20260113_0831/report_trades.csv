@@ -1,0 +1,13 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank
+3167,SignalA,StrongGroup,09:29:16,09:30:08,takeProfit,62241,0.62%,0h00m52s,鑽孔,5,1,1
+8150,SignalA,StrongGroup,09:29:46,09:35:38,stopLoss,-145161,-1.45%,0h05m52s,記憶體,4,2,5
+6739,SignalA,StrongGroup,09:30:02,09:36:49,takeProfit,80107,0.80%,0h06m47s,設備儀器商,5,2,3
+6282,SignalA,StrongGroup,09:30:56,09:39:18,stopLoss,-157171,-1.57%,0h08m22s,電供,11,1,1
+6196,SignalA,StrongGroup,09:36:27,09:42:33,stopLoss,-154374,-1.54%,0h06m06s,半導體設備,5,1,2
+4973,SignalA,StrongGroup,09:41:51,09:42:35,stopLoss,-153551,-1.54%,0h00m44s,記憶體,4,1,5
+3037,SignalA,StrongGroup,09:34:57,10:07:39,stopLoss,-3937,-0.04%,0h32m42s,ABF,4,1,1
+8210,SignalA,StrongGroup,09:43:58,10:07:57,stopLoss,-156576,-1.57%,0h23m59s,機殼,9,1,1
+3167,SignalA,StrongGroup,09:46:35,10:37:01,takeProfit,103520,1.04%,0h50m26s,鑽孔,5,1,1
+6683,SignalA,StrongGroup,10:19:06,11:58:00,stopLoss,-134639,-1.35%,1h38m54s,探針卡,9,1,1
+3167,SignalA,StrongGroup,11:07:18,13:20:00,timeExit,-8230,-0.08%,2h12m42s,鑽孔,5,1,1
+8046,SignalA,StrongGroup,10:25:13,13:20:00,timeExit,18657,0.19%,2h54m47s,ABF,2,1,1

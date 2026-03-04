@@ -1,0 +1,9 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,6739      ,92356105897         ,7990000        ,-1e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,12515.6        ,設備儀器商(G1/M1/R1)
+enter     ,6706      ,92605699866         ,1220000        ,-2e+07         ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,81967.2        ,CPO(G4/M1/R2)
+leave     ,6739      ,92910013526         ,7870000        ,-1.01502e+07   ,-150188        ,-              ,-              ,stopLoss       ,0              
+leave     ,6706      ,93609947057         ,1200000        ,-314122        ,-163934        ,-              ,-              ,stopLoss       ,0              
+enter     ,6706      ,93736627412         ,1220000        ,-1.03141e+07   ,-1.01639e+07   ,SignalA        ,StrongGroup    ,-              ,81967.2        ,CPO(G4/M1/R2)
+leave     ,6706      ,94513274787         ,1200000        ,-478057        ,-327869        ,-              ,-              ,stopLoss       ,0              
+enter     ,1519      ,104440690726        ,7730000        ,-1.04781e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,12936.6        ,重電(G2/M1/R1)
+leave     ,1519      ,132000247619        ,7780000        ,-426310        ,51746.4        ,-              ,-              ,timeExit       ,0              

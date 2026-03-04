@@ -1,0 +1,7 @@
+Action    ,Symbol    ,Time                ,Price          ,Cash           ,SymbolCash     ,SignalType     ,EnterCause     ,LeaveCause     ,RemainingQty   ,GroupInfo
+enter     ,2467      ,105127470566        ,2620000        ,-3.04867e+07   ,-1e+07         ,SignalA        ,StrongGroup    ,-              ,38167.9        ,FOPLP(G7/M1/R1)
+leave     ,2467      ,105503473939        ,2635000        ,-2.84753e+07   ,-7.98855e+06   ,-              ,-              ,takeProfit     ,30534.4        
+leave     ,2467      ,105505994927        ,2640000        ,-2.646e+07     ,-5.97328e+06   ,-              ,-              ,takeProfit     ,22900.8        
+leave     ,2467      ,111346882321        ,2645000        ,-2.03898e+07   ,-3.9542e+06    ,-              ,-              ,takeProfit     ,15267.2        
+leave     ,2467      ,111346911604        ,2650000        ,-1.83669e+07   ,-1.9313e+06    ,-              ,-              ,takeProfit     ,7633.59        
+leave     ,2467      ,111807373893        ,2655000        ,-1.43105e+07   ,95419.8        ,-              ,-              ,takeProfit     ,0              
