@@ -8,7 +8,8 @@ class StrongGroup;
 class QuoteSv;
 
 struct SignalAConfig {
-    double vwap_touch_ratio = 0.002;
+    double vwap_near_ratio = 1.005;     // price/vwap <= this = "near VWAP"
+    double bounce_ratio = 0.006;        // bounce 0.6% from low = entry
     long long entry_start_time = 92000000000;
     long long entry_end_time = 110000000000;
     long long pre_condition_start_time = 91500000000;
@@ -26,6 +27,8 @@ private:
     string symbol = "";
     bool forbidden = false;
     bool triggered = false;
+    bool near_vwap = false;
+    long long low_since_near = 0;  // lowest price after approaching VWAP
     QuoteSv *quoteSv = nullptr;
 
     SignalAConfig config;

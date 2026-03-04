@@ -12,8 +12,11 @@ signalA::signalA() {
         try {
             string val;
 
-            val = reader.Read(section.c_str(), "vwap_touch_ratio");
-            if (!val.empty()) config.vwap_touch_ratio = stod(val);
+            val = reader.Read(section.c_str(), "vwap_near_ratio");
+            if (!val.empty()) config.vwap_near_ratio = stod(val);
+
+            val = reader.Read(section.c_str(), "bounce_ratio");
+            if (!val.empty()) config.bounce_ratio = stod(val);
 
             val = reader.Read(section.c_str(), "entry_start_time");
             if (!val.empty()) config.entry_start_time = stoll(val);
@@ -58,13 +61,28 @@ bool signalA::eval(IndexData &idx, format6Type *f6, MatchType matchType, MatchTy
     if (prev_close > 0 && (f6->match.Price - prev_close) / prev_close > config.trade_zone_max_increase_ratio)
         return false;
 
-    // price near VWAP
     double price = f6->match.Price;
     double vwap = idx.vwap;
     if (vwap <= 0) return false;
 
-    double ratio = (price - vwap) / vwap;
-    if (ratio <= config.vwap_touch_ratio && ratio >= -config.vwap_touch_ratio) {
+    double pv_ratio = price / vwap;
+
+    // phase 1: detect price approaching VWAP from above
+    if (!near_vwap) {
+        if (pv_ratio <= config.vwap_near_ratio) {
+            near_vwap = true;
+            low_since_near = f6->match.Price;
+        }
+        return false;
+    }
+
+    // track the low after approaching VWAP
+    if (f6->match.Price < low_since_near)
+        low_since_near = f6->match.Price;
+
+    // phase 2: bounce from the low
+    double bounce = (price - low_since_near) / (double)low_since_near;
+    if (bounce >= config.bounce_ratio) {
         triggered = true;
         triggerMatchType = matchType;
         return true;
