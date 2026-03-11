@@ -81,6 +81,9 @@ StrongGroup::StrongGroup (){
             val = reader.Read(section.c_str(), "exclude_prev_limit_up_from_rank");
             config.exclude_prev_limit_up_from_rank = (val == "true");
 
+            val = reader.Read(section.c_str(), "exclude_disposition_from_rank");
+            if (!val.empty()) config.exclude_disposition_from_rank = (val == "true");
+
             val = reader.Read(section.c_str(), "member_cond1_enabled");
             config.member_cond1_enabled = val.empty() || (val == "true");
 
@@ -89,6 +92,21 @@ StrongGroup::StrongGroup (){
 
             val = reader.Read(section.c_str(), "member_cond4_enabled");
             config.member_cond4_enabled = val.empty() || (val == "true");
+
+            val = reader.Read(section.c_str(), "entry_min_vwap_pct_chg");
+            if (!val.empty()) config.entry_min_vwap_pct_chg = stod(val);
+
+            val = reader.Read(section.c_str(), "entry_max_vwap_pct_chg");
+            if (!val.empty()) config.entry_max_vwap_pct_chg = stod(val);
+
+            val = reader.Read(section.c_str(), "entry_min_group_rank");
+            if (!val.empty()) config.entry_min_group_rank = stoi(val);
+
+            val = reader.Read(section.c_str(), "require_raw_m1");
+            if (!val.empty()) config.require_raw_m1 = (val == "true");
+
+            val = reader.Read(section.c_str(), "block_disposition_entry");
+            if (!val.empty()) config.block_disposition_entry = (val == "true");
 
         } catch (const std::exception& e) {
             std::cerr << "Error parsing config for StrongGroup: " << e.what() << std::endl;
@@ -197,14 +215,12 @@ bool StrongGroup::on_tick(IndexData &idx, format6Type *f6) {
                       || percentagChg(f6->symbol, idx.vwap) > config.member_vwap_pct_chg_threshold;
 
             auto& f1 = quoteSv->f1mgr.format1Map[f6->symbol];
-            double rawLimitUp = f1.limit_up_price;
-            long long limitUpInt = (long long)(rawLimitUp * 10000 + 0.5);
-            bool isAtLimitUp = f6->match.Price >= limitUpInt;
             bool isDisposition = (f1.security == "RR");
+            bool excludeDispositionFromRank = isDisposition && config.exclude_disposition_from_rank;
 
             bool excludePrevLimit = isPrevDayLimitUp && config.exclude_prev_limit_up_from_rank;
 
-            if (isAtLimitUp || isDisposition || vwapPerChg >= 0.085 || excludePrevLimit) {
+            if (f6->isLimitUpLocked || excludeDispositionFromRank || vwapPerChg >= 0.085 || excludePrevLimit) {
                 group_member_vwapRank[group].erase(f6->symbol);
             }
             else if (cond1 && cond2 && cond4) {
@@ -221,17 +237,27 @@ bool StrongGroup::on_tick(IndexData &idx, format6Type *f6) {
 
                 for (auto &[gain, symbol] : group_member_vwapRank[group].rank_map) {
                     cnt++;
-                    if (symbol == f6->symbol && !isPrevDayLimitUp) {
-                        ans = true;
+                    bool blockDisp = config.block_disposition_entry && isDisposition;
+                    if (symbol == f6->symbol && !isPrevDayLimitUp && !blockDisp && !ans) {
+                        ans = (vwapPerChg >= config.entry_min_vwap_pct_chg);
+                        if (config.entry_max_vwap_pct_chg > 0 && vwapPerChg > config.entry_max_vwap_pct_chg)
+                            ans = false;
                         int gr = groupRank.getRank(group);
+                        if (config.entry_min_group_rank > 0 && gr < config.entry_min_group_rank)
+                            ans = false;
                         int rawRank = group_member_raw_vwapRank[group].getRank(f6->symbol);
+                        if (config.require_raw_m1 && rawRank != 1)
+                            ans = false;
                         if (!last_match_info.count(f6->symbol)
                             || last_match_info[f6->symbol].member_rank == 0  // isSingleAllowed 暫存，直接覆寫
+                            || ans  // ans=true 時一律更新，確保報告反映觸發時狀態
                             || gr < last_match_info[f6->symbol].group_rank) {
                             std::string m1 = "";
                             if (!group_member_vwapRank[group].rank_map.empty())
                                 m1 = group_member_vwapRank[group].rank_map.begin()->second;
-                            last_match_info[f6->symbol] = {group, gr, cnt, rawRank, m1};
+                            double vr = (avg > 0) ? (double)vol_cumu[f6->symbol] / avg : 0;
+                            long long mtv = total_tradingVal / DAY_PER_MONTH;
+                            last_match_info[f6->symbol] = {group, gr, cnt, rawRank, m1, vr, mtv};
                         }
                     }
                     if (cnt >= maxChoosen) {
@@ -337,6 +363,21 @@ void StrongGroup::readFile(std::string filename) {
     file.close();
 }
 
+int StrongGroup::getGroupLimitUpCount(const std::string& group) {
+    auto it = group_member.find(group);
+    if (it == group_member.end()) return 0;
+    int count = 0;
+    for (const auto& sym : it->second) {
+        if (price_last.count(sym) == 0) continue;
+        auto f1it = quoteSv->f1mgr.format1Map.find(sym);
+        if (f1it == quoteSv->f1mgr.format1Map.end()) continue;
+        long long limitUp = (long long)(f1it->second.limit_up_price * 10000 + 0.5);
+        if (limitUp > 0 && price_last[sym] >= limitUp)
+            count++;
+    }
+    return count;
+}
+
 bool StrongGroup::isSingleAllowed(const std::string& symbol, int maxRank) {
     if (symbol_to_groups.count(symbol) == 0)
         return true;  // 沒有歸類在任何族群
@@ -355,7 +396,7 @@ bool StrongGroup::isSingleAllowed(const std::string& symbol, int maxRank) {
                 // 填入 last_match_info 供 report 使用
                 int gr = groupRank.getRank(group);
                 if (gr < 0) gr = 0;
-                last_match_info[symbol] = {group, gr, 0, rank};
+                last_match_info[symbol] = {group, gr, 0, rank, "", 0, 0};
                 return true;
             }
         }

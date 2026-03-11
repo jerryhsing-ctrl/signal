@@ -7,59 +7,38 @@
 
 StrongSingle::StrongSingle () : topTracker(200) {
     IniReader reader;
-    if (reader.ReadIni("./cfg/parameter.cfg")) {
-        string section = "StrongSignal";
-        try {
-            string val;
-
-            val = reader.Read(section.c_str(), "monitor_pool_size");
-            if (val.empty()) throw std::runtime_error("monitor_pool_size missing");
-            config.monitor_pool_size = stoi(val);
-            // Re-initialize topTracker with config value
-            topTracker = TopKVolumeTracker(config.monitor_pool_size);
-
-            val = reader.Read(section.c_str(), "min_month_trading_val");
-            if (val.empty()) throw std::runtime_error("min_month_trading_val missing");
-            config.min_month_trading_val = stoll(val);
-
-            val = reader.Read(section.c_str(), "price_amplitude_threshold");
-            if (val.empty()) throw std::runtime_error("price_amplitude_threshold missing");
-            config.price_amplitude_threshold = stod(val);
-
-            val = reader.Read(section.c_str(), "day_high_increase_threshold");
-            if (val.empty()) throw std::runtime_error("day_high_increase_threshold missing");
-            config.day_high_increase_threshold = stod(val);
-
-            val = reader.Read(section.c_str(), "vol_increase_month_ratio");
-            if (val.empty()) throw std::runtime_error("vol_increase_month_ratio missing");
-            config.vol_increase_month_ratio = stod(val);
-
-            val = reader.Read(section.c_str(), "vol_increase_yesterday_ratio");
-            if (val.empty()) throw std::runtime_error("vol_increase_yesterday_ratio missing");
-            config.vol_increase_yesterday_ratio = stod(val);
-
-            val = reader.Read(section.c_str(), "strong_month_trading_val");
-            if (val.empty()) throw std::runtime_error("strong_month_trading_val missing");
-            config.strong_month_trading_val = stoll(val);
-
-            val = reader.Read(section.c_str(), "vwap_floor_start_time");
-            if (val.empty()) throw std::runtime_error("vwap_floor_start_time missing");
-            config.vwap_floor_start_time = stoll(val);
-
-            val = reader.Read(section.c_str(), "vwap_floor_ratio");
-            if (val.empty()) throw std::runtime_error("vwap_floor_ratio missing");
-            config.vwap_floor_ratio = stod(val);
-
-            val = reader.Read(section.c_str(), "extreme_price_increase_limit");
-            if (val.empty()) throw std::runtime_error("extreme_price_increase_limit missing");
-            config.extreme_price_increase_limit = stod(val);
-
-        } catch (const std::exception& e) {
-            std::cerr << "Error parsing config for StrongSignal: " << e.what() << std::endl;
-            exit(1);
-        }
-    } else {
+    if (!reader.ReadIni("./cfg/parameter.cfg")) {
         std::cerr << "Failed to read ./cfg/parameter.cfg" << std::endl;
+        exit(1);
+    }
+    string section = "StrongSignal";
+    string enabledStr = reader.Read(section.c_str(), "enabled");
+    if (enabledStr.empty() || enabledStr != "true") return;  // [StrongSignal] not present or disabled
+    string val;
+    try {
+        config.monitor_pool_size = stoi(val);
+        topTracker = TopKVolumeTracker(config.monitor_pool_size);
+
+        val = reader.Read(section.c_str(), "min_month_trading_val");
+        if (!val.empty()) config.min_month_trading_val = stoll(val);
+        val = reader.Read(section.c_str(), "price_amplitude_threshold");
+        if (!val.empty()) config.price_amplitude_threshold = stod(val);
+        val = reader.Read(section.c_str(), "day_high_increase_threshold");
+        if (!val.empty()) config.day_high_increase_threshold = stod(val);
+        val = reader.Read(section.c_str(), "vol_increase_month_ratio");
+        if (!val.empty()) config.vol_increase_month_ratio = stod(val);
+        val = reader.Read(section.c_str(), "vol_increase_yesterday_ratio");
+        if (!val.empty()) config.vol_increase_yesterday_ratio = stod(val);
+        val = reader.Read(section.c_str(), "strong_month_trading_val");
+        if (!val.empty()) config.strong_month_trading_val = stoll(val);
+        val = reader.Read(section.c_str(), "vwap_floor_start_time");
+        if (!val.empty()) config.vwap_floor_start_time = stoll(val);
+        val = reader.Read(section.c_str(), "vwap_floor_ratio");
+        if (!val.empty()) config.vwap_floor_ratio = stod(val);
+        val = reader.Read(section.c_str(), "extreme_price_increase_limit");
+        if (!val.empty()) config.extreme_price_increase_limit = stod(val);
+    } catch (const std::exception& e) {
+        std::cerr << "Error parsing config for StrongSignal: " << e.what() << std::endl;
         exit(1);
     }
 }

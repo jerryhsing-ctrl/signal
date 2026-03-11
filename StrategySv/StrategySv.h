@@ -28,6 +28,7 @@ private:
 	bool single_group_rank_filter = true;
 	int single_max_member_rank = 1;
 	double market_rally_disable_threshold = 0.02;
+	double market_open_min_chg = 0.0;
 	bool market_disabled = false;
 
 	unordered_map<std::string, signalA> signalA_map_;

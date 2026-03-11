@@ -165,7 +165,7 @@ void QuoteSv::getTickData(string type, string date) {
     auto worker_func = [&](int thread_id, int core) {
         // 迴圈：只要還有任務就繼續拿
 		set_thread_name(("QuoteSvWorker" + std::to_string(thread_id)).c_str());
-		set_fifo_priority(99);
+		set_fifo_priority(89);
         while (true) {
             // fetch_add 會原子性地取出當前值並+1，保證不重複
 			pin_thread_to_core(core);
@@ -553,6 +553,7 @@ void QuoteSv::readFileMerged(string marketA, string dateA, string marketB, strin
         string market;
         string filename;
         // int coreId; // Removed as requested
+        std::unordered_set<std::string> cbSymbols; // circuit breaker symbols
     };
 
     ThreadContext ctxA;
@@ -632,8 +633,9 @@ void QuoteSv::readFileMerged(string marketA, string dateA, string marketB, strin
                     // 使用 release 確保 data 寫入完成後才改變 state
                     ctx->state.store(STATE_HAS_DATA, std::memory_order_release);
                 } else {
-                    // 解析失敗(statusCode!=0)，直接跳過讀下一筆，不需要通知主執行緒
-                    continue; 
+                    // 解析失敗(statusCode!=0)，記錄緩搓symbol後跳過
+                    ctx->cbSymbols.insert(ctx->data.symbol);
+                    continue;
                 }
             }
         }
@@ -726,6 +728,9 @@ void QuoteSv::readFileMerged(string marketA, string dateA, string marketB, strin
     // 5. 等待執行緒結束
     if (tA.joinable()) tA.join();
     if (tB.joinable()) tB.join();
+    // merge circuit breaker symbols from both readers
+    circuitBreakerSymbols.insert(ctxA.cbSymbols.begin(), ctxA.cbSymbols.end());
+    circuitBreakerSymbols.insert(ctxB.cbSymbols.begin(), ctxB.cbSymbols.end());
 	readFileFinish = true;
     cout << "Merged Read Finish. Total count: " << readFileCnt << endl;
     fflush(stdout);

@@ -15,6 +15,7 @@ struct SignalAConfig {
     long long pre_condition_start_time = 91500000000;
     double pre_condition_vwap_ratio = 0.993;
     double trade_zone_max_increase_ratio = 0.085;
+    long long max_near_to_entry_us = 0;  // 0 = no limit; in microseconds
 };
 
 class signalA {
@@ -29,6 +30,11 @@ private:
     bool triggered = false;
     bool near_vwap = false;
     long long low_since_near = 0;  // lowest price after approaching VWAP
+    long long near_vwap_time_us = 0; // matchTime_us when near_vwap triggered
+public:
+    long long near_vwap_time = 0;  // matchTimeStr when near_vwap triggered (for tick_dump)
+    double near_vwap_pv_ratio = 0; // price/vwap when near_vwap triggered (for tick_dump)
+private:
     QuoteSv *quoteSv = nullptr;
 
     SignalAConfig config;

@@ -8,6 +8,7 @@
 #include "tick.h"
 #include "IniReader.h"
 #include <filesystem>
+#include "QuoteSv.h"
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -130,6 +131,8 @@ Order::Order() {
     if (!val.empty()) stop_loss_ratio_b = stod(val);
     val = reader.Read("Order", "bailout_ratio");
     if (!val.empty()) bailout_ratio = stod(val);
+    val = reader.Read("Order", "max_entry_price");
+    if (!val.empty()) max_entry_price = stod(val);
     val = reader.Read("Order", "entry_time_limit");
     if (!val.empty()) entry_time_limit = stoll(val);
     val = reader.Read("Order", "exit_time_limit");
@@ -145,6 +148,19 @@ Order::Order() {
             take_profit_tick_offsets.push_back(stoi(token));
         }
     }
+    val = reader.Read("Order", "take_profit_pcts");
+    if (!val.empty()) {
+        take_profit_pcts.clear();
+        stringstream ss(val);
+        string token;
+        while (getline(ss, token, ',')) {
+            take_profit_pcts.push_back(stod(token));
+        }
+    }
+    val = reader.Read("Order", "reserve_limit_up_splits");
+    if (!val.empty()) reserve_limit_up_splits = stoi(val);
+    val = reader.Read("Order", "tp_base_entry");
+    if (!val.empty()) tp_base_entry = (val == "true" || val == "1");
 }
 
 Order::~Order() {
@@ -181,6 +197,11 @@ void Order::setDate(const std::string& date, const std::string& logFolder) {
 
     closeSymbolLogFiles(); // date changed -> reopen per-symbol logs with new name
     openLogFile();
+
+    // open tick dump file
+    if (tickDumpFile.is_open()) tickDumpFile.close();
+    tickDumpFile.open(logDir + "tick_dump.csv");
+    enteredSymbols.clear();
 }
 
 void Order::trigger(IndexData &idx, format6Type *f6, int entry_idx, SIGNAL_TYPE signal_type, MatchType matchType, StrongSingle &strongSingle, StrongGroup &strongGroup) {
@@ -200,6 +221,8 @@ void Order::trigger(IndexData &idx, format6Type *f6, int entry_idx, SIGNAL_TYPE 
         return;
     }
     double currentPrice = (f6->ask[0].Price > 0) ? f6->ask[0].Price : f6->match.Price;
+    if (max_entry_price > 0 && currentPrice / ZERO_NUM > max_entry_price)
+        return;
     currentPrice /= ZERO_NUM; // Convert back to actual price
     stocks[f6->symbol] = position / currentPrice; // Calculate quantity based on fixed cash position
     entrySignalType[f6->symbol] = signal_type;
@@ -236,19 +259,89 @@ void Order::trigger(IndexData &idx, format6Type *f6, int entry_idx, SIGNAL_TYPE 
             ot.member_rank = mi->second.member_rank;
             ot.raw_member_rank = mi->second.raw_member_rank;
             ot.m1_symbol = mi->second.m1_symbol;
+            ot.vol_ratio = mi->second.vol_ratio;
+            ot.month_trading_val = mi->second.month_trading_val;
         }
+        ot.entry_price = currentPrice;
+        ot.entry_vwap = idx.vwap / 10000.0;
+        ot.day_high_at_entry = idx.day_high / 10000.0;
+        ot.is_prev_day_lu = f6->prevLimitUp;
+        if (quoteSv) {
+            auto f1it = quoteSv->f1mgr.format1Map.find(f6->symbol);
+            if (f1it != quoteSv->f1mgr.format1Map.end()) {
+                ot.prev_close = f1it->second.previous_close;
+                ot.is_disposition = (f1it->second.security == "RR");
+            }
+            ot.had_circuit_breaker = quoteSv->circuitBreakerSymbols.count(f6->symbol) > 0;
+        }
+        if (!ot.group_name.empty())
+            ot.group_limit_up_count = strongGroup.getGroupLimitUpCount(ot.group_name);
         openTrades[f6->symbol] = ot;
+
+        // write ENTRY to tick dump
+        if (tickDumpFile.is_open()) {
+            enteredSymbols.insert(f6->symbol);
+            tickDumpFile << "ENTRY," << f6->symbol
+                << "," << f6->matchTimeStr
+                << "," << f6->match.Price
+                << "," << (long long)idx.vwap
+                << "," << idx.day_high
+                << "," << (long long)(ot.prev_close * 10000)
+                << "," << (long long)stocks[f6->symbol]
+                << "," << sigTypeStr
+                << "," << (long long)position
+                << "," << ot.group_name
+                << "," << ot.group_rank
+                << "," << ot.member_rank
+                << "," << ot.raw_member_rank
+                << "," << pending_near_vwap_time
+                << "," << std::fixed << std::setprecision(6) << pending_near_vwap_pv_ratio
+                << "\n";
+        }
     }
 
     // 鋪賣單
-    double q = stocks[f6->symbol] / take_profit_splits;
+    int actual_splits = take_profit_splits + reserve_limit_up_splits;
+    double q = stocks[f6->symbol] / actual_splits;
     vector<int64_t> prices;
-    for (int offset : take_profit_tick_offsets) {
-        if (offset == 0)
-            prices.push_back(idx.day_high);
-        else
-            prices.push_back(getPriceCond(f6->symbol, idx.day_high, offset));
+
+    // Get limit-up price
+    long long limitUpInt = 0;
+    if (quoteSv) {
+        auto it = quoteSv->f1mgr.format1Map.find(f6->symbol);
+        if (it != quoteSv->f1mgr.format1Map.end()) {
+            limitUpInt = (long long)(it->second.limit_up_price * 10000 + 0.5);
+        }
     }
+
+    if (!take_profit_pcts.empty()) {
+        // Percentage-based TP
+        int64_t tpBase = tp_base_entry ? f6->match.Price : idx.day_high;
+        for (int i = 0; i < take_profit_splits && i < (int)take_profit_pcts.size(); i++) {
+            int64_t p = roundUpToTick(f6->symbol, (int64_t)(tpBase * (1.0 + take_profit_pcts[i]) + 0.5));
+            if (limitUpInt > 0 && p > limitUpInt) p = limitUpInt;
+            prices.push_back(p);
+        }
+    } else {
+        // Tick-based TP (original logic)
+        for (int i = 0; i < take_profit_splits && i < (int)take_profit_tick_offsets.size(); i++) {
+            int offset = take_profit_tick_offsets[i];
+            if (offset == 0)
+                prices.push_back(idx.day_high);
+            else
+                prices.push_back(getPriceCond(f6->symbol, idx.day_high, offset));
+        }
+        // cap at limit-up
+        if (limitUpInt > 0) {
+            for (auto& p : prices) {
+                if (p > limitUpInt) p = limitUpInt;
+            }
+        }
+    }
+
+    // Reserve splits: NOT placed as orders — held until end of day
+    reserveStocks[f6->symbol] = q * reserve_limit_up_splits;
+    limitUpPrices[f6->symbol] = limitUpInt;
 
     if (f6->symbol == "2360") {
         cout << " ====== trigger price " << f6->match.Price << " time " << f6->matchTimeStr << " day_high " << idx.day_high << '\n';
@@ -347,6 +440,16 @@ void Order::on_tick(format6Type *f6) {
         tr.member_rank = ot.member_rank;
         tr.raw_member_rank = ot.raw_member_rank;
         tr.m1_symbol = ot.m1_symbol;
+        tr.entry_price = ot.entry_price;
+        tr.entry_vwap = ot.entry_vwap;
+        tr.day_high_at_entry = ot.day_high_at_entry;
+        tr.prev_close = ot.prev_close;
+        tr.vol_ratio = ot.vol_ratio;
+        tr.month_trading_val = ot.month_trading_val;
+        tr.is_prev_day_lu = ot.is_prev_day_lu;
+        tr.is_disposition = ot.is_disposition;
+        tr.had_circuit_breaker = ot.had_circuit_breaker;
+        tr.group_limit_up_count = ot.group_limit_up_count;
         completedTrades.push_back(tr);
         openTrades.erase(it);
     };
@@ -386,8 +489,8 @@ void Order::on_tick(format6Type *f6) {
         return;
     }
     else if (timeExit(f6)) {
-        writeLeave("timeExit");
-        recordClose("timeExit");
+        writeLeave(lastTimeExitCause);
+        recordClose(lastTimeExitCause);
         return;
     }
     else if (takeProfit(f6)) {
@@ -395,7 +498,9 @@ void Order::on_tick(format6Type *f6) {
         // takeProfit 部分成交時繼續持有，全部賣完才 return
         if (openTrades.count(f6->symbol))
             openTrades[f6->symbol].had_take_profit = true;
-        if (stocks[f6->symbol] == 0) {
+        double remainReserve = reserveStocks.count(f6->symbol) ? reserveStocks[f6->symbol] : 0;
+        if (stocks[f6->symbol] <= 0.001 && remainReserve <= 0.001) {
+            stocks[f6->symbol] = 0;
             recordClose("takeProfit");
             return;
         }
@@ -404,11 +509,6 @@ void Order::on_tick(format6Type *f6) {
     if (bailout(f6)) {
         writeLeave("bailout");
         recordClose("bailout");
-        return;
-    }
-    else if (marketClose(f6)) {
-        writeLeave("marketClose");
-        recordClose("marketClose");
         return;
     }
 }
@@ -422,6 +522,7 @@ bool Order::stopLoss(format6Type *f6) {
         stoppedLossSymbols.insert(f6->symbol);
         cancelAll(f6->symbol);
         closeAll(f6->symbol, f6);
+        reserveStocks[f6->symbol] = 0;
         profitTaken[f6->symbol] = false;
         return true;
     }
@@ -430,11 +531,38 @@ bool Order::stopLoss(format6Type *f6) {
 
 bool Order::timeExit(format6Type *f6) {
     if (f6->matchTimeStr >= exit_time_limit) {
-        cancelAll(f6->symbol);
-        closeAll(f6->symbol, f6);
-        profitTaken[f6->symbol] = false;
+        double reserve = reserveStocks.count(f6->symbol) ? reserveStocks[f6->symbol] : 0;
+        long long limitUp = limitUpPrices.count(f6->symbol) ? limitUpPrices[f6->symbol] : 0;
+
+        if (reserve > 0.001 && limitUp > 0 && f6->match.Price >= limitUp) {
+            // 收盤鎖漲停 → reserve 以漲停價計算
+            cancelAll(f6->symbol);
+            // 先賣掉非 reserve 部位 at market
+            double nonReserve = std::max(0.0, stocks[f6->symbol] - reserve);
+            if (nonReserve > 0.001) {
+                double marketPrice = (f6->bid[0].Price > 0) ? f6->bid[0].Price : f6->match.Price;
+                double income = nonReserve * marketPrice / ZERO_NUM;
+                cash += income;
+                symbolCash[f6->symbol] += income;
+            }
+            // reserve 以漲停價賣出（模擬收盤鎖漲停）
+            double income = reserve * limitUp / ZERO_NUM;
+            cash += income;
+            symbolCash[f6->symbol] += income;
+            stocks[f6->symbol] = 0;
+            reserveStocks[f6->symbol] = 0;
+            profitTaken[f6->symbol] = false;
+            lastTimeExitCause = "lockedLimitUp";
+        } else {
+            // 沒鎖漲停 → 全部以市價出場
+            cancelAll(f6->symbol);
+            closeAll(f6->symbol, f6);
+            reserveStocks[f6->symbol] = 0;
+            profitTaken[f6->symbol] = false;
+            lastTimeExitCause = "timeExit";
+        }
         return true;
-    }   
+    }
     return false;
 }
 
@@ -448,6 +576,7 @@ bool Order::bailout(format6Type *f6) {
     if (f6->match.Price <= entryIdx.day_high * bailout_ratio) {
         cancelAll(f6->symbol);
         closeAll(f6->symbol, f6);
+        reserveStocks[f6->symbol] = 0;
         profitTaken[f6->symbol] = false;
 
         return true;
@@ -472,37 +601,18 @@ bool Order::takeProfit(format6Type *f6) {
             symbolCash[f6->symbol] += income;
             stocks[f6->symbol] -= qty;
 
-            if (f6->symbol == "2360") {
-                cout << " !!!!!!!! take profit " << f6->match.Price << " time " << f6->matchTimeStr <<  " order price " << price << '\n'; 
-                
-            }
-
             // 移除已成交的訂單
             orders[f6->symbol].erase(orders[f6->symbol].begin() + i);
             everTaken = true;
         }
     }
-    if (stocks[f6->symbol] < 0.0000000001)
+    if (stocks[f6->symbol] < 0.001)
         stocks[f6->symbol] = 0; // 避免因為浮點數精度問題導致的負數
     if (everTaken)
         profitTaken[f6->symbol] = true;
     return everTaken;
 }
 
-bool Order::marketClose(format6Type *f6) {
-    if (f6->matchTimeStr >= exit_time_limit) {
-        
-        double income = (double) stocks[f6->symbol] * f6->match.Price / ZERO_NUM; // Convert back to actual price
-        cash += income;
-        symbolCash[f6->symbol] += income;
-        stocks[f6->symbol] = 0;
-
-        orders[f6->symbol].clear();
-        profitTaken[f6->symbol] = false;
-        return true;
-    }
-    return false;
-}
 
 void Order::cancelAll(string symbol) {
     // Implementation here
@@ -525,6 +635,15 @@ void Order::closeAll(string symbol, format6Type *f6) {
         cash -= symbolCash[symbol];
         symbolCash[symbol] = 0;
     }
+}
+
+void Order::dumpTick(format6Type *f6) {
+    if (!tickDumpFile.is_open()) return;
+    if (enteredSymbols.count(f6->symbol) == 0) return;
+    tickDumpFile << "TICK," << f6->symbol
+        << "," << f6->matchTimeStr
+        << "," << f6->match.Price
+        << "," << f6->bid[0].Price << "\n";
 }
 
 // ── Report Generation ───────────────────────────────────────────────────
@@ -568,7 +687,11 @@ void Order::generateReport() {
     {
         string path = dir + "report_trades.csv";
         ofstream f(path);
-        f << "Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol\n";
+        f << "Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,"
+          << "GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol,"
+          << "EntryPrice,EntryVWAP,DayHigh,PrevClose,0050OpenChg%,"
+          << "VolRatio,MonthTradingVal,"
+          << "IsPrevDayLU,IsDisposition,HadCircuitBreaker,GroupLimitUpCount\n";
         for (auto& t : completedTrades) {
             int dur = durationSec(t.entry_time_raw, t.exit_time_raw);
             f << t.symbol << ","
@@ -584,7 +707,18 @@ void Order::generateReport() {
               << t.group_rank << ","
               << t.member_rank << ","
               << t.raw_member_rank << ","
-              << (t.member_rank > 1 ? t.m1_symbol : "") << "\n";
+              << (t.member_rank > 1 ? t.m1_symbol : "") << ","
+              << fixed << setprecision(2) << t.entry_price << ","
+              << fixed << setprecision(2) << t.entry_vwap << ","
+              << fixed << setprecision(2) << t.day_high_at_entry << ","
+              << fixed << setprecision(2) << t.prev_close << ","
+              << fixed << setprecision(3) << market_open_chg_pct << ","
+              << fixed << setprecision(2) << t.vol_ratio << ","
+              << t.month_trading_val << ","
+              << (t.is_prev_day_lu ? 1 : 0) << ","
+              << (t.is_disposition ? 1 : 0) << ","
+              << (t.had_circuit_breaker ? 1 : 0) << ","
+              << t.group_limit_up_count << "\n";
         }
         cout << "[Report] " << path << "\n";
     }

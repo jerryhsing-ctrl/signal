@@ -33,6 +33,9 @@ signalA::signalA() {
             val = reader.Read(section.c_str(), "trade_zone_max_increase_ratio");
             if (!val.empty()) config.trade_zone_max_increase_ratio = stod(val);
 
+            val = reader.Read(section.c_str(), "max_near_to_entry_sec");
+            if (!val.empty()) config.max_near_to_entry_us = stoll(val) * 1'000'000LL;
+
         } catch (const std::exception& e) {
             std::cerr << "Error parsing config for SignalA: " << e.what() << std::endl;
             exit(1);
@@ -51,7 +54,10 @@ bool signalA::eval(IndexData &idx, format6Type *f6, MatchType matchType, MatchTy
     triggerMatchType = MatchType::None;
 
     if (triggered) return false;
-    if (matchType == MatchType::None) return false;
+    if (matchType == MatchType::None) {
+        if (near_vwap) { near_vwap = false; low_since_near = 0; near_vwap_time = 0; near_vwap_time_us = 0; near_vwap_pv_ratio = 0; }
+        return false;
+    }
     if (f6->matchTimeStr < config.entry_start_time || f6->matchTimeStr >= config.entry_end_time)
         return false;
     if (!pre_condition_met(idx, f6)) return false;
@@ -71,8 +77,18 @@ bool signalA::eval(IndexData &idx, format6Type *f6, MatchType matchType, MatchTy
     if (!near_vwap) {
         if (pv_ratio <= config.vwap_near_ratio) {
             near_vwap = true;
+            near_vwap_time = f6->matchTimeStr;
+            near_vwap_time_us = f6->matchTime_us;
+            near_vwap_pv_ratio = pv_ratio;
             low_since_near = f6->match.Price;
         }
+        return false;
+    }
+
+    // timeout: near_vwap waited too long → permanently skip this stock
+    if (config.max_near_to_entry_us > 0 &&
+        (f6->matchTime_us - near_vwap_time_us) > config.max_near_to_entry_us) {
+        triggered = true;  // prevent re-evaluation
         return false;
     }
 

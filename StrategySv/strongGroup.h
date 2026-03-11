@@ -29,9 +29,15 @@ struct StrongGroupConfig {
     long long group_vol_ratio_exempt_threshold;
     bool filter_prev_day_limit_up;
     bool exclude_prev_limit_up_from_rank;
+    bool exclude_disposition_from_rank = true;
     bool member_cond1_enabled;
     bool member_cond2_enabled;
     bool member_cond4_enabled;
+    double entry_min_vwap_pct_chg = 0.0;
+    double entry_max_vwap_pct_chg = 0.0;  // 0 = no limit
+    int entry_min_group_rank = 0;         // 0 = no limit; e.g. 2 = exclude G1
+    bool require_raw_m1 = false;
+    bool block_disposition_entry = true;  // block disposition stocks from entry
 };
 
 class StrongGroup {
@@ -83,8 +89,11 @@ public:
         int member_rank = 0;   // stock's rank within the group (1-based)
         int raw_member_rank = 0; // 僅過濾成交值，不做其他過濾的 VWAP 排名
         std::string m1_symbol;  // debug: M1 at the time last_match_info was set
+        double vol_ratio = 0;           // 當日累計量 / 月均同時段量
+        long long month_trading_val = 0; // 月均成交金額
     };
     unordered_map<std::string, MatchInfo> last_match_info;
 
     bool isSingleAllowed(const std::string& symbol, int maxRank);
+    int getGroupLimitUpCount(const std::string& group);
 };

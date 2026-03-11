@@ -16,9 +16,10 @@ StrategySv::StrategySv(QuoteSv *quoteSv) {
     // strongSingle.f1mgr = &quoteSv->f1mgr;
     strongSingle.quoteSv = quoteSv;
     strongGroup.quoteSv = quoteSv;
-    
-    
-    
+    order.quoteSv = quoteSv;
+
+
+
     IniReader reader(CFG_FILE);
     std::string tseEnable = reader.Read("TSE", "ENABLE");
 
@@ -35,13 +36,14 @@ StrategySv::StrategySv(QuoteSv *quoteSv) {
     string strongSingleEnable = parameterReader.Read("StrongSignal", "enabled");
     strongSingle_enabled = (strongSingleEnable == "true");
     cout << "strongSingle_enabled: [" << strongSingleEnable << "]" << endl;
-    
 
-    string singleGroupRankFilter = parameterReader.Read("StrongSignal", "single_group_rank_filter");
-    if (!singleGroupRankFilter.empty()) single_group_rank_filter = (singleGroupRankFilter == "true");
-    string singleMaxMemberRank = parameterReader.Read("StrongSignal", "single_max_member_rank");
-    if (!singleMaxMemberRank.empty()) single_max_member_rank = stoi(singleMaxMemberRank);
-    cout << "single_group_rank_filter: [" << single_group_rank_filter << "] single_max_member_rank: [" << single_max_member_rank << "]" << endl;
+    if (strongSingle_enabled) {
+        string singleGroupRankFilter = parameterReader.Read("StrongSignal", "single_group_rank_filter");
+        if (!singleGroupRankFilter.empty()) single_group_rank_filter = (singleGroupRankFilter == "true");
+        string singleMaxMemberRank = parameterReader.Read("StrongSignal", "single_max_member_rank");
+        if (!singleMaxMemberRank.empty()) single_max_member_rank = stoi(singleMaxMemberRank);
+        cout << "single_group_rank_filter: [" << single_group_rank_filter << "] single_max_member_rank: [" << single_max_member_rank << "]" << endl;
+    }
 
     string strongGroupEnable = parameterReader.Read("StrongGroup", "enabled");
     strongGroup_enabled = (strongGroupEnable == "true");
@@ -50,6 +52,10 @@ StrategySv::StrategySv(QuoteSv *quoteSv) {
     string marketRallyThreshold = parameterReader.Read("Strategy", "market_rally_disable_threshold");
     if (!marketRallyThreshold.empty()) market_rally_disable_threshold = stod(marketRallyThreshold);
     cout << "market_rally_disable_threshold: [" << market_rally_disable_threshold << "]" << endl;
+
+    string marketOpenMinChg = parameterReader.Read("Strategy", "market_open_min_chg");
+    if (!marketOpenMinChg.empty()) market_open_min_chg = stod(marketOpenMinChg);
+    cout << "market_open_min_chg: [" << market_open_min_chg << "]" << endl;
 
     cout << "tseEnable: [" << tseEnable << "]" << endl;
     market_queue_TSE = new queueType();
@@ -62,7 +68,7 @@ StrategySv::StrategySv(QuoteSv *quoteSv) {
     }
     th_TSE = thread([this]() {
         pin_thread_to_core(20);
-        set_fifo_priority(99);
+        set_fifo_priority(89);
         set_thread_name("strat TSE");
         this->run(market_queue_TSE, "TSE");
     });
@@ -125,7 +131,17 @@ void StrategySv::run(queueType *market_queue_, string market_name) {
             static bool got_900 = false, got_915 = false;
             if (!got_915 && f6->symbol[0] == '0' && f6->symbol[1] == '0' && strcmp(f6->symbol.c_str(), "0050") == 0 && f6->tradeCode == 1 && f6->tradeAt > 0) {
                 if (p0050_prev == 0) p0050_prev = quoteSv->f1mgr.format1Map["0050"].previous_close * 10000;
-                if (!got_900 && f6->matchTimeStr >= 90000000000) { p0050_900 = f6->match.Price; got_900 = true; }
+                if (!got_900 && f6->matchTimeStr >= 90000000000) {
+                    p0050_900 = f6->match.Price; got_900 = true;
+                    double open_chg = (double)(p0050_900 - p0050_prev) / p0050_prev;
+                    order.market_open_chg_pct = open_chg * 100.0;
+                    if (open_chg < market_open_min_chg) {
+                        market_disabled = true;
+                        fprintf(stderr, "[STRATEGY] DISABLED: 0050 open_chg=%.3f%% < min_chg=%.3f%%\n", open_chg*100.0, market_open_min_chg*100.0);
+                        order.generateReport();
+                        exit(0);
+                    }
+                }
                 if (f6->matchTimeStr >= 91500000000) { p0050_915 = f6->match.Price; got_915 = true;
                     double at915_chg = (double)(p0050_915-p0050_prev)/p0050_prev;
                     fprintf(stderr, "[0050] prev=%lld open=%lld at915=%lld open_chg=%.3f%% at915_chg=%.3f%%\n",
@@ -136,6 +152,8 @@ void StrategySv::run(queueType *market_queue_, string market_name) {
                         market_disabled = true;
                         fprintf(stderr, "[STRATEGY] DISABLED: 0050 at915 change %.3f%% >= threshold %.1f%%\n",
                             at915_chg*100.0, market_rally_disable_threshold*100.0);
+                        order.generateReport();
+                        exit(0);
                     }
                 }
             }
@@ -152,6 +170,7 @@ void StrategySv::run(queueType *market_queue_, string market_name) {
 
             // cout <<  "symbol " << f6->symbol << '\n';
 
+            order.dumpTick(f6);
             order.on_tick(f6);
             if (order.stocks[f6->symbol] > 0 || market_disabled) {
                 processed_cnt++;
@@ -179,16 +198,6 @@ void StrategySv::run(queueType *market_queue_, string market_name) {
                 matchType = MatchType::StrongGroup;
 
             MatchType triggerMatchTypeA = MatchType::None;
-            static bool printed_top_948 = false;
-            if (symbol == "3037" && f6->matchTimeStr >= 94800000000 && f6->matchTimeStr <= 94810000000 && !printed_top_948) {
-                printed_top_948 = true;
-                int abf_rank = strongGroup.groupRank.getRank("ABF");
-                auto topN = strongGroup.groupRank.query(abf_rank > 0 ? abf_rank : 25);
-                for (auto &[name, gain] : topN) {
-                    fprintf(stderr, "[TOP-G@0948] G-rank %s gain=%.4f%%\n", name.c_str(), gain * 100.0);
-                }
-                fprintf(stderr, "[TOP-G@0948] ABF rank=%d\n", abf_rank);
-            }
             bool isSignalA = signalA_map_[symbol].eval(idx, f6, matchType, triggerMatchTypeA, strongSingle, strongGroup, quoteSv);
             if (!signalA_enabled)
                 isSignalA = false;
@@ -201,19 +210,21 @@ void StrategySv::run(queueType *market_queue_, string market_name) {
 
             // cout << "   SignalA: " << isSignalA << " SignalB: " << isSignalB << '\n';
  
-            if (isSignalA) {
-                 // Debug: print M1 info for non-M1 entries (M1 captured at last_match_info write time)
-                 if (strongGroup.last_match_info.count(symbol) && strongGroup.last_match_info[symbol].member_rank > 1) {
-                     auto &mi = strongGroup.last_match_info[symbol];
-                     fprintf(stderr, "[M1-DEBUG] %s entered as M%d in %s(G%d), M1=%s\n",
-                         symbol.c_str(), mi.member_rank, mi.group_name.c_str(), mi.group_rank, mi.m1_symbol.c_str());
-                 }
+            if (isSignalA && isSignalB) {
+                errorLog(" both signal triggered, symbol: " + f6->symbol + " matchTime: " + to_string(f6->matchTimeStr));
+                // 兩個同時觸發時優先用 SignalA
+                order.pending_near_vwap_time = signalA_map_[symbol].near_vwap_time;
+                order.pending_near_vwap_pv_ratio = signalA_map_[symbol].near_vwap_pv_ratio;
+                order.trigger(idx, f6, entry_idx++, SIGNAL_TYPE::SIGNAL_A, triggerMatchTypeA, strongSingle, strongGroup);
+            } else if (isSignalA) {
+                 order.pending_near_vwap_time = signalA_map_[symbol].near_vwap_time;
+                 order.pending_near_vwap_pv_ratio = signalA_map_[symbol].near_vwap_pv_ratio;
                  order.trigger(idx, f6, entry_idx++, SIGNAL_TYPE::SIGNAL_A, triggerMatchTypeA, strongSingle, strongGroup);
             } else if (isSignalB) {
+                 order.pending_near_vwap_time = 0;
+                 order.pending_near_vwap_pv_ratio = 0;
                  order.trigger(idx, f6, entry_idx++, SIGNAL_TYPE::SIGNAL_B, triggerMatchTypeB, strongSingle, strongGroup);
             }
-            else if (isSignalA && isSignalB)
-                errorLog(" both signal triggered, symbol: " + f6->symbol + " matchTime: " + to_string(f6->matchTimeStr));
             
             market_queue_->pop(); 
             processed_cnt++;
@@ -227,12 +238,15 @@ void StrategySv::run(queueType *market_queue_, string market_name) {
                 cout << "signal finish\n";
                 
                 format6Type f6;
-                f6.matchTimeStr = LLONG_MAX; 
-                
+                f6.matchTimeStr = LLONG_MAX;
+
                 for (auto& [symbol, qty] : order.stocks) {
                     if (qty > 0) {
                         errorLog(" final stock: " + symbol + " qty: " + to_string(qty));
                         f6.symbol = symbol;
+                        long long lp = quoteSv->lastPrice.count(symbol) ? quoteSv->lastPrice[symbol] : 0;
+                        f6.match.Price = lp;
+                        f6.bid[0].Price = lp;
                         order.on_tick(&f6); // 強制檢查是否需要停損或其他離場條件
                     }
                 }

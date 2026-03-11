@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <unordered_set>
 #include <functional>
 #include <signal.h>
 #include "IniReader.h"
@@ -72,6 +73,7 @@ class QuoteSv
 
 		// 判斷每檔股票前一天是否漲停
 		unordered_map<std::string, bool> prevDayLimitUpMap;
+	unordered_set<std::string> circuitBreakerSymbols;  // symbols that had statusCode!=0
 		bool checkPrevDayLimitUp(const std::string& date);
 		NumTracker numTracker;
 		bool run(string market);

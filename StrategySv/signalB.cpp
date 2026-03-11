@@ -12,11 +12,12 @@ signalB::signalB() {
     IniReader reader;
     if (reader.ReadIni("./cfg/parameter.cfg")) {
         string section = "SignalB";
+        string enabledStr = reader.Read(section.c_str(), "enabled");
+        if (enabledStr.empty() || enabledStr != "true") return;  // [SignalB] not present or disabled
         try {
             string val;
 
             val = reader.Read(section.c_str(), "vol_contract_ratio");
-            if (val.empty()) throw std::runtime_error("vol_contract_ratio missing");
             double vol_contract_ratio = stod(val);
 
             // Read Index config for rolling
