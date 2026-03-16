@@ -61,6 +61,8 @@ class QuoteSv
 		unordered_map<std::string, long long> lastPrice;
 
 		bool get_vol_cum(std::string filename, int idx);
+		bool save_vol_cache(const std::string& cacheFile, int idx);
+		bool load_vol_cache(const std::string& cacheFile, int idx);
 
 		Format1Manager f1mgr;
         atomic<int> readFileCnt = 0;
@@ -70,6 +72,9 @@ class QuoteSv
 
 		bool readFile(string market, const std::string date);
 		void readFileMerged(string market1, string date1, string market2, string date2);
+
+		// 過濾用：只處理這些 symbol 的 tick（空 = 不過濾）
+		unordered_set<std::string> tickFilter;
 
 		// 判斷每檔股票前一天是否漲停
 		unordered_map<std::string, bool> prevDayLimitUpMap;

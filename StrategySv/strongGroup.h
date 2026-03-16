@@ -38,6 +38,7 @@ struct StrongGroupConfig {
     int entry_min_group_rank = 0;         // 0 = no limit; e.g. 2 = exclude G1
     bool require_raw_m1 = false;
     bool block_disposition_entry = true;  // block disposition stocks from entry
+    double entry_max_vol_ratio = 0.0;    // 0 = no limit; e.g. 1.5 = reject VR >= 1.5
 };
 
 class StrongGroup {
@@ -78,7 +79,7 @@ public:
     // GroupRank vwapRank;
     unordered_map<std::string, GroupRank> group_member_vwapRank;
     unordered_map<std::string, GroupRank> group_member_raw_vwapRank; // 僅過濾 member_min_month_trading_val，不做其他過濾
-private:
+public:
     unordered_map<std::string, bool> symbol_is_valid;
 
 public:

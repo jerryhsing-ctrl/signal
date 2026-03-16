@@ -203,6 +203,13 @@ void QuoteSv::getTickData(string type, string date) {
 }
 
 bool QuoteSv::get_vol_cum(string filename, int idx) {
+	// 嘗試從快取載入
+	std::string cacheFile = filename + ".volcache";
+	if (load_vol_cache(cacheFile, idx)) {
+		printf("  [cache hit] %s\n", filename.c_str());
+		return true;
+	}
+
 	std::ifstream file;
 	const size_t BUF_SIZE = 1024 * 1024; // 1MB Buffer
 	std::vector<char> buffer(BUF_SIZE);
@@ -215,31 +222,155 @@ bool QuoteSv::get_vol_cum(string filename, int idx) {
 	}
 
 	std::string lineTrade, lineDepth;
-	lineTrade.reserve(1024); // 預先配置記憶體以減少重新分配
+	lineTrade.reserve(1024);
     lineDepth.reserve(1024);
 
 	format6Type f6;
-	// int cu = 0;
 	while (std::getline(file, lineTrade)) {
 		if (lineTrade.empty()) continue;
 		if (lineTrade.size() < 2 || lineTrade[0] != 'T' || lineTrade[1] != 'r') continue;
-        
-		
+
 		f6.fromRedis(lineTrade, "");
 		if (f6.statusCode == 0) {
-			// if (f6.symbol == "1605") {
-			// 	cu += f6.match.Qty;
-			// }
 			vol_cum[idx].on_tick(f6.symbol, f6.matchTime_us, f6.match.Qty);
 			tradingValue_cum[idx].on_tick(f6.symbol, f6.matchTime_us, (long long) f6.match.Price * f6.match.Qty / 10);
 			trading_val[idx][f6.symbol] += (long long) f6.match.Qty * f6.match.Price / 10;
-			
 		}
-		
 	}
 
-
 	file.close();
+
+	// 儲存快取供下次使用
+	save_vol_cache(cacheFile, idx);
+	printf("  [cache saved] %s\n", cacheFile.c_str());
+
+	return true;
+}
+
+// 二進制快取格式:
+// Magic: "VOLCACHE" (8 bytes)
+// Version: uint32 (4 bytes)
+// NumSymbols: uint32 (4 bytes)
+// Per symbol:
+//   SymbolLen: uint16
+//   Symbol: char[SymbolLen]
+//   TradingVal: int64
+//   NumTicks: uint32
+//   Per tick: Timestamp(int64) + CumQty(int64) + CumTradingVal(int64)
+
+bool QuoteSv::save_vol_cache(const std::string& cacheFile, int idx) {
+	auto& volStore = vol_cum[idx].dataStore;
+	auto& valStore = tradingValue_cum[idx].dataStore;
+
+	// 預估檔案大小並一次寫入
+	size_t estimatedSize = 16; // header
+	for (auto& [symbol, volTicks] : volStore) {
+		estimatedSize += 2 + symbol.size() + 8 + 4 + volTicks.size() * 24;
+	}
+
+	std::vector<char> buf;
+	buf.reserve(estimatedSize);
+
+	auto appendBytes = [&](const void* data, size_t len) {
+		buf.insert(buf.end(), (const char*)data, (const char*)data + len);
+	};
+
+	// Magic + Version
+	appendBytes("VOLCACHE", 8);
+	uint32_t version = 1;
+	appendBytes(&version, 4);
+
+	uint32_t numSymbols = volStore.size();
+	appendBytes(&numSymbols, 4);
+
+	for (auto& [symbol, volTicks] : volStore) {
+		uint16_t symLen = symbol.size();
+		appendBytes(&symLen, 2);
+		appendBytes(symbol.data(), symLen);
+
+		long long tv = trading_val[idx][symbol];
+		appendBytes(&tv, 8);
+
+		uint32_t numTicks = volTicks.size();
+		appendBytes(&numTicks, 4);
+
+		auto& valTicks = valStore[symbol];
+		for (uint32_t t = 0; t < numTicks; t++) {
+			appendBytes(&volTicks[t].timestamp, 8);
+			appendBytes(&volTicks[t].cumulativeQty, 8);
+			long long cumVal = (t < valTicks.size()) ? valTicks[t].cumulativeQty : 0;
+			appendBytes(&cumVal, 8);
+		}
+	}
+
+	std::ofstream out(cacheFile, std::ios::binary);
+	if (!out.is_open()) return false;
+	out.write(buf.data(), buf.size());
+	out.close();
+	return true;
+}
+
+bool QuoteSv::load_vol_cache(const std::string& cacheFile, int idx) {
+	// 一次讀入整個檔案到記憶體，避免大量小 I/O
+	std::ifstream in(cacheFile, std::ios::binary | std::ios::ate);
+	if (!in.is_open()) return false;
+
+	size_t fileSize = in.tellg();
+	if (fileSize < 16) { in.close(); return false; }
+
+	std::vector<char> buf(fileSize);
+	in.seekg(0);
+	in.read(buf.data(), fileSize);
+	in.close();
+
+	const char* ptr = buf.data();
+	const char* end = ptr + fileSize;
+
+	// Check magic
+	if (std::string(ptr, 8) != "VOLCACHE") return false;
+	ptr += 8;
+
+	// Check version
+	uint32_t version;
+	memcpy(&version, ptr, 4); ptr += 4;
+	if (version != 1) return false;
+
+	uint32_t numSymbols;
+	memcpy(&numSymbols, ptr, 4); ptr += 4;
+
+	for (uint32_t s = 0; s < numSymbols; s++) {
+		if (ptr + 2 > end) return false;
+
+		// Symbol
+		uint16_t symLen;
+		memcpy(&symLen, ptr, 2); ptr += 2;
+		std::string symbol(ptr, symLen); ptr += symLen;
+
+		// TradingVal
+		long long tv;
+		memcpy(&tv, ptr, 8); ptr += 8;
+		trading_val[idx][symbol] = tv;
+
+		// Ticks
+		uint32_t numTicks;
+		memcpy(&numTicks, ptr, 4); ptr += 4;
+
+		auto& volTicks = vol_cum[idx].dataStore[symbol];
+		auto& valTicks = tradingValue_cum[idx].dataStore[symbol];
+		volTicks.resize(numTicks);
+		valTicks.resize(numTicks);
+
+		for (uint32_t t = 0; t < numTicks; t++) {
+			long long timestamp, cumQty, cumVal;
+			memcpy(&timestamp, ptr, 8); ptr += 8;
+			memcpy(&cumQty, ptr, 8); ptr += 8;
+			memcpy(&cumVal, ptr, 8); ptr += 8;
+
+			volTicks[t] = {timestamp, cumQty};
+			valTicks[t] = {timestamp, cumVal};
+		}
+	}
+
 	return true;
 }
 bool QuoteSv::checkPrevDayLimitUp(const std::string& date) {
@@ -554,6 +685,7 @@ void QuoteSv::readFileMerged(string marketA, string dateA, string marketB, strin
         string filename;
         // int coreId; // Removed as requested
         std::unordered_set<std::string> cbSymbols; // circuit breaker symbols
+        const std::unordered_set<std::string>* pTickFilter = nullptr;
     };
 
     ThreadContext ctxA;
@@ -561,11 +693,15 @@ void QuoteSv::readFileMerged(string marketA, string dateA, string marketB, strin
 
     ctxA.market = marketA;
     ctxA.filename = "./data/" + marketA + "Quote." + dateA;
-    // ctxA.coreId = 2; 
 
     ctxB.market = marketB;
     ctxB.filename = "./data/" + marketB + "Quote." + dateB;
-    // ctxB.coreId = 3; 
+    ctxA.pTickFilter = &tickFilter;
+    ctxB.pTickFilter = &tickFilter;
+    printf("readFileMerged: A=%s\n", ctxA.filename.c_str());
+    printf("readFileMerged: B=%s\n", ctxB.filename.c_str());
+    if (!tickFilter.empty())
+        printf("readFileMerged: tickFilter active (%zu symbols)\n", tickFilter.size());
 
     // 2. 定義讀檔 Worker (Lambda)
     // 這裡完整複製了你原本 readFile 的 parsing 邏輯 (Trade + Depth 合併)
@@ -624,9 +760,22 @@ void QuoteSv::readFileMerged(string marketA, string dateA, string marketB, strin
                 lineDepth = "";
             }
 
-            // C. 解析資料到 ctx->data
+            // C. 快速 symbol 過濾（避免不必要的完整解析）
+            if (ctx->pTickFilter && !ctx->pTickFilter->empty()) {
+                // 快速提取 symbol: "Trade,SYMBOL,..."
+                const char* p = lineTrade.c_str();
+                while (*p && *p != ',') p++;
+                if (*p == ',') p++;
+                std::string sym;
+                while (*p && *p != ',') {
+                    if (*p != ' ') sym += *p;
+                    p++;
+                }
+                if (!ctx->pTickFilter->count(sym)) continue;
+            }
+
+            // D. 完整解析資料到 ctx->data
             ctx->data.market = ctx->market;
-            // 這裡假設 fromRedis 會填寫 matchTimeStr
             if (ctx->data.fromRedis(lineTrade, lineDepth)) {
                 if (ctx->data.statusCode == 0) {
                     // D. 解析成功，通知主執行緒
