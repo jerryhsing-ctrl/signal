@@ -51,7 +51,6 @@ int main(int argc, char* argv[]) {
     strategySv.strongGroup.getGroup();
     printf("[TIMING] getGroup: %.0f ms\n", elapsed_ms(t0));
 
-    // 建立 tick 過濾器：只保留有效族群成員 + 0050
     for (auto& [sym, valid] : strategySv.strongGroup.symbol_is_valid) {
         if (valid) quoteSv.tickFilter.insert(sym);
     }

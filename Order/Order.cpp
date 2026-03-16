@@ -320,7 +320,7 @@ void Order::trigger(IndexData &idx, format6Type *f6, int entry_idx, SIGNAL_TYPE 
         // Percentage-based TP
         int64_t tpBase = tp_base_entry ? f6->match.Price : idx.day_high;
         for (int i = 0; i < take_profit_splits && i < (int)take_profit_pcts.size(); i++) {
-            int64_t p = roundUpToTick(f6->symbol, (int64_t)(tpBase * (1.0 + take_profit_pcts[i]) + 0.5));
+            int64_t p = (int64_t)(tpBase * (1.0 + take_profit_pcts[i]) + 0.5);
             if (limitUpInt > 0 && p > limitUpInt) p = limitUpInt;
             prices.push_back(p);
         }
