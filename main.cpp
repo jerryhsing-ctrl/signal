@@ -66,10 +66,12 @@ int main(int argc, char* argv[]) {
 
     fflush(stdout);
 
-    // Wait for strategy thread to finish processing
-    // StrategySv::run() calls exit(0) when done; fallback after readFileMerged + 5s
-    for (int i = 0; i < 5; i++) {
+    // Wait for strategy thread to finish processing all ticks
+    // StrategySv::run() calls exit(0) after generating report
+    // Fallback: if strategy thread gets stuck, exit after 60s
+    for (int i = 0; i < 60; i++) {
         sleep(1);
     }
+    fprintf(stderr, "[main] fallback exit after 60s\n");
     exit(0);
 }
