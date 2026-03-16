@@ -1,0 +1,30 @@
+# Build artifacts
+build/
+exec/sv/signal
+
+# Logs
+exec/log/
+exec/stderr_*.log
+
+# Batch results
+exec/batch_*/
+exec/old_batches/
+
+# Data cache
+exec/data/*.volcache
+
+# Python analysis scripts (not part of core strategy)
+exec/*.py
+exec/*.sh
+
+# Misc
+*.main_backup
+*.bak
+exec/cfg/parameter.cfg.bak.*
+exec/cfg/parameter.cfg.user_backup
+exec/cfg/parameter_strict.cfg
+exec/*.csv
+exec/*.txt
+exec/*.md
+exec/*.png
+exec/sweep_results/
