@@ -130,7 +130,8 @@ void StrategySv::run(queueType *market_queue_, string market_name) {
             static long long p0050_900 = 0, p0050_915 = 0, p0050_prev = 0;
             static bool got_900 = false, got_915 = false;
             if (!got_915 && f6->symbol[0] == '0' && f6->symbol[1] == '0' && strcmp(f6->symbol.c_str(), "0050") == 0 && f6->tradeCode == 1 && f6->tradeAt > 0) {
-                if (p0050_prev == 0) p0050_prev = quoteSv->f1mgr.format1Map["0050"].previous_close * 10000;
+                if (p0050_prev == 0) { p0050_prev = quoteSv->f1mgr.format1Map["0050"].previous_close * 10000; order.p0050_prev = p0050_prev; }
+                order.p0050_latest = f6->match.Price;
                 if (!got_900 && f6->matchTimeStr >= 90000000000) {
                     p0050_900 = f6->match.Price; got_900 = true;
                     double open_chg = (double)(p0050_900 - p0050_prev) / p0050_prev;

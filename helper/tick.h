@@ -3,6 +3,7 @@
 #include <array>    // 用於 std::array
 #include <string>   // 用於 std::string
 #include <cstddef>  // 用於 size_t (template<size_t N> 中需要)
+#include <cmath>    // 用於 std::ceil
 #include "errorLog.h"
 struct SecInfo {
     char category;   // '1' ~ '7'
@@ -204,6 +205,18 @@ inline int64_t getPriceCond(const string &symbol, int64_t price, int tick) {
     }
     // cout << " price double after getPriceCond: " << price_double << " double " << price_double * CHG << " int64 " << ((int64_t)(price_double * CHG + 0.01)) << '\n';
     return (int64_t)(price_double * CHG + 0.01);
+}
+
+// Round a raw int64 price (×10000) UP to the nearest valid tick
+inline int64_t roundUpToTick(const string &symbol, int64_t rawPrice) {
+    #define CHG2 10000
+    double p = (double)rawPrice / CHG2;
+    double tick = GetTick(symbol, p, true);
+    if (tick <= 0) return rawPrice;
+    // snap to tick grid: ceil(p / tick) * tick
+    double snapped = std::ceil(p / tick - 1e-9) * tick;
+    return (int64_t)(snapped * CHG2 + 0.5);
+    #undef CHG2
 }
 
 

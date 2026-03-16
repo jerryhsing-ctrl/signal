@@ -108,6 +108,9 @@ StrongGroup::StrongGroup (){
             val = reader.Read(section.c_str(), "block_disposition_entry");
             if (!val.empty()) config.block_disposition_entry = (val == "true");
 
+            val = reader.Read(section.c_str(), "entry_max_vol_ratio");
+            if (!val.empty()) config.entry_max_vol_ratio = stod(val);
+
         } catch (const std::exception& e) {
             std::cerr << "Error parsing config for StrongGroup: " << e.what() << std::endl;
             exit(1);
@@ -247,6 +250,9 @@ bool StrongGroup::on_tick(IndexData &idx, format6Type *f6) {
                             ans = false;
                         int rawRank = group_member_raw_vwapRank[group].getRank(f6->symbol);
                         if (config.require_raw_m1 && rawRank != 1)
+                            ans = false;
+                        double vr = (avg > 0) ? (double)vol_cumu[f6->symbol] / avg : 0;
+                        if (config.entry_max_vol_ratio > 0 && vr >= config.entry_max_vol_ratio)
                             ans = false;
                         if (!last_match_info.count(f6->symbol)
                             || last_match_info[f6->symbol].member_rank == 0  // isSingleAllowed 暫存，直接覆寫

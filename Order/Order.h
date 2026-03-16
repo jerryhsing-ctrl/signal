@@ -46,6 +46,7 @@ struct TradeRecord {
     bool is_disposition = false;     // 處置股
     bool had_circuit_breaker = false; // 曾觸發緩搓
     int group_limit_up_count = 0;    // 進場時族群漲停家數
+    double market_entry_chg_pct = 0;  // 0050 at entry time vs prev close (%)
 };
 
 class Order {
@@ -115,6 +116,7 @@ private:
         bool is_disposition = false;
         bool had_circuit_breaker = false;
         int group_limit_up_count = 0;
+        double market_entry_chg_pct = 0;
     };
     unordered_map<string, OpenTrade> openTrades;
     std::vector<TradeRecord> completedTrades;
@@ -138,6 +140,8 @@ public:
     void dumpTick(format6Type *f6);
     QuoteSv *quoteSv = nullptr;
     double market_open_chg_pct = 0;  // 0050 open change %, set by StrategySv
+    long long p0050_latest = 0;      // 0050 latest trade price, set by StrategySv
+    long long p0050_prev = 0;        // 0050 prev close, set by StrategySv
     long long pending_near_vwap_time = 0;  // set by StrategySv before trigger()
     double pending_near_vwap_pv_ratio = 0; // set by StrategySv before trigger()
 };

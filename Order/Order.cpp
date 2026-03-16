@@ -276,6 +276,8 @@ void Order::trigger(IndexData &idx, format6Type *f6, int entry_idx, SIGNAL_TYPE 
         }
         if (!ot.group_name.empty())
             ot.group_limit_up_count = strongGroup.getGroupLimitUpCount(ot.group_name);
+        if (p0050_prev > 0 && p0050_latest > 0)
+            ot.market_entry_chg_pct = (double)(p0050_latest - p0050_prev) / p0050_prev * 100.0;
         openTrades[f6->symbol] = ot;
 
         // write ENTRY to tick dump
@@ -450,6 +452,7 @@ void Order::on_tick(format6Type *f6) {
         tr.is_disposition = ot.is_disposition;
         tr.had_circuit_breaker = ot.had_circuit_breaker;
         tr.group_limit_up_count = ot.group_limit_up_count;
+        tr.market_entry_chg_pct = ot.market_entry_chg_pct;
         completedTrades.push_back(tr);
         openTrades.erase(it);
     };
@@ -691,7 +694,7 @@ void Order::generateReport() {
           << "GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol,"
           << "EntryPrice,EntryVWAP,DayHigh,PrevClose,0050OpenChg%,"
           << "VolRatio,MonthTradingVal,"
-          << "IsPrevDayLU,IsDisposition,HadCircuitBreaker,GroupLimitUpCount\n";
+          << "IsPrevDayLU,IsDisposition,HadCircuitBreaker,GroupLimitUpCount,0050EntryChg%\n";
         for (auto& t : completedTrades) {
             int dur = durationSec(t.entry_time_raw, t.exit_time_raw);
             f << t.symbol << ","
@@ -718,7 +721,8 @@ void Order::generateReport() {
               << (t.is_prev_day_lu ? 1 : 0) << ","
               << (t.is_disposition ? 1 : 0) << ","
               << (t.had_circuit_breaker ? 1 : 0) << ","
-              << t.group_limit_up_count << "\n";
+              << t.group_limit_up_count << ","
+              << fixed << setprecision(3) << t.market_entry_chg_pct << "\n";
         }
         cout << "[Report] " << path << "\n";
     }
