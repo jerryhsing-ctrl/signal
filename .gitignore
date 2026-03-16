@@ -28,3 +28,12 @@ exec/*.txt
 exec/*.md
 exec/*.png
 exec/sweep_results/
+exec/old/
+exec/scripts/
+exec/gen_cache
+exec/cfg/parameter.cfg.main_original
+exec/files/Stock_group.xlsx
+exec/files/Symbols_*.csv
+exec/files/group_old_backup.csv
+exec/files/group.csv.new
+tools/
