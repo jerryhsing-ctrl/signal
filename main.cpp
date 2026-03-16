@@ -65,7 +65,11 @@ int main(int argc, char* argv[]) {
     printf("[TIMING] TOTAL: %.0f ms\n", elapsed_ms(t_start));
 
     fflush(stdout);
-    while(1) {
-        sleep(10);
+
+    // Wait for strategy thread to finish processing
+    // StrategySv::run() calls exit(0) when done; fallback after readFileMerged + 5s
+    for (int i = 0; i < 5; i++) {
+        sleep(1);
     }
+    exit(0);
 }
