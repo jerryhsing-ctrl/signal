@@ -1,0 +1,11 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol,EntryPrice,EntryVWAP,DayHigh,PrevClose,0050OpenChg%,VolRatio,MonthTradingVal,IsPrevDayLU,IsDisposition,HadCircuitBreaker,GroupLimitUpCount,0050EntryChg%
+5347,SignalA,StrongGroup,09:30:00,09:50:40,stopLoss,-177778,-1.78%,0h20m40s,晶圓代工,2,2,2,2303,112.50,111.17,114.50,109.00,-0.428,7.81,1425708880,0,0,1,0,-0.785
+3665,SignalA,StrongGroup,09:49:28,10:00:17,stopLoss,-205479,-2.05%,0h10m49s,連接線材,3,1,1,,1460.00,1442.01,1465.00,1410.00,-0.428,0.99,4619831000,0,1,1,0,-0.785
+3624,SignalA,StrongGroup,10:02:00,10:18:55,stopLoss,-117647,-1.18%,0h16m55s,被動元件,8,2,2,8043,59.50,59.14,60.20,57.10,-0.428,0.64,609572065,0,0,1,0,-0.785
+2374,SignalA,StrongGroup,10:42:28,12:01:44,stopLoss,-125786,-1.26%,1h19m16s,光學鏡頭指標,14,2,2,3406,79.50,78.98,80.50,77.40,-0.428,1.39,398846230,0,0,1,0,-0.785
+6443,SignalA,StrongGroup,10:43:50,12:10:21,stopLoss,17356,0.17%,1h26m31s,太陽能,12,1,1,,32.15,31.79,33.60,31.20,-0.428,5.98,1016540567,1,0,1,0,-0.785
+3376,SignalA,StrongGroup,12:45:25,12:58:56,stopLoss,-108932,-1.09%,0h13m31s,軸承,11,1,1,,229.50,228.97,239.50,223.00,-0.428,3.42,873330000,0,0,1,0,-0.785
+6282,SignalA,StrongGroup,10:34:21,13:20:00,timeExit,44150,0.44%,2h45m39s,電供,12,1,1,,45.30,44.92,46.30,42.35,-0.428,2.77,1627991587,0,0,1,0,-0.785
+2367,SignalA,StrongGroup,10:02:12,13:20:01,timeExit,159344,1.59%,3h17m49s,低軌衛星,7,2,2,2313,30.50,30.38,31.25,29.60,-0.428,1.91,848970910,0,0,1,0,-0.785
+6409,SignalA,StrongGroup,12:03:36,13:20:27,timeExit,0,0.00%,1h16m51s,太陽能,14,2,2,2406,1025.00,1014.26,1045.00,995.00,-0.428,1.33,639051950,0,0,1,0,-0.785
+8043,SignalA,StrongGroup,09:41:17,13:20:32,lockedLimitUp,438072,4.38%,3h39m15s,被動元件,4,1,1,,83.00,82.80,84.80,79.50,-0.428,0.82,1188036255,0,0,1,0,-0.785

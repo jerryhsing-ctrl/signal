@@ -1,0 +1,2 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol,EntryPrice,EntryVWAP,DayHigh,PrevClose,0050OpenChg%,VolRatio,MonthTradingVal,IsPrevDayLU,IsDisposition,HadCircuitBreaker,GroupLimitUpCount,0050EntryChg%
+2495,SignalA,StrongGroup,10:03:37,13:20:01,timeExit,83056,0.83%,3h16m24s,記憶體,1,2,2,3060,30.10,29.77,30.75,28.65,-0.162,4.12,244556082,0,0,1,1,-0.323

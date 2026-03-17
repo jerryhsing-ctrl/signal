@@ -1,0 +1,2 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol,EntryPrice,EntryVWAP,DayHigh,PrevClose,0050OpenChg%,VolRatio,MonthTradingVal,IsPrevDayLU,IsDisposition,HadCircuitBreaker,GroupLimitUpCount,0050EntryChg%
+3030,SignalA,StrongGroup,09:05:38,13:20:00,timeExit,181983,1.82%,4h14m22s,PCB 設備,5,1,1,,242.00,240.48,242.50,231.50,3.125,1.35,1317996750,0,0,0,1,2.853

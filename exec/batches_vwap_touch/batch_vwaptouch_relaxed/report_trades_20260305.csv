@@ -1,0 +1,7 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol,EntryPrice,EntryVWAP,DayHigh,PrevClose,0050OpenChg%,VolRatio,MonthTradingVal,IsPrevDayLU,IsDisposition,HadCircuitBreaker,GroupLimitUpCount,0050EntryChg%
+2605,SignalA,StrongGroup,09:06:37,09:17:04,stopLoss,-162382,-1.62%,0h10m27s,海運,20,1,1,,36.95,36.53,37.50,35.00,3.571,1.33,719805810,0,0,0,0,3.704
+1815,SignalA,StrongGroup,09:05:42,09:17:44,stopLoss,-223214,-2.23%,0h12m02s,玻纖布,3,1,1,,112.00,110.40,112.00,103.50,3.571,1.55,7617909070,0,0,0,0,3.704
+3017,SignalA,StrongGroup,09:05:47,09:51:25,stopLoss,-185185,-1.85%,0h45m38s,散熱,12,1,1,,1890.00,1867.09,1890.00,1750.00,3.571,1.20,10620597750,0,0,0,0,3.704
+2383,SignalA,StrongGroup,09:13:34,09:55:34,stopLoss,-147992,-1.48%,0h42m00s,PCB上游,11,1,1,,2365.00,2346.69,2380.00,2190.00,3.571,1.23,8412249500,0,0,0,0,4.167
+4931,SignalA,StrongGroup,09:04:22,10:03:25,stopLoss,-145455,-1.45%,0h59m03s,BBU,2,1,1,,137.50,136.23,137.50,128.50,3.571,0.98,541188275,0,0,0,0,3.505
+2404,SignalA,StrongGroup,09:07:35,10:15:25,stopLoss,-55300,-0.55%,1h07m50s,廠務,14,1,1,,1085.00,1070.71,1085.00,1000.00,3.571,1.62,2941919850,0,0,0,0,3.770

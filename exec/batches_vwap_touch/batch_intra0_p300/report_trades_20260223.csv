@@ -1,0 +1,6 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol,EntryPrice,EntryVWAP,DayHigh,PrevClose,0050OpenChg%,VolRatio,MonthTradingVal,IsPrevDayLU,IsDisposition,HadCircuitBreaker,GroupLimitUpCount,0050EntryChg%
+2883,SignalA,StrongGroup,09:10:12,13:20:00,timeExit,24510,0.25%,4h09m48s,金控,11,1,1,,20.40,20.18,20.50,19.25,1.619,7.04,874456052,0,0,0,0,0.842
+8033,SignalA,StrongGroup,09:05:33,13:20:00,timeExit,144937,1.45%,4h14m27s,軍工,6,1,1,,158.00,156.32,158.00,148.00,1.619,6.98,556413050,0,0,0,0,0.712
+4958,SignalA,StrongGroup,09:08:10,13:20:07,lockedLimitUp,289474,2.89%,4h11m57s,印刷電路板,16,1,1,,190.00,187.61,190.50,178.00,1.619,1.24,5758583300,0,1,0,0,0.712
+4764,SignalA,StrongGroup,09:18:56,13:20:26,lockedLimitUp,341198,3.41%,4h01m30s,電子化工材料,16,1,1,,108.50,107.81,111.50,102.50,1.619,1.09,241170075,0,0,0,0,0.972
+4919,SignalA,StrongGroup,09:17:07,13:21:03,lockedLimitUp,345352,3.45%,4h03m56s,車用電子,18,1,1,,63.90,63.01,65.50,60.30,1.619,2.69,367261655,0,0,0,0,0.972

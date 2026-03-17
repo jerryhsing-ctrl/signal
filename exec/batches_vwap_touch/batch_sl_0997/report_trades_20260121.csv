@@ -1,0 +1,2 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol,EntryPrice,EntryVWAP,DayHigh,PrevClose,0050OpenChg%,VolRatio,MonthTradingVal,IsPrevDayLU,IsDisposition,HadCircuitBreaker,GroupLimitUpCount,0050EntryChg%
+3663,SignalA,StrongGroup,09:17:00,11:53:01,stopLoss,33769,0.34%,2h36m01s,FOPLP,6,1,1,,67.40,66.73,69.00,64.20,-1.102,0.83,326715275,0,0,0,0,-0.826

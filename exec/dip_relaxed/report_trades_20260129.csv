@@ -1,0 +1,6 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol,EntryPrice,EntryVWAP,DayHigh,PrevClose,0050OpenChg%,VolRatio,MonthTradingVal,IsPrevDayLU,IsDisposition,HadCircuitBreaker,GroupLimitUpCount,0050EntryChg%
+8390,SignalA,StrongGroup,09:32:26,09:36:46,stopLoss,-95238,-0.95%,0h04m20s,回收焚化相關指標,4,2,2,7610,105.00,104.70,107.00,101.00,0.270,2.03,248630475,0,0,1,0,0.135
+2313,SignalA,StrongGroup,09:40:47,09:43:05,stopLoss,-160000,-1.60%,0h02m18s,低軌衛星,6,1,1,,187.50,185.78,192.00,176.00,0.270,1.29,12102972900,0,0,1,1,0.135
+6265,SignalA,StrongGroup,09:30:12,09:44:41,stopLoss,-133588,-1.34%,0h14m29s,記憶體,3,2,2,8096,52.40,52.05,53.60,48.80,0.270,2.73,608649475,1,0,1,0,0.135
+2027,SignalA,StrongGroup,10:14:57,10:45:47,stopLoss,-147783,-1.48%,0h30m50s,不鏽鋼,1,1,1,,40.60,40.23,41.10,38.70,0.270,9.28,785242650,0,0,1,0,0.135
+8033,SignalA,StrongGroup,11:00:23,11:51:37,stopLoss,-153374,-1.53%,0h51m14s,軍工,3,2,2,6753,163.00,161.42,166.00,155.00,0.270,3.63,991068050,0,0,1,1,0.135

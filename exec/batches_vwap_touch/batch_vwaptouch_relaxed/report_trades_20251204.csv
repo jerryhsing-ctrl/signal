@@ -1,0 +1,7 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol,EntryPrice,EntryVWAP,DayHigh,PrevClose,0050OpenChg%,VolRatio,MonthTradingVal,IsPrevDayLU,IsDisposition,HadCircuitBreaker,GroupLimitUpCount,0050EntryChg%
+5284,SignalA,StrongGroup,09:05:12,09:18:35,stopLoss,-112179,-1.12%,0h13m23s,軍工,3,1,1,,312.00,310.30,313.50,300.00,0.161,4.75,405479625,0,1,0,0,0.080
+3450,SignalA,StrongGroup,09:12:30,09:20:33,stopLoss,-150943,-1.51%,0h08m03s,CPO,2,1,1,,265.00,262.55,269.50,251.50,0.161,6.18,1420848475,0,0,0,0,0.241
+4989,SignalA,StrongGroup,09:20:38,09:28:40,stopLoss,-121212,-1.21%,0h08m02s,PCB上游,8,1,1,,41.25,40.97,41.60,39.80,0.161,2.41,298171892,0,0,0,0,0.241
+3037,SignalA,StrongGroup,09:11:31,09:49:32,stopLoss,-172840,-1.73%,0h38m01s,ABF,1,1,1,,202.50,200.23,202.50,196.50,0.161,2.68,3438398600,0,0,0,0,0.161
+6805,SignalA,StrongGroup,09:12:39,11:00:28,stopLoss,-182371,-1.82%,1h47m49s,散熱,6,1,1,,1645.00,1624.98,1650.00,1595.00,0.161,4.15,1431295500,0,0,0,0,0.241
+6706,SignalA,StrongGroup,09:04:07,13:20:01,timeExit,191388,1.91%,4h15m54s,設備儀器商,2,1,1,,104.50,103.68,106.50,100.00,0.161,21.92,273250900,1,0,0,0,0.080

@@ -1,0 +1,2 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol,EntryPrice,EntryVWAP,DayHigh,PrevClose,0050OpenChg%,VolRatio,MonthTradingVal,IsPrevDayLU,IsDisposition,HadCircuitBreaker,GroupLimitUpCount,0050EntryChg%
+2486,SignalA,StrongGroup,09:10:29,09:21:14,stopLoss,-221998,-2.22%,0h10m45s,散熱,6,1,1,,99.10,97.66,100.00,92.20,0.157,4.14,954161945,0,0,0,0,0.314

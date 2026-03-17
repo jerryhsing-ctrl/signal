@@ -1,0 +1,6 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol,EntryPrice,EntryVWAP,DayHigh,PrevClose,0050OpenChg%,VolRatio,MonthTradingVal,IsPrevDayLU,IsDisposition,HadCircuitBreaker,GroupLimitUpCount,0050EntryChg%
+8074,SignalA,StrongGroup,09:18:30,09:19:38,stopLoss,-150000,-1.50%,0h01m08s,鑽孔,4,1,1,,60.00,59.44,61.20,58.00,-0.071,1.26,1118650362,0,0,0,0,-0.424
+2455,SignalA,StrongGroup,09:11:05,09:33:38,stopLoss,-210843,-2.11%,0h22m33s,砷化鎵,9,1,1,,166.00,163.71,166.00,160.00,-0.071,3.10,1107842575,0,0,0,0,-0.495
+3189,SignalA,StrongGroup,09:22:07,09:59:15,stopLoss,-170455,-1.70%,0h37m08s,ABF,10,1,1,,176.00,174.06,177.00,172.00,-0.071,0.88,3810161000,0,0,1,0,-0.424
+1303,SignalA,StrongGroup,09:10:18,13:20:00,lockedLimitUp,428356,4.28%,4h09m42s,塑膠,3,1,1,,66.30,65.63,66.60,63.40,-0.071,1.83,5595166350,0,0,0,0,-0.495
+4989,SignalA,StrongGroup,09:07:32,13:20:09,lockedLimitUp,246533,2.47%,4h12m37s,CCL,5,1,1,,64.90,63.94,65.70,60.50,-0.071,3.69,1139252782,1,0,0,0,-0.353

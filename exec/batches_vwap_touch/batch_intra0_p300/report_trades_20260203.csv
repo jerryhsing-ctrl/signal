@@ -1,0 +1,4 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol,EntryPrice,EntryVWAP,DayHigh,PrevClose,0050OpenChg%,VolRatio,MonthTradingVal,IsPrevDayLU,IsDisposition,HadCircuitBreaker,GroupLimitUpCount,0050EntryChg%
+6215,SignalA,StrongGroup,09:19:24,10:17:07,stopLoss,-263158,-2.63%,0h57m43s,設備儀器商,16,1,1,,114.00,111.93,113.50,108.00,2.098,0.45,474648300,0,0,0,0,2.028
+6285,SignalA,StrongGroup,09:04:26,10:39:17,stopLoss,27692,0.28%,1h34m51s,網路通訊,11,1,1,,195.00,193.03,196.00,183.00,2.098,1.34,4367056000,0,0,0,0,1.888
+2467,SignalA,StrongGroup,09:06:55,13:20:22,lockedLimitUp,329709,3.30%,4h13m27s,FOPLP,10,1,1,,257.50,255.67,262.00,242.50,2.098,3.19,658781450,0,0,0,0,1.958

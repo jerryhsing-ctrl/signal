@@ -1,0 +1,3 @@
+Symbol,SignalType,EnterCause,EntryTime,ExitTime,LeaveCause,PnL,Return%,HoldingDuration,GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol,EntryPrice,EntryVWAP,DayHigh,PrevClose,0050OpenChg%,VolRatio,MonthTradingVal,IsPrevDayLU,IsDisposition,HadCircuitBreaker,GroupLimitUpCount,0050EntryChg%
+8996,SignalA,StrongGroup,09:36:15,13:20:00,timeExit,-202952,-2.03%,3h43m45s,散熱,5,1,1,,542.00,538.22,554.00,514.00,0.488,5.84,558810675,0,0,1,0,1.138
+7769,SignalA,StrongGroup,09:53:32,13:20:08,timeExit,-254669,-2.55%,3h26m36s,設備儀器商,8,1,1,,2945.00,2929.38,2960.00,2890.00,0.488,1.45,1270032250,0,0,1,0,1.138
