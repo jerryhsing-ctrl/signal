@@ -133,6 +133,14 @@ Order::Order() {
     if (!val.empty()) bailout_ratio = stod(val);
     val = reader.Read("Order", "max_entry_price");
     if (!val.empty()) max_entry_price = stod(val);
+    val = reader.Read("Order", "no_entry_friday");
+    if (!val.empty()) no_entry_friday = (val == "true");
+    val = reader.Read("Order", "max_0050_entry_chg");
+    if (!val.empty()) max_0050_entry_chg = stod(val);
+    val = reader.Read("Order", "max_0050_intra_chg");
+    if (!val.empty()) max_0050_intra_chg = stod(val);
+    val = reader.Read("Order", "position_scale_nth");
+    if (!val.empty()) position_scale_nth = stod(val);
     val = reader.Read("Order", "entry_time_limit");
     if (!val.empty()) entry_time_limit = stoll(val);
     val = reader.Read("Order", "exit_time_limit");
@@ -191,10 +199,28 @@ void Order::setDate(const std::string& date, const std::string& logFolder) {
 
     try {
         fs::create_directories(logDir);
+        // Clean stale report files from previous runs that may have reused same HHMM directory
+        for (const auto& entry : fs::directory_iterator(logDir)) {
+            const auto& fname = entry.path().filename().string();
+            if (fname.find("report_") == 0) {
+                fs::remove(entry.path());
+            }
+        }
     } catch(const std::exception& e) {
         cerr << "Failed to create directory: " << logDir << " Error: " << e.what() << endl;
     }
 
+    // Compute day of week from logDate (YYYYMMDD)
+    if (logDate.size() == 8) {
+        struct tm tm_date = {};
+        tm_date.tm_year = stoi(logDate.substr(0, 4)) - 1900;
+        tm_date.tm_mon  = stoi(logDate.substr(4, 2)) - 1;
+        tm_date.tm_mday = stoi(logDate.substr(6, 2));
+        mktime(&tm_date);
+        is_friday = (tm_date.tm_wday == 5);
+    }
+
+    trades_entered_today = 0; // reset for new day
     closeSymbolLogFiles(); // date changed -> reopen per-symbol logs with new name
     openLogFile();
 
@@ -211,6 +237,18 @@ void Order::trigger(IndexData &idx, format6Type *f6, int entry_idx, SIGNAL_TYPE 
     if (filter_prev_day_limit_up && f6->prevLimitUp) {
         return;
     }
+    if (no_entry_friday && is_friday) {
+        return;
+    }
+    if (max_0050_entry_chg > 0 && p0050_prev > 0 && p0050_latest > 0) {
+        double chg = (double)(p0050_latest - p0050_prev) / p0050_prev * 100.0;
+        if (chg >= max_0050_entry_chg) return;
+    }
+    if (max_0050_intra_chg < 99 && p0050_prev > 0 && p0050_latest > 0) {
+        double entry_chg = (double)(p0050_latest - p0050_prev) / p0050_prev * 100.0;
+        double intra_chg = entry_chg - market_open_chg_pct;
+        if (intra_chg >= max_0050_intra_chg) return;
+    }
     if (dispostion_enabled) {
         if (f6->volatilityPause)
             return;
@@ -224,7 +262,13 @@ void Order::trigger(IndexData &idx, format6Type *f6, int entry_idx, SIGNAL_TYPE 
     if (max_entry_price > 0 && currentPrice / ZERO_NUM > max_entry_price)
         return;
     currentPrice /= ZERO_NUM; // Convert back to actual price
-    stocks[f6->symbol] = position / currentPrice; // Calculate quantity based on fixed cash position
+    // Position scaling: scale up for 2nd+ trades of the day
+    double effective_position = position;
+    if (trades_entered_today >= 1 && position_scale_nth != 1.0) {
+        effective_position = position * position_scale_nth;
+    }
+    trades_entered_today++;
+    stocks[f6->symbol] = effective_position / currentPrice; // Calculate quantity based on fixed cash position
     entrySignalType[f6->symbol] = signal_type;
     profitTaken[f6->symbol] = false; // Reset profitTaken status for new position
     string sigTypeStr = "";
@@ -232,11 +276,8 @@ void Order::trigger(IndexData &idx, format6Type *f6, int entry_idx, SIGNAL_TYPE 
     else if (signal_type == SIGNAL_TYPE::SIGNAL_B) sigTypeStr = "SignalB";
     else if (signal_type == SIGNAL_TYPE::SIGNAL_BOTH) sigTypeStr = "SignalBoth";
 
-
-
-
-    cash -= position;
-    symbolCash[f6->symbol] -= position;
+    cash -= effective_position;
+    symbolCash[f6->symbol] -= effective_position;
     entryPointIdx[f6->symbol] = idx;
 
     // record open trade for report
@@ -250,7 +291,7 @@ void Order::trigger(IndexData &idx, format6Type *f6, int entry_idx, SIGNAL_TYPE 
         else if (matchType == MatchType::Both) cause_str = "Both";
         ot.enter_cause = cause_str;
         ot.entry_time_raw = f6->matchTimeStr;
-        ot.baseline = symbolCash[f6->symbol] + position;
+        ot.baseline = symbolCash[f6->symbol] + effective_position;
         ot.had_take_profit = false;
         auto mi = strongGroup.last_match_info.find(f6->symbol);
         if (mi != strongGroup.last_match_info.end()) {
@@ -291,7 +332,7 @@ void Order::trigger(IndexData &idx, format6Type *f6, int entry_idx, SIGNAL_TYPE 
                 << "," << (long long)(ot.prev_close * 10000)
                 << "," << (long long)stocks[f6->symbol]
                 << "," << sigTypeStr
-                << "," << (long long)position
+                << "," << (long long)effective_position
                 << "," << ot.group_name
                 << "," << ot.group_rank
                 << "," << ot.member_rank

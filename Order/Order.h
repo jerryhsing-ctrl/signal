@@ -80,6 +80,12 @@ private:
     double stop_loss_ratio_b = 0.997;
     double bailout_ratio = 0.985;
     double max_entry_price = 0;  // 0 = no limit
+    bool no_entry_friday = false;  // skip all entries on Friday
+    bool is_friday = false;        // computed from logDate in setDate()
+    double max_0050_entry_chg = 0; // 0 = no limit; e.g. 2.0 = skip entry when 0050 up >= 2%
+    double max_0050_intra_chg = 99; // max 0050 intraday change (entry vs open). 0 = only enter when market falling from open
+    double position_scale_nth = 1.0; // scale factor for 2nd+ trades of the day (1.0 = no scaling)
+    int trades_entered_today = 0;    // counter for position scaling
     long long entry_time_limit = 130'000'000'000;
     long long exit_time_limit = 132'500'000'000;
     int take_profit_splits = 5;

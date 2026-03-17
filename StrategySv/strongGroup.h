@@ -39,6 +39,7 @@ struct StrongGroupConfig {
     bool require_raw_m1 = false;
     bool block_disposition_entry = true;  // block disposition stocks from entry
     double entry_max_vol_ratio = 0.0;    // 0 = no limit; e.g. 1.5 = reject VR >= 1.5
+    long long entry_min_month_trading_val = 0;  // 0 = no limit; e.g. 1000000000 = require MV >= 10億
 };
 
 class StrongGroup {
