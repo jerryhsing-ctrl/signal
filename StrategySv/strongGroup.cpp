@@ -182,6 +182,7 @@ bool StrongGroup::on_tick(IndexData &idx, format6Type *f6) {
     for (const auto& group : symbol_to_groups[f6->symbol]) {
 
         if (!isValidGroup(idx, f6, group)) {
+
             continue;
         }
         {
@@ -241,6 +242,7 @@ bool StrongGroup::on_tick(IndexData &idx, format6Type *f6) {
                 for (auto &[gain, symbol] : group_member_vwapRank[group].rank_map) {
                     cnt++;
                     bool blockDisp = config.block_disposition_entry && isDisposition;
+
                     if (symbol == f6->symbol && !isPrevDayLimitUp && !blockDisp && !ans) {
                         ans = (vwapPerChg >= config.entry_min_vwap_pct_chg);
                         if (config.entry_max_vwap_pct_chg > 0 && vwapPerChg > config.entry_max_vwap_pct_chg)

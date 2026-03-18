@@ -53,6 +53,7 @@ bool signalA::eval(IndexData &idx, format6Type *f6, MatchType matchType, MatchTy
 
     triggerMatchType = MatchType::None;
 
+
     if (triggered) return false;
     if (matchType == MatchType::None) {
         if (near_vwap) { near_vwap = false; low_since_near = 0; near_vwap_time = 0; near_vwap_time_us = 0; near_vwap_pv_ratio = 0; }
