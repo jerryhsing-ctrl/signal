@@ -169,6 +169,11 @@ void StrategySv::run(queueType *market_queue_, string market_name) {
             indexCalc &index_calc = index_calc_map_[symbol];
             IndexData idx = index_calc.calc(f6);
 
+            // Track 0050 price when individual stock hits new day high
+            if (idx.day_high_updated && order.p0050_latest > 0) {
+                p0050_at_day_high_[symbol] = order.p0050_latest;
+            }
+
             // cout <<  "symbol " << f6->symbol << '\n';
 
             order.dumpTick(f6);
@@ -211,6 +216,12 @@ void StrategySv::run(queueType *market_queue_, string market_name) {
 
             // cout << "   SignalA: " << isSignalA << " SignalB: " << isSignalB << '\n';
  
+            // Set 0050 at day_high for potential entry
+            if (isSignalA || isSignalB) {
+                auto it = p0050_at_day_high_.find(symbol);
+                order.pending_p0050_at_day_high = (it != p0050_at_day_high_.end()) ? it->second : 0;
+            }
+
             if (isSignalA && isSignalB) {
                 errorLog(" both signal triggered, symbol: " + f6->symbol + " matchTime: " + to_string(f6->matchTimeStr));
                 // 兩個同時觸發時優先用 SignalA

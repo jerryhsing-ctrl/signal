@@ -139,6 +139,10 @@ Order::Order() {
     if (!val.empty()) max_0050_entry_chg = stod(val);
     val = reader.Read("Order", "max_0050_intra_chg");
     if (!val.empty()) max_0050_intra_chg = stod(val);
+    val = reader.Read("Order", "entry_max_group_rank");
+    if (!val.empty()) entry_max_group_rank = stoi(val);
+    val = reader.Read("Order", "min_dip_from_high");
+    if (!val.empty()) min_dip_from_high = stod(val);
     val = reader.Read("Order", "position_scale_nth");
     if (!val.empty()) position_scale_nth = stod(val);
     val = reader.Read("Order", "entry_time_limit");
@@ -258,9 +262,20 @@ void Order::trigger(IndexData &idx, format6Type *f6, int entry_idx, SIGNAL_TYPE 
     if (matchType == MatchType::StrongSingle && strongSingle.forbidden[f6->symbol]) {
         return;
     }
+    // Group rank filter
+    if (entry_max_group_rank > 0) {
+        auto mi = strongGroup.last_match_info.find(f6->symbol);
+        if (mi == strongGroup.last_match_info.end() || mi->second.group_rank > entry_max_group_rank)
+            return;
+    }
     double currentPrice = (f6->ask[0].Price > 0) ? f6->ask[0].Price : f6->match.Price;
     if (max_entry_price > 0 && currentPrice / ZERO_NUM > max_entry_price)
         return;
+    // Min dip from day high filter
+    if (min_dip_from_high > 0 && idx.day_high > 0) {
+        double dip = (double)(idx.day_high - currentPrice) / idx.day_high;
+        if (dip < min_dip_from_high) return;
+    }
     currentPrice /= ZERO_NUM; // Convert back to actual price
     // Position scaling: scale up for 2nd+ trades of the day
     double effective_position = position;
@@ -319,6 +334,8 @@ void Order::trigger(IndexData &idx, format6Type *f6, int entry_idx, SIGNAL_TYPE 
             ot.group_limit_up_count = strongGroup.getGroupLimitUpCount(ot.group_name);
         if (p0050_prev > 0 && p0050_latest > 0)
             ot.market_entry_chg_pct = (double)(p0050_latest - p0050_prev) / p0050_prev * 100.0;
+        if (p0050_prev > 0 && pending_p0050_at_day_high > 0)
+            ot.market_at_day_high_chg_pct = (double)(pending_p0050_at_day_high - p0050_prev) / p0050_prev * 100.0;
         openTrades[f6->symbol] = ot;
 
         // write ENTRY to tick dump
@@ -494,6 +511,7 @@ void Order::on_tick(format6Type *f6) {
         tr.had_circuit_breaker = ot.had_circuit_breaker;
         tr.group_limit_up_count = ot.group_limit_up_count;
         tr.market_entry_chg_pct = ot.market_entry_chg_pct;
+        tr.market_at_day_high_chg_pct = ot.market_at_day_high_chg_pct;
         completedTrades.push_back(tr);
         openTrades.erase(it);
     };
@@ -735,7 +753,7 @@ void Order::generateReport() {
           << "GroupName,GroupRank,MemberRank,RawMemberRank,M1Symbol,"
           << "EntryPrice,EntryVWAP,DayHigh,PrevClose,0050OpenChg%,"
           << "VolRatio,MonthTradingVal,"
-          << "IsPrevDayLU,IsDisposition,HadCircuitBreaker,GroupLimitUpCount,0050EntryChg%\n";
+          << "IsPrevDayLU,IsDisposition,HadCircuitBreaker,GroupLimitUpCount,0050EntryChg%,0050AtDayHighChg%\n";
         for (auto& t : completedTrades) {
             int dur = durationSec(t.entry_time_raw, t.exit_time_raw);
             f << t.symbol << ","
@@ -763,7 +781,8 @@ void Order::generateReport() {
               << (t.is_disposition ? 1 : 0) << ","
               << (t.had_circuit_breaker ? 1 : 0) << ","
               << t.group_limit_up_count << ","
-              << fixed << setprecision(3) << t.market_entry_chg_pct << "\n";
+              << fixed << setprecision(3) << t.market_entry_chg_pct << ","
+              << fixed << setprecision(3) << t.market_at_day_high_chg_pct << "\n";
         }
         cout << "[Report] " << path << "\n";
     }

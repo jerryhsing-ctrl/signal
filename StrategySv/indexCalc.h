@@ -11,6 +11,7 @@ public:
     long long rolling_low = 0;
     long long day_high = 0;
     long long day_low = LLONG_MAX;
+    bool day_high_updated = false; // true when day_high changed on this tick
 };
 
 class indexCalc {

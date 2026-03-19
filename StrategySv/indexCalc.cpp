@@ -23,8 +23,10 @@ IndexData indexCalc::calc(format6Type *f6) {
 
 
 
+    long long prev_high = day_high;
     day_high = max(day_high, (long long)f6->match.Price);
     idx.day_high = day_high;
+    idx.day_high_updated = (day_high > prev_high);
 
     day_low = min(day_low, (long long) f6->match.Price);
     idx.day_low = day_low;

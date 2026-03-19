@@ -23,6 +23,7 @@ private:
 	queueType *market_queue_OTC = nullptr;
 	queueType *market_queue_HWQ = nullptr;
 	unordered_map<std::string, indexCalc> index_calc_map_;
+	unordered_map<std::string, long long> p0050_at_day_high_; // 0050 price when stock hit day high
 
 	bool signalA_enabled = false, signalB_enabled = false, strongGroup_enabled = false, strongSingle_enabled = false;
 	bool single_group_rank_filter = true;

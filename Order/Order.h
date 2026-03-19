@@ -47,6 +47,7 @@ struct TradeRecord {
     bool had_circuit_breaker = false; // 曾觸發緩搓
     int group_limit_up_count = 0;    // 進場時族群漲停家數
     double market_entry_chg_pct = 0;  // 0050 at entry time vs prev close (%)
+    double market_at_day_high_chg_pct = 0; // 0050 at stock's day_high time vs prev close (%)
 };
 
 class Order {
@@ -84,6 +85,8 @@ private:
     bool is_friday = false;        // computed from logDate in setDate()
     double max_0050_entry_chg = 0; // 0 = no limit; e.g. 2.0 = skip entry when 0050 up >= 2%
     double max_0050_intra_chg = 99; // max 0050 intraday change (entry vs open). 0 = only enter when market falling from open
+    int entry_max_group_rank = 0;  // 0 = no limit; e.g. 4 = only enter GR<=4
+    double min_dip_from_high = 0;  // 0 = no limit; e.g. 0.005 = require (dayHigh-price)/dayHigh >= 0.5%
     double position_scale_nth = 1.0; // scale factor for 2nd+ trades of the day (1.0 = no scaling)
     int trades_entered_today = 0;    // counter for position scaling
     long long entry_time_limit = 130'000'000'000;
@@ -123,6 +126,7 @@ private:
         bool had_circuit_breaker = false;
         int group_limit_up_count = 0;
         double market_entry_chg_pct = 0;
+        double market_at_day_high_chg_pct = 0;
     };
     unordered_map<string, OpenTrade> openTrades;
     std::vector<TradeRecord> completedTrades;
@@ -150,4 +154,5 @@ public:
     long long p0050_prev = 0;        // 0050 prev close, set by StrategySv
     long long pending_near_vwap_time = 0;  // set by StrategySv before trigger()
     double pending_near_vwap_pv_ratio = 0; // set by StrategySv before trigger()
+    long long pending_p0050_at_day_high = 0; // 0050 price when stock hit day high, set by StrategySv
 };
