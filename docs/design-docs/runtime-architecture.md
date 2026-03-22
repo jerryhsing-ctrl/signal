@@ -46,19 +46,17 @@ The history loader builds:
 - per-group monthly trading-value sums
 - per-group valid member counts
 
-`StrongSingleEvaluator` is instantiated as well, but its runtime effect depends on the config.
+`StrongSingleEvaluator` is instantiated as well. When enabled, it now precomputes its monthly trading-value validity so replay-universe construction can include its candidates.
 
 ### 4. Replay universe build
 
-`replay/build_replay_universe.py` currently uses the strong-group validity map plus `0050`.
+`replay/build_replay_universe.py` now unions:
 
-Important current behavior:
+- strong-group symbols
+- prevalidated strong-single symbols when that screen is enabled
+- `0050`
 
-- the replay universe is not the union of all possible signal candidates
-- `0050` is always included for market gating
-- a symbol that is absent from the strong-group validity map is not parsed, even if future strategy work might otherwise want it
-
-This is a deliberate description of the current code, not an idealized architecture.
+`0050` is always included for market gating.
 
 ### 5. Stream merge
 
@@ -73,7 +71,7 @@ Per yielded tick it also:
 
 For each merged trade tick:
 
-1. Update `0050` market-gate state. A disable event terminates the session early after reports are generated.
+1. Update `0050` market-gate state. A disable event finalizes any open positions, generates reports, and terminates the session early.
 2. Skip non-trade ticks and `00xx` symbols after the market-gate update.
 3. Update per-symbol intraday state through `state/IndexCalc`:
    - VWAP
@@ -87,7 +85,7 @@ For each merged trade tick:
 
 ### 7. End-of-day closeout
 
-After the stream ends, `replay_session.py` force-closes any remaining positions by invoking the normal exit path with a sentinel end-of-day timestamp. It then writes:
+After the stream ends, or immediately before an early market-gate return, `replay_session.py` force-closes any remaining positions by invoking the normal exit path with a sentinel end-of-day timestamp. It then writes:
 
 - `order_log_YYYYMMDD.csv`
 - `order_log_YYYYMMDD_<symbol>.csv`

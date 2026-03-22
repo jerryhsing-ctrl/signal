@@ -17,10 +17,11 @@ def _find_history_files(market_type: str, date: str, data_dir: str = "./data/") 
     """
     data_path = Path(data_dir)
     prefix = f"{market_type}Quote"
+    target_file = data_path / f"{prefix}.{date}"
     date_file_map: dict[str, str] = {}
 
     if not data_path.exists():
-        return []
+        raise FileNotFoundError(f"Replay data directory not found: {data_path}")
 
     for entry in data_path.iterdir():
         name = entry.name
@@ -29,14 +30,11 @@ def _find_history_files(market_type: str, date: str, data_dir: str = "./data/") 
             if len(file_date) == 8:
                 date_file_map[file_date] = str(entry)
 
-    if not date_file_map:
-        return []
+    if date not in date_file_map:
+        raise FileNotFoundError(f"Missing replay file for {market_type} on {date}: {target_file}")
 
     sorted_dates = sorted(date_file_map.keys())
-    # Find dates <= target date
     valid_dates = [d for d in sorted_dates if d <= date]
-    if not valid_dates:
-        return []
 
     # Take up to 21 most recent
     selected = valid_dates[-21:]

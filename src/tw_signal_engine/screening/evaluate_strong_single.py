@@ -31,6 +31,20 @@ class StrongSingleEvaluator:
         self._vol_cumu: dict[str, int] = {}
         self._max_price_amp: dict[str, float] = {}
 
+    def initialize_validity(self, symbols: set[str] | None = None) -> set[str]:
+        """Pre-compute monthly-trading-value validity for replay universe construction."""
+        candidates = symbols if symbols is not None else set(self.f1_map.keys())
+        for symbol in candidates:
+            self._is_symbol_valid(symbol)
+        return {symbol for symbol, is_valid in self.symbol_is_valid.items() if is_valid}
+
+    def _is_symbol_valid(self, symbol: str) -> bool:
+        if symbol not in self.symbol_is_valid:
+            total = sum(self.trading_val[i].get(symbol, 0) for i in range(1, DAY_PER_MONTH + 1))
+            avg = total // DAY_PER_MONTH
+            self.symbol_is_valid[symbol] = avg >= self.config.min_month_trading_val
+        return self.symbol_is_valid[symbol]
+
     def on_tick(
         self, idx: IndexData, symbol: str, price: int, qty: int,
         match_time_us: int, match_time_str: int,
@@ -38,13 +52,7 @@ class StrongSingleEvaluator:
         if not self.config.enabled:
             return False
 
-        # Validate symbol (month avg trading val)
-        if symbol not in self.symbol_is_valid:
-            total = sum(self.trading_val[i].get(symbol, 0) for i in range(1, DAY_PER_MONTH + 1))
-            avg = total // DAY_PER_MONTH
-            self.symbol_is_valid[symbol] = avg >= self.config.min_month_trading_val
-
-        if not self.symbol_is_valid[symbol]:
+        if not self._is_symbol_valid(symbol):
             return False
 
         self._vol_cumu[symbol] = self._vol_cumu.get(symbol, 0) + qty

@@ -30,10 +30,9 @@ In practice, these settings are extremely loose and rarely disable the session.
 
 The engine replays:
 
-- symbols prevalidated by strong-group monthly trading-value rules
+- symbols discovered by strong-group screening
+- prevalidated strong-single candidates when strong-single is enabled
 - `0050`
-
-This is the current implementation, even though it is narrower than a theoretical all-symbol universe.
 
 ## Strong-Group Screening
 
@@ -69,7 +68,7 @@ Strong-single is implemented in code but disabled in the committed config.
 Other important current behavior:
 
 - `single_group_rank_filter` still defaults to enabled in code
-- if strong-single is re-enabled later, it will also interact with the current replay-universe limitation
+- if strong-single is re-enabled later, its monthly-value candidates are included in the replay universe before group-rank filtering is applied
 
 ## Signal A
 

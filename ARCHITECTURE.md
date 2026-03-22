@@ -7,10 +7,10 @@
 1. Parse `exec/cfg/parameter.cfg` with the legacy INI loader and normalize it into typed config models.
 2. Load symbol reference data from `Symbols_YYYYMMDD.csv`, derive previous-day limit-up flags, and load `group.csv`.
 3. Build 20-session historical volume and trading-value caches from up to 21 replay sessions.
-4. Initialize screening state, then build the replay universe and always include `0050` for market gating.
+4. Initialize screening state, then build the replay universe from strong-group symbols, any enabled strong-single candidates, and `0050` for market gating.
 5. Merge OTC and TSE replay files in `match_time_str` order.
 6. For each trade tick: update market gate, update per-symbol intraday state, process exits first, then screening, signals, and entries.
-7. Force-close any remaining positions at the end of the session and write `order_log_*.csv`, `report_trades.csv`, `report_summary.csv`, and `report_by_category.csv`.
+7. Force-close any remaining positions at the end of the session, or before an early market-gate abort, then write `order_log_*.csv`, `report_trades.csv`, `report_summary.csv`, and `report_by_category.csv`.
 
 ## Domain Boundaries
 

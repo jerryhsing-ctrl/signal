@@ -8,6 +8,7 @@ from datetime import datetime
 
 from tw_signal_engine.config.load_legacy_ini import load_legacy_ini
 from tw_signal_engine.config.normalize_strategy_config import normalize_strategy_config
+from tw_signal_engine.config.strategy_config import NormalizedStrategyConfig
 from tw_signal_engine.execution.create_entry_trade import execute_entry, should_enter
 from tw_signal_engine.execution.trade_ledger import on_tick_exit
 from tw_signal_engine.market_data.load_history_window import load_history_window
@@ -37,6 +38,38 @@ def _compute_log_dir(date: str, log_folder: str = "") -> str:
         return f"./log/{log_folder}/{date}/"
     now = datetime.now()
     return f"./log/{date}_{now.strftime('%H%M')}/"
+
+
+def _finalize_open_positions(
+    config: NormalizedStrategyConfig,
+    pos: PositionState,
+    last_price: dict[str, int],
+    entry_signal_type: dict[str, str],
+    entry_idx_map: dict[str, IndexData],
+    completed_trades: list[TradeRecord],
+    log_writer: OrderLogWriter,
+) -> None:
+    dummy_tick = MarketTick()
+    dummy_tick.match_time_str = sys.maxsize
+    for symbol, qty in list(pos.stocks.items()):
+        if qty <= 0:
+            continue
+        lp = last_price.get(symbol, 0)
+        dummy_tick.symbol = symbol
+        dummy_tick.match.price = lp
+        dummy_tick.bid[0].price = lp
+        sig_type = entry_signal_type.get(symbol, "")
+        eidx = entry_idx_map.get(symbol, IndexData())
+        cause = on_tick_exit(
+            config.execution, symbol, lp, lp,
+            dummy_tick.match_time_str, sig_type, eidx, pos, completed_trades,
+        )
+        if cause:
+            log_writer.write_leave(
+                symbol, dummy_tick.match_time_str, lp,
+                pos.cash, pos.symbol_cash.get(symbol, 0), cause,
+                pos.stocks.get(symbol, 0),
+            )
 
 
 def run_daily_replay(
@@ -104,9 +137,13 @@ def run_daily_replay(
         trading_val=trading_val,
         f1_map=f1_map,
     )
+    strong_single_valid_symbols = strong_single.initialize_validity() if config.strong_single.enabled else set()
 
     # 5. Build replay universe
-    tick_filter = build_replay_universe(set(strong_group.symbol_is_valid.keys()))
+    tick_filter = build_replay_universe(
+        set(strong_group.symbol_is_valid.keys()),
+        single_valid_symbols=strong_single_valid_symbols,
+    )
     print(f"tickFilter: {len(tick_filter)} symbols")
 
     # 6. Setup position state
@@ -159,6 +196,15 @@ def run_daily_replay(
         if tick.symbol == "0050" and tick.trade_code == 1 and tick.match.price > 0:
             market_gate.on_tick(tick)
             if market_gate.market_disabled:
+                _finalize_open_positions(
+                    config,
+                    pos,
+                    last_price,
+                    entry_signal_type,
+                    entry_idx_map,
+                    completed_trades,
+                    log_writer,
+                )
                 _generate_reports(completed_trades, log_dir, market_gate.market_open_chg_pct)
                 log_writer.close()
                 return completed_trades
@@ -278,22 +324,15 @@ def run_daily_replay(
     print(f"[TIMING] readFileMerged: {(time.time() - t0) * 1000:.0f} ms")
 
     # 8. Force close remaining positions
-    dummy_tick = MarketTick()
-    dummy_tick.match_time_str = sys.maxsize
-    for symbol, qty in list(pos.stocks.items()):
-        if qty > 0:
-            lp = last_price.get(symbol, 0)
-            dummy_tick.symbol = symbol
-            dummy_tick.match.price = lp
-            dummy_tick.bid[0].price = lp
-            sig_type = entry_signal_type.get(symbol, "")
-            eidx = entry_idx_map.get(symbol, IndexData())
-            cause = on_tick_exit(config.execution, symbol, lp, lp,
-                                dummy_tick.match_time_str, sig_type, eidx, pos, completed_trades)
-            if cause:
-                log_writer.write_leave(symbol, dummy_tick.match_time_str, lp,
-                                       pos.cash, pos.symbol_cash.get(symbol, 0), cause,
-                                       pos.stocks.get(symbol, 0))
+    _finalize_open_positions(
+        config,
+        pos,
+        last_price,
+        entry_signal_type,
+        entry_idx_map,
+        completed_trades,
+        log_writer,
+    )
 
     # 9. Generate reports
     _generate_reports(completed_trades, log_dir, market_gate.market_open_chg_pct)
