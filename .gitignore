@@ -1,6 +1,15 @@
 # Build artifacts
 build/
+legacy/cpp/build/
 exec/sv/signal
+legacy/cpp/replay_tools/a.out
+legacy/cpp/replay_tools/occupy
+legacy/cpp/replay_tools/presure_test
+legacy/cpp/replay_tools/replay
+legacy/cpp/replay_tools/tcp_send
+legacy/cpp/replay_tools/tcp_server
+legacy/cpp/replay_tools/tcpdirect_client
+legacy/cpp/replay_tools/udpserver
 
 # Logs
 exec/log/
@@ -37,3 +46,25 @@ exec/files/Symbols_*.csv
 exec/files/group_old_backup.csv
 exec/files/group.csv.new
 tools/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+*.egg-info/
+dist/
+.venv/
+
+# Runtime outputs (Python)
+runtime/caches/
+runtime/replay_runs/
+runtime/benchmarks/
+
+# Local system files and generated artifacts
+.DS_Store
+artifacts/
+legacy/cpp/replay_tools/full_market_replay.pcap
+legacy/cpp/replay_tools/udp.*

@@ -1,0 +1,60 @@
+"""CLI: run batch replay across multiple dates."""
+
+from __future__ import annotations
+
+import argparse
+from datetime import datetime
+from pathlib import Path
+
+
+def _get_trading_dates(start: str, end: str, data_dir: str = "./data/") -> list[str]:
+    """Find all trading dates between start and end that have data files."""
+    data_path = Path(data_dir)
+    available_dates: set[str] = set()
+    for f in data_path.iterdir():
+        name = f.name
+        if "Quote." in name:
+            date_part = name.split(".")[-1]
+            if len(date_part) == 8:
+                available_dates.add(date_part)
+
+    result = sorted(d for d in available_dates if start <= d <= end)
+    return result
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Run batch replay backtest")
+    parser.add_argument("--start", required=True, help="Start date YYYYMMDD")
+    parser.add_argument("--end", required=True, help="End date YYYYMMDD")
+    parser.add_argument("--config", default="./cfg/parameter.cfg", help="Config file path")
+    parser.add_argument("--data-dir", default="./data/", help="Data directory")
+    parser.add_argument("--files-dir", default="./files/", help="Symbol files directory")
+    parser.add_argument("--group-file", default="./files/group.csv", help="Group membership file")
+    args = parser.parse_args()
+
+    from tw_signal_engine.replay.replay_session import run_daily_replay
+
+    dates = _get_trading_dates(args.start, args.end, args.data_dir)
+    print(f"Batch replay: {len(dates)} dates from {args.start} to {args.end}")
+
+    batch_folder = datetime.now().strftime("%m%d_%H%M")
+
+    for date in dates:
+        print(f"\n{'=' * 40}")
+        print(f"  Replaying {date}")
+        print(f"{'=' * 40}")
+        try:
+            run_daily_replay(
+                trade_date=date,
+                config_path=args.config,
+                data_dir=args.data_dir,
+                files_dir=args.files_dir,
+                group_file=args.group_file,
+                log_folder=batch_folder,
+            )
+        except Exception as e:
+            print(f"  ERROR on {date}: {e}")
+
+
+if __name__ == "__main__":
+    main()
